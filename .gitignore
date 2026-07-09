@@ -1,1 +1,11 @@
-.DS_STORE
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.env
+*.gguf
+*.safetensors
+*.bin
+models/
+results/
+*.csv
