@@ -4,7 +4,10 @@
 2-Qwen 2.5 Series (7B)
 3-Mistral & Mixtral 8x7B
 4-DeepSeek-R1
-### my finds:
-majentik/Qwen3.6-35B-A3B-TurboQuant-MLX-4bit
+# modelos actuales
+unsloth/gemma-4-E4B-it-GGUF
+unsloth/gemma-4-E2B-it-GGUF
+unsloth/Qwen3.5-9B-GGUF
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
 ## datasets
 zai-org/LongBench-v2
