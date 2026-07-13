@@ -102,7 +102,7 @@ def stop_server(proc: subprocess.Popen) -> None:
 def run_single(
     model_id: str,
     prompt: str,
-    system_prompt: str | None = None,
+    sys_prompt: str | None = None,
     host: str = DEFAULT_HOST,
     port: int = DEFAULT_PORT,
     cache_type_k: str = DEFAULT_KV_CACHE_TYPE,
@@ -122,8 +122,8 @@ def run_single(
     try:
         wait_for_server(host, port)
         messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
+        if sys_prompt:
+            messages.append({"role": "system", "content": sys_prompt})
         messages.append({"role": "user", "content": prompt})
 
         r = requests.post(

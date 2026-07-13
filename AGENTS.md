@@ -3,23 +3,63 @@
 ## Context
 
 This is the main repository for the LLM Engineering Project.
-This project consists in comparing different quantization models across different models.
-The main actor here is TurboQuant. An experimental new KV Cache compression method that can, theoretically, compress the KV memory on different models.
+The project compares different quantization methods across several language
+models, with TurboQuant as the primary subject of study. TurboQuant is an
+experimental KV cache compression and weight quantization method built on top
+of llama.cpp (via the [llama-cpp-turboquant](https://github.com/TheTom/llama-cpp-turboquant)
+fork, release `tqp-v0.2.0`).
+
+The project measures GPU memory usage, KV cache size, generation throughput
+(time to first token, decode tokens/sec) and perplexity to evaluate the
+quality/speed trade-off introduced by each quantization strategy.
+
+### Models under evaluation
+
+Downloaded as Q8_0 GGUF baselines from Hugging Face, then quantized with
+TurboQuant via `quantize_models.py`:
+
+- `unsloth/gemma-4-E4B-it-GGUF`
+- `unsloth/gemma-4-E2B-it-GGUF`
+- `unsloth/Qwen3.5-9B-GGUF`
+- `bartowski/Meta-Llama-3.1-8B-Instruct-GGUF`
+
+### Dataset
+
+- `zai-org/LongBench-v2` - long-context evaluation benchmark.
 
 ## Repository content
 
 - `Documentation/` - Lecture material and project specification.
-- `Report/` - LaTeX sources for the final report.
-- `scripts/setup_llamacpp.sh` - Downloads the prebuilt TurboQuant llama.cpp binaries (`llama-server`, `llama-quantize`) into `bin/`.
-- `download_models.py` - Downloads baseline GGUF models from the Hugging Face Hub into `Models/`.
-- `quantize_models.py` - Quantizes GGUF models in `Models/` with the TurboQuant `llama-quantize` binary.
-- `upload_models.py` - Uploads TurboQuant GGUF models back to the Hugging Face Hub with generated model cards.
-- `backend/llama_server.py` - Starts/stops the TurboQuant `llama-server`, waits for health, and issues chat requests. KV cache compression is selected with `--cache-type-k` / `--cache-type-v` (e.g. `turbo3`).
-- `backend/evaluate.py` - Server-based benchmark harness (CLI). For each model and KV cache configuration it launches `llama-server` and measures process memory (RSS), KV cache size, throughput (TTFT, tokens/sec) and perplexity, then appends the results to a CSV under `results/`.
-- `main.ipynb` - Legacy transformers-based benchmark functions. Superseded by `backend/evaluate.py`; kept for reference and plotting only. Note: transformers cannot exercise TurboQuant, which lives in the llama.cpp fork.
+- `Report/` - LaTeX sources for the final report (NeurIPS template).
+- `backend/llama_server.py` - Python wrapper around the TurboQuant `llama-server`
+  binary. Handles model discovery, server lifecycle, and OpenAI-compatible
+  chat completion requests with configurable K/V cache types.
+- `backend/evaluate.py` - Server-based benchmark harness (CLI). For each model and
+  KV cache configuration it launches `llama-server` and measures process memory
+  (RSS), KV cache size, throughput (TTFT, decode tokens/sec) and perplexity, then
+  appends the results to a CSV under `results/`.
+- `benchmarks/test_models.py` - Benchmark test suite (work in progress).
+- `bin/` - TurboQuant prebuilt binaries (gitignored, populated by
+  `scripts/setup_llamacpp.sh`). Contains `llama-server` and `llama-quantize`.
+- `scripts/setup_llamacpp.sh` - Downloads TurboQuant+ prebuilt binaries for the
+  current platform (macOS Metal, Linux CPU, Windows CUDA) into `bin/`.
+- `download_models.py` - Downloads GGUF model files from Hugging Face Hub into
+  `Models/`. Supports individual repos or batch download of all configured models.
+- `quantize_models.py` - Quantizes every `.gguf` under `Models/` using the
+  TurboQuant `llama-quantize` binary. Supports all TQ and Q quantization types.
+- `upload_models.py` - Uploads TurboQuant-quantized GGUF files to Hugging Face,
+  creating linked model repos with auto-generated model cards.
+- `main.py` - Entry point for single inference runs via `backend/llama_server.py`.
+- `main.ipynb` - Legacy transformers-based benchmark harness (model loading, GPU
+  memory, KV cache size, throughput, perplexity, CSV export). Superseded by
+  `backend/evaluate.py`; transformers cannot exercise TurboQuant, which lives in
+  the llama.cpp fork. Pending removal.
+- `test_mlx.py` - Experimental MLX inference test (Apple Silicon local runtime).
+- `Models/` - Downloaded GGUF models (gitignored).
 - `pyproject.toml` - Project metadata and dependencies (used by `uv`).
 - `uv.lock` - Reproducible dependency lockfile (used by `uv`).
-- `Makefile` - Environment setup shortcuts (`make setup`, `make notebook`, `make clean`).
+- `Makefile` - Environment setup shortcuts (`make setup`, `make notebook`,
+  `make clean`, `make clean-models`).
 
 ## Evaluation workflow
 
@@ -38,6 +78,10 @@ make setup
 source .venv/bin/activate
 ```
 
+`make setup` runs `uv sync` and then `scripts/setup_llamacpp.sh` to download
+the TurboQuant+ binaries into `bin/`. Both steps must complete before running
+inference or quantization.
+
 When adding dependencies, edit `pyproject.toml` (`[project].dependencies`) and
 run `uv lock` to regenerate `uv.lock`.
 
@@ -47,6 +91,27 @@ run `uv lock` to regenerate `uv.lock`.
 - datasets, huggingface_hub - dataset download and gated model access
 - numpy - numerical helpers
 - jupyter, ipykernel - notebook execution
+- sentencepiece - tokenizer support
+- requests - HTTP client for `llama-server` communication
+- mlx, mlx-vlm - Apple Silicon local inference (experimental)
+- ruff, black - linting and formatting (dev optional dependencies)
+
+## TurboQuant
+
+The TurboQuant+ binaries live in `bin/turboquant-plus-tqp-v0.2.0/` and provide
+two executables:
+
+- `llama-server` - inference server with runtime KV cache quantization
+  (`--cache-type-k` / `--cache-type-v` flags).
+- `llama-quantize` - offline weight quantization (produces TQ-formatted GGUF files).
+
+Weight quantization types available via `quantize_models.py`:
+`TQ1_0`, `TQ2_0`, `TQ3_1S`, `TQ4_1S`, `Q4_K_M`, `Q4_K_S`, `Q5_K_M`, `Q8_0`.
+
+KV cache quantization types available via `backend/llama_server.py`:
+`f16`, `q8_0`, `turbo2`, `turbo3`, `turbo4`.
+
+Project defaults: K cache `q8_0`, V cache `turbo3`.
 
 ## Rules
 
