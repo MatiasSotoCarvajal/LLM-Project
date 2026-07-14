@@ -1,13 +1,13 @@
 import subprocess
-import sys
 import time
 from pathlib import Path
 
 import requests
 
-ROOT = Path(__file__).resolve().parent.parent
-MODELS_DIR = ROOT / "Models"
-SERVER_BIN = ROOT / "bin" / "turboquant-plus-tqp-v0.2.0" / "llama-server"
+try:
+    from backend.config import MODELS_DIR, QUANT_SUFFIXES, SERVER_BIN
+except ImportError:
+    from config import MODELS_DIR, QUANT_SUFFIXES, SERVER_BIN
 
 DEFAULT_KV_CACHE_TYPE = "q8_0"
 DEFAULT_V_CACHE_TYPE = "turbo3"
@@ -19,7 +19,7 @@ REQUEST_TIMEOUT = 600
 
 def find_model(model_id: str) -> Path:
     if not MODELS_DIR.exists():
-        raise FileNotFoundError(f"Models directory not found: {MODELS_DIR}")
+        raise FileNotFoundError(f"models directory not found: {MODELS_DIR}")
 
     direct = MODELS_DIR / model_id
     if direct.is_file():
@@ -31,6 +31,19 @@ def find_model(model_id: str) -> Path:
         ggufs = sorted(folder.glob("*.gguf"))
         if ggufs:
             return ggufs[0]
+
+    for suffix in QUANT_SUFFIXES:
+        lower_suffix = f"-{suffix.lower()}"
+        if model_id.lower().endswith(lower_suffix):
+            base_model_id = model_id[: -len(lower_suffix)]
+            base_folder = MODELS_DIR / base_model_id.replace("/", "__")
+            if base_folder.is_dir():
+                ggufs = sorted(base_folder.glob(f"*{lower_suffix}.gguf"))
+                if ggufs:
+                    return ggufs[0]
+                ggufs = sorted(base_folder.glob(f"*_{suffix.lower()}.gguf"))
+                if ggufs:
+                    return ggufs[0]
 
     matches = sorted(MODELS_DIR.rglob(f"{model_id}*.gguf"))
     if matches:

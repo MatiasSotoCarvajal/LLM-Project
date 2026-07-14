@@ -40,8 +40,8 @@ TurboQuant via `quantize_models.py`:
 - `scripts/setup_llamacpp.sh` - Downloads TurboQuant+ prebuilt binaries for the
   current platform (macOS Metal, Linux CPU, Windows CUDA) into `bin/`.
 - `download_models.py` - Downloads GGUF model files from Hugging Face Hub into
-  `Models/`. Supports individual repos or batch download of all configured models.
-- `quantize_models.py` - Quantizes every `.gguf` under `Models/` using the
+  `models/`. Supports individual repos or batch download of all configured models.
+- `quantize_models.py` - Quantizes every `.gguf` under `models/` using the
   TurboQuant `llama-quantize` binary. Supports all TQ and Q quantization types.
 - `upload_models.py` - Uploads TurboQuant-quantized GGUF files to Hugging Face,
   creating linked model repos with auto-generated model cards.
@@ -49,7 +49,7 @@ TurboQuant via `quantize_models.py`:
 - `main.ipynb` - Legacy benchmark harness (model loading, GPU memory, KV cache
   size, throughput, perplexity, CSV export). Pending removal.
 - `test_mlx.py` - Experimental MLX inference test (Apple Silicon local runtime).
-- `Models/` - Downloaded GGUF models (gitignored).
+- `models/` - Downloaded GGUF models (gitignored).
 - `pyproject.toml` - Project metadata and dependencies (used by `uv`).
 - `uv.lock` - Reproducible dependency lockfile (used by `uv`).
 - `Makefile` - Environment setup shortcuts (`make setup`, `make notebook`,

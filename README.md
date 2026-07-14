@@ -162,5 +162,5 @@ pending
 
 ```bash
 make clean    # removes the virtual environment
-make clean-models # removes the entire /Models folder
+make clean-models # removes the entire /models folder
 ```

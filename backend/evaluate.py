@@ -2,7 +2,6 @@ import argparse
 import csv
 import json
 import math
-import os
 import re
 import sys
 import threading
@@ -31,8 +30,11 @@ except ImportError:
         wait_for_server,
     )
 
-ROOT = Path(__file__).resolve().parent.parent
-RESULTS_DIR = ROOT / "results"
+try:
+    from backend.config import RESULTS_DIR
+except ImportError:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from backend.config import RESULTS_DIR
 
 DEFAULT_CACHE_CONFIGS = [
     ("f16", "f16"),
@@ -322,7 +324,7 @@ def parse_args():
     parser.add_argument(
         "models",
         nargs="+",
-        help="One or more model ids resolvable under ./Models (see find_model).",
+        help="One or more model ids resolvable under ./models (see find_model).",
     )
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)

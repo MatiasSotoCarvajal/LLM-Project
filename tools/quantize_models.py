@@ -3,9 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-MODELS_DIR = ROOT / "Models"
-QUANTIZE_BIN = ROOT / "bin" / "turboquant-plus-tqp-v0.2.0" / "llama-quantize"
+from backend.config import MODELS_DIR, QUANTIZE_BIN, find_gguf_models
 
 DEFAULT_TYPE = "TQ4_1S"
 SUFFIX_BY_TYPE = {
@@ -18,12 +16,6 @@ SUFFIX_BY_TYPE = {
     "Q5_K_M": "Q5_K_M",
     "Q8_0": "Q8_0",
 }
-
-
-def find_gguf_models(models_dir: Path) -> list[Path]:
-    if not models_dir.exists():
-        return []
-    return sorted(models_dir.rglob("*.gguf"))
 
 
 def output_path(model_path: Path, quant_type: str) -> Path:
@@ -76,7 +68,7 @@ def quantize_model(model_path: Path, quant_type: str, threads: int | None, dry_r
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Quantize every .gguf model found under ./Models using the TurboQuant llama-quantize binary."
+        description="Quantize every .gguf model found under ./models using the TurboQuant llama-quantize binary."
     )
     parser.add_argument(
         "-t",
@@ -111,7 +103,7 @@ if __name__ == "__main__":
         print(f"Quantize binary not found: {QUANTIZE_BIN}", file=sys.stderr)
         sys.exit(1)
 
-    models = find_gguf_models(MODELS_DIR)
+    models = find_gguf_models()
     if not models:
         print(f"No .gguf models found under {MODELS_DIR}")
         sys.exit(0)

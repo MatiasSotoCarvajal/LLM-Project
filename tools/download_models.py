@@ -3,9 +3,7 @@ from pathlib import Path
 
 from huggingface_hub import hf_hub_download
 
-ROOT = Path(__file__).resolve().parent
-MODELS_DIR = ROOT / "Models"
-
+from backend.config import local_folder
 MODELS: list[dict] = [
     {
         "repo_id": "unsloth/gemma-4-E4B-it-GGUF",
@@ -24,10 +22,6 @@ MODELS: list[dict] = [
         "filenames": ["Meta-Llama-3.1-8B-Instruct-Q8_0.gguf"],
     },
 ]
-
-
-def local_folder(repo_id: str) -> Path:
-    return MODELS_DIR / repo_id.replace("/", "__")
 
 
 def is_downloaded(repo_id: str, filename: str | None = None) -> bool:
@@ -75,7 +69,7 @@ def download_all(models: list[dict] | None = None) -> list[Path]:
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Download specific quantizations from the Hugging Face Hub into ./Models."
+        description="Download specific quantizations from the Hugging Face Hub into ./models."
     )
     parser.add_argument(
         "repo_id",
@@ -93,7 +87,7 @@ def parse_args():
         "-n",
         "--name",
         default=None,
-        help="Optional local folder name under ./Models. Defaults to the repo id with '/' replaced by '__'.",
+        help="Optional local folder name under ./models. Defaults to the repo id with '/' replaced by '__'.",
     )
     return parser.parse_args()
 

@@ -1,28 +1,14 @@
 import argparse
-import re
 import sys
 from pathlib import Path
 
 from huggingface_hub import HfApi, create_repo, whoami
 
-ROOT = Path(__file__).resolve().parent
-MODELS_DIR = ROOT / "Models"
+from backend.config import MODELS_DIR, TQ_PATTERN, find_gguf_models, repo_id_from_folder
 
 HF_USER_DEFAULT = "yosoyalguien"
 TURBOQUANT_VERSION = "turboquant-plus-tqp-v0.2.0"
 QUANTIZE_BIN_URL = "https://github.com/ggml-org/llama.cpp"
-
-TQ_PATTERN = re.compile(r"-tq(\d_\w+)", re.IGNORECASE)
-
-
-def find_tq_models(models_dir: Path) -> list[Path]:
-    if not models_dir.exists():
-        return []
-    return sorted(p for p in models_dir.rglob("*.gguf") if TQ_PATTERN.search(p.stem))
-
-
-def repo_id_from_folder(folder_name: str) -> str:
-    return folder_name.replace("__", "/")
 
 
 def model_base_name(repo_id: str) -> str:
@@ -172,7 +158,7 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
-    models = find_tq_models(MODELS_DIR)
+    models = find_gguf_models(fn_filter=lambda p: TQ_PATTERN.search(p.stem))
     if not models:
         print(f"No TurboQuant (.gguf with tq suffix) models found under {MODELS_DIR}")
         sys.exit(0)
