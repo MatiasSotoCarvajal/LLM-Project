@@ -14,6 +14,9 @@ QUANTIZE_BIN = ROOT / "bin" / "turboquant-plus-tqp-v0.2.0" / "llama-quantize"
 
 RESULTS_DIR = ROOT / "results"
 
+PERPLEXITY_BIN = ROOT / "bin" / "turboquant-plus-tqp-v0.2.0" / "llama-perplexity"
+DEFAULT_PPL_FILE = ROOT / "benchmarks" / "ppl_sample.txt"
+
 TQ_PATTERN = re.compile(r"-tq(\d_\w+)", re.IGNORECASE)
 
 QUANT_SUFFIXES: list[str] = [

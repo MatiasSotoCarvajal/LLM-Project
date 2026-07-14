@@ -34,6 +34,10 @@ TurboQuant via `quantize_models.py`:
 - `backend/llama_server.py` - Python wrapper around the TurboQuant `llama-server`
   binary. Handles model discovery, server lifecycle, and OpenAI-compatible
   chat completion requests with configurable K/V cache types.
+- `backend/evaluate.py` - Server-based benchmark harness (CLI). For each model and
+  KV cache configuration it launches `llama-server` and measures process memory
+  (RSS), KV cache size, throughput (TTFT, decode tokens/sec) and perplexity, then
+  appends the results to a CSV under `results/`.
 - `benchmarks/test_models.py` - Benchmark test suite (work in progress).
 - `bin/` - TurboQuant prebuilt binaries (gitignored, populated by
   `scripts/setup_llamacpp.sh`). Contains `llama-server` and `llama-quantize`.
@@ -46,14 +50,23 @@ TurboQuant via `quantize_models.py`:
 - `upload_models.py` - Uploads TurboQuant-quantized GGUF files to Hugging Face,
   creating linked model repos with auto-generated model cards.
 - `main.py` - Entry point for single inference runs via `backend/llama_server.py`.
-- `main.ipynb` - Legacy benchmark harness (model loading, GPU memory, KV cache
-  size, throughput, perplexity, CSV export). Pending removal.
+- `main.ipynb` - Legacy transformers-based benchmark harness (model loading, GPU
+  memory, KV cache size, throughput, perplexity, CSV export). Superseded by
+  `backend/evaluate.py`; transformers cannot exercise TurboQuant, which lives in
+  the llama.cpp fork. Pending removal.
 - `test_mlx.py` - Experimental MLX inference test (Apple Silicon local runtime).
 - `models/` - Downloaded GGUF models (gitignored).
 - `pyproject.toml` - Project metadata and dependencies (used by `uv`).
 - `uv.lock` - Reproducible dependency lockfile (used by `uv`).
 - `Makefile` - Environment setup shortcuts (`make setup`, `make notebook`,
   `make clean`, `make clean-models`).
+
+## Evaluation workflow
+
+1. `scripts/setup_llamacpp.sh` - fetch the TurboQuant binaries into `bin/`.
+2. `python download_models.py` - fetch baseline GGUF models into `Models/`.
+3. `python quantize_models.py -t TQ4_1S` - optionally produce quantized variants.
+4. `python -m backend.evaluate <model_id> [--cache-configs k:v,k:v]` - run the benchmark; results are written to `results/results.csv`.
 
 ## Environment setup
 
