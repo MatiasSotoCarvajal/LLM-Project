@@ -64,8 +64,10 @@ def run(
     cache_type_v: str = DEFAULT_V_CACHE_TYPE,
     extra_args: list[str] | None = None,
     capture_output: bool = False,
+    model_path: Path | None = None,
 ) -> subprocess.Popen:
-    model_path = find_model(model_id)
+    if model_path is None:
+        model_path = find_model(model_id)
     print(f"Using model: {model_path}")
 
     if not SERVER_BIN.exists():

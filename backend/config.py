@@ -6,15 +6,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 ROOT = Path(__file__).resolve().parent.parent
+BIN_NAME = "turboquant-plus-tqp-v0.3.0"
 
 MODELS_DIR = Path(os.environ.get("MODELS_DIR", ROOT / "models"))
 
-SERVER_BIN = ROOT / "bin" / "turboquant-plus-tqp-v0.2.0" / "llama-server"
-QUANTIZE_BIN = ROOT / "bin" / "turboquant-plus-tqp-v0.2.0" / "llama-quantize"
+SERVER_BIN = ROOT / "bin" / BIN_NAME / "llama-server"
+QUANTIZE_BIN = ROOT / "bin" / BIN_NAME / "llama-quantize"
 
 RESULTS_DIR = ROOT / "results"
 
-PERPLEXITY_BIN = ROOT / "bin" / "turboquant-plus-tqp-v0.2.0" / "llama-perplexity"
+PERPLEXITY_BIN = ROOT / "bin" / BIN_NAME / "llama-perplexity"
 DEFAULT_PPL_FILE = ROOT / "benchmarks" / "ppl_sample.txt"
 
 TQ_PATTERN = re.compile(r"-tq(\d_\w+)", re.IGNORECASE)

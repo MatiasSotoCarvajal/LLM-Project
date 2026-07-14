@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RELEASE_TAG="tqp-v0.2.0"
+RELEASE_TAG="tqp-v0.3.0"
 REPO="TheTom/llama-cpp-turboquant"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BIN_DIR="${ROOT}/bin"
