@@ -98,9 +98,68 @@ run `uv lock` to regenerate `uv.lock`.
 - mlx, mlx-vlm - Apple Silicon local inference (experimental)
 - ruff, black - linting and formatting (dev optional dependencies)
 
+## GPU configuration
+
+All GPU flags can be set via CLI or environment variables (loaded from `.env`
+via `python-dotenv` in `backend/config.py`):
+
+| Arg | Env var | Effect |
+|---|---|---|
+| `--n-gpu-layers N` | `N_GPU_LAYERS=N` | `-ngl N` (999 = offload all) |
+| `--flash-attn` | `FLASH_ATTN=1` | `-fa on` |
+| `--batch-size N` | `N_BATCH=N` | `-b N` |
+| `--ubatch-size N` | `N_UBATCH=N` | `-ub N` |
+
+`--no-warmup` is passed by default (`build_server_args(no_warmup=True)`) to
+avoid a `fattn.cu:469` crash on Blackwell GPUs (RTX 5090) during warmup.
+
+## Linux CUDA setup
+
+The TurboQuant fork has no official Linux CUDA binary. Prebuilt CUDA 13.2
+binaries are hosted at `yosoyalguien/llama-binaries-cuda`. `scripts/setup_llamacpp.sh`
+detects `nvidia-smi` and downloads from HF instead of GitHub.
+
+After `make setup`, register CUDA libraries:
+
+```bash
+echo "/usr/local/cuda/lib64" > /etc/ld.so.conf.d/cuda.conf && ldconfig
+```
+
+## Vast.ai workflow
+
+1. Template: llama.cpp with `LLAMA_MODEL="" LLAMA_ARGS=""` (prevents VRAM preload).
+2. First login: `kill -9 $(nvidia-smi --query-compute-apps=pid --format=csv,noheader)`.
+3. `make setup && source .venv/bin/activate`
+4. `python tools/download_models.py`
+5. `python tools/quantize_models.py -t TQ4_1S` (optional, re-quantize from BF16/F32)
+6. `python benchmarks/test_longbenchv2.py <model> --n-gpu-layers 999 --n-ctx 65536 --flash-attn 2>&1 | tee benchmark.log`
+
+## Quantization pipeline
+
+**Critical:** Always quantize from unquantized sources (BF16/F32). Quantizing
+from Q8_0 to TQ4_1S produces corrupt models (token loops: `Atha Atha...`,
+`bahbah...`).
+
+`tools/quantize_models.py` auto-selects the highest-precision GGUF per folder
+(F32 > BF16 > F16 > Q8_0). It skips `--allow-requantize` when the source
+is unquantized.
+
+## Model storage
+
+All 4 models (BF16/F32 + Q8_0 + TQ4_1S): ~97 GB total. Llama-3.1-8B F32 alone
+is 32 GB. If disk-limited, skip F32 for Llama and quantize from Q8_0.
+
+## Known limitations
+
+- **Blackwell (RTX 5090):** `fattn.cu:469` crash on 3 KV pairs (`f16:q8_0`,
+  `f16:turbo2`, `q8_0:f16`). Exclude via `--cache-pairs`. Bug in upstream fork.
+- **TQ4_1S from Q8_0 produces garbage.** Always use BF16/F32 as source.
+- **No official Linux CUDA binary.** Use `yosoyalguien/llama-binaries-cuda`
+  or compile from source with `-DGGML_CUDA=ON`.
+
 ## TurboQuant
 
-The TurboQuant+ binaries live in `bin/turboquant-plus-tqp-v0.2.0/` and provide
+The TurboQuant+ binaries live in `bin/turboquant-plus-tqp-v0.3.0/` and provide
 two executables:
 
 - `llama-server` - inference server with runtime KV cache quantization

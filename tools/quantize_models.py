@@ -1,6 +1,7 @@
 import argparse
 import subprocess
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -18,6 +19,34 @@ SUFFIX_BY_TYPE = {
     "Q5_K_M": "Q5_K_M",
     "Q8_0": "Q8_0",
 }
+
+_SOURCE_PRIORITY = ["F32", "f32", "BF16", "bf16", "F16", "f16"]
+
+
+def _precision_rank(stem: str) -> int:
+    for i, tag in enumerate(_SOURCE_PRIORITY):
+        if tag in stem:
+            return i
+    return len(_SOURCE_PRIORITY)
+
+
+def _is_tq_suffixed(stem: str) -> bool:
+    return any(stem.lower().endswith(f"-{s}") for s in SUFFIX_BY_TYPE.values())
+
+
+def pick_sources(model_paths: list[Path]) -> list[Path]:
+    by_folder: dict[Path, list[Path]] = defaultdict(list)
+    for p in model_paths:
+        by_folder[p.parent].append(p)
+
+    sources: list[Path] = []
+    for folder, files in sorted(by_folder.items()):
+        candidates = [f for f in files if not _is_tq_suffixed(f.stem)]
+        if not candidates:
+            candidates = files
+        candidates.sort(key=lambda p: _precision_rank(p.stem))
+        sources.append(candidates[0])
+    return sources
 
 
 def output_path(model_path: Path, quant_type: str) -> Path:
@@ -110,15 +139,23 @@ if __name__ == "__main__":
         print(f"No .gguf models found under {MODELS_DIR}")
         sys.exit(0)
 
-    print(f"Found {len(models)} model(s) under {MODELS_DIR}")
+    sources = pick_sources(models)
+    print(f"Found {len(sources)} source model(s) under {MODELS_DIR} (best precision per folder)")
     failures = 0
-    for model_path in models:
+    for model_path in sources:
+        allow_rq = not args.no_allow_requantize
+        if _precision_rank(model_path.stem) >= len(_SOURCE_PRIORITY):
+            print(f"Source is already quantized ({model_path.name}), allowing requantize")
+        else:
+            allow_rq = False
+            print(f"Source is unquantized ({model_path.name}), using clean quantization")
+
         rc = quantize_model(
             model_path,
             args.type,
             args.threads,
             args.dry_run,
-            allow_requantize=not args.no_allow_requantize,
+            allow_requantize=allow_rq,
         )
         failures += 1 if rc != 0 else 0
         print("-" * 60)
