@@ -622,6 +622,9 @@ def evaluate_longbench(
                     f"pred={pred_str}  expected={exp_str}{ttft_str}",
                     flush=True,
                 )
+                if predicted is None and output and output.strip():
+                    preview = output.strip()[:200].replace("\n", "\\n")
+                    print(f"         raw: {preview}", flush=True)
 
                 sample = read_rss_gb(proc.pid)
                 if sample is not None:
