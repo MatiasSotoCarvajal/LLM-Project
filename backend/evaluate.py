@@ -130,7 +130,7 @@ def build_server_args(
     if n_gpu_layers is not None:
         args.extend(["-ngl", str(n_gpu_layers)])
     if flash_attn:
-        args.append("-fa")
+        args.extend(["-fa", "on"])
     if n_batch is not None:
         args.extend(["-b", str(n_batch)])
     if n_ubatch is not None:
