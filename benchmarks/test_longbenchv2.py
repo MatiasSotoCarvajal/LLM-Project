@@ -68,10 +68,12 @@ from backend.evaluate import build_server_args  # noqa: E402
 # ---------------------------------------------------------------------------
 # Default sweep configuration
 # ---------------------------------------------------------------------------
-WEIGHT_QUANTIZATIONS = ["Q8_0", "TQ4_1S"]
+WEIGHT_QUANTIZATIONS = ["Q8_0", "TQ4_1S", "BF16"]
 
 QUANT_SUFFIX_MAP = {
-    "Q8_0": None,
+    "Q8_0": "Q8_0",
+    "BF16": "BF16",
+    "F32": "F32",
     "TQ1_0": "tq1_0",
     "TQ2_0": "tq2_0",
     "TQ3_1S": "tq3_1s",
@@ -163,23 +165,19 @@ def resolve_model_path(model_id: str, weight_quant: str) -> Path:
     if not ggufs:
         raise FileNotFoundError(f"No .gguf files in {folder}")
 
-    if weight_quant == "Q8_0":
-        baselines = [f for f in ggufs if "-tq" not in f.stem.lower()]
-        if baselines:
-            return baselines[0]
-        raise FileNotFoundError(
-            f"No baseline GGUF (without -tq suffix) found in {folder}. "
-            f"Files present: {[f.name for f in ggufs]}"
-        )
-
     suffix = QUANT_SUFFIX_MAP.get(weight_quant)
     if suffix:
         pattern = f"-{suffix}.gguf".lower()
         matches = [f for f in ggufs if f.name.lower().endswith(pattern)]
+        if not matches:
+            sub = f"_{suffix}".lower()
+            matches = [f for f in ggufs if sub in f.name.lower()]
+        if weight_quant == "Q8_0" and not matches:
+            matches = [f for f in ggufs if "q8_k" in f.name.lower()]
         if matches:
             return matches[0]
         raise FileNotFoundError(
-            f"No GGUF ending with '{pattern}' found in {folder}. "
+            f"No GGUF matching '{pattern}' or containing '{suffix}' found in {folder}. "
             f"Files present: {[f.name for f in ggufs]}"
         )
 

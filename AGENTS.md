@@ -119,10 +119,11 @@ The TurboQuant fork has no official Linux CUDA binary. Prebuilt CUDA 13.2
 binaries are hosted at `yosoyalguien/llama-binaries-cuda`. `scripts/setup_llamacpp.sh`
 detects `nvidia-smi` and downloads from HF instead of GitHub.
 
-After `make setup`, register CUDA libraries:
+Every new container requires this after `make setup`:
 
 ```bash
 echo "/usr/local/cuda/lib64" > /etc/ld.so.conf.d/cuda.conf && ldconfig
+export LD_LIBRARY_PATH="/workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0:${LD_LIBRARY_PATH:-}"
 ```
 
 ## Vast.ai workflow

@@ -65,20 +65,11 @@ auto-detects your platform:
 
 ### Linux CUDA post-setup
 
-After setup on Linux with NVIDIA GPU, register the CUDA libraries so the
-dynamic linker finds them:
+Every new container requires these steps after `make setup`:
 
 ```bash
-echo "/usr/local/cuda/lib64" > /etc/ld.so.conf.d/cuda.conf
-ldconfig
-```
-
-If the binary fails with `libcudart.so.13: cannot open shared object file`,
-the host CUDA version differs from the binary's. Install CUDA 13 runtime:
-
-```bash
-pip install nvidia-cuda-runtime-cu13 nvidia-cublas-cu13
-export LD_LIBRARY_PATH="$(python -c 'import nvidia.cublas; print(nvidia.cublas.__path__[0])')/lib:$(python -c 'import nvidia.cuda_runtime; print(nvidia.cuda_runtime.__path__[0])')/lib:${LD_LIBRARY_PATH}"
+echo "/usr/local/cuda/lib64" > /etc/ld.so.conf.d/cuda.conf && ldconfig
+export LD_LIBRARY_PATH="/workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0:${LD_LIBRARY_PATH:-}"
 ```
 
 ## Vast.ai quickstart
