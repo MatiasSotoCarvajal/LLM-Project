@@ -65,7 +65,7 @@ def already_quantized(model_path: Path, quant_type: str) -> bool:
     return stem.endswith((f"-{suffix}", f"_{suffix}"))
 
 
-def quantize_model(model_path: Path, quant_type: str, threads: int | None, dry_run: bool, allow_requantize: bool = True) -> int:
+def quantize_model(model_path: Path, quant_type: str, threads: int | None, dry_run: bool, allow_requantize: bool = True, delete_source: bool = False) -> int:
     if already_quantized(model_path, quant_type):
         print(f"Already {quant_type}, skipping: {model_path.name}")
         return 0
@@ -94,12 +94,25 @@ def quantize_model(model_path: Path, quant_type: str, threads: int | None, dry_r
         if out_path.exists():
             out_path.unlink()
             print(f"Removed incomplete output: {out_path.name}")
+    elif delete_source:
+        source_rank = _precision_rank(model_path.stem)
+        if source_rank < len(_SOURCE_PRIORITY):
+            print(f"Deleting source: {model_path.name}")
+            model_path.unlink()
+        else:
+            print(f"Skipping delete -- source is already quantized ({model_path.name})")
     return proc.returncode
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Quantize every .gguf model found under ./models using the TurboQuant llama-quantize binary."
+    )
+    parser.add_argument(
+        "repo_id",
+        nargs="?",
+        default=None,
+        help="Optional repo id (e.g. unsloth/Qwen3.5-9B-GGUF) to quantize a single model.",
     )
     parser.add_argument(
         "-t",
@@ -118,6 +131,11 @@ def parse_args():
         "--no-allow-requantize",
         action="store_true",
         help="Disable --allow-requantize (enabled by default).",
+    )
+    parser.add_argument(
+        "--delete-source",
+        action="store_true",
+        help="Delete the source GGUF after a successful quantization (only for unquantized sources: F32/BF16/F16).",
     )
     parser.add_argument(
         "--dry-run",
@@ -139,6 +157,13 @@ if __name__ == "__main__":
         print(f"No .gguf models found under {MODELS_DIR}")
         sys.exit(0)
 
+    if args.repo_id:
+        folder = MODELS_DIR / args.repo_id.replace("/", "__")
+        models = [p for p in models if p.parent == folder]
+        if not models:
+            print(f"No .gguf files found for {args.repo_id} in {folder}")
+            sys.exit(1)
+
     sources = pick_sources(models)
     print(f"Found {len(sources)} source model(s) under {MODELS_DIR} (best precision per folder)")
     failures = 0
@@ -156,6 +181,7 @@ if __name__ == "__main__":
             args.threads,
             args.dry_run,
             allow_requantize=allow_rq,
+            delete_source=args.delete_source,
         )
         failures += 1 if rc != 0 else 0
         print("-" * 60)
