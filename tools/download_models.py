@@ -17,15 +17,15 @@ class ModelEntry(TypedDict, total=False):
 
 
 MODELS: list[ModelEntry] = [
-    {
-        "repo_id": "unsloth/gemma-4-E4B-it-GGUF",
-        "filenames": ["gemma-4-E4B-it-Q8_0.gguf"],
-    },
-    {
-        "repo_id": "yosoyalguien/gemma-4-E4B-it-GGUF-TQ4_1S",
-        "filenames": ["gemma-4-E4B-it-tq4_1s.gguf"],
-        "local_repo_id": "unsloth/gemma-4-E4B-it-GGUF",
-    },
+    # {
+    #     "repo_id": "unsloth/gemma-4-E4B-it-GGUF",
+    #     "filenames": ["gemma-4-E4B-it-Q8_0.gguf"],
+    # },
+    # {
+    #     "repo_id": "yosoyalguien/gemma-4-E4B-it-GGUF-TQ4_1S",
+    #     "filenames": ["gemma-4-E4B-it-tq4_1s.gguf"],
+    #     "local_repo_id": "unsloth/gemma-4-E4B-it-GGUF",
+    # },
     {
         "repo_id": "unsloth/gemma-4-E2B-it-GGUF",
         "filenames": ["gemma-4-E2B-it-UD-Q8_K_XL.gguf"],
@@ -44,15 +44,15 @@ MODELS: list[ModelEntry] = [
         "filenames": ["Qwen3.5-9B-tq4_1s.gguf"],
         "local_repo_id": "unsloth/Qwen3.5-9B-GGUF",
     },
-    {
-        "repo_id": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
-        "filenames": ["Meta-Llama-3.1-8B-Instruct-Q8_0.gguf"],
-    },
-    {
-        "repo_id": "yosoyalguien/Meta-Llama-3.1-8B-Instruct-GGUF-TQ4_1S",
-        "filenames": ["Meta-Llama-3.1-8B-Instruct-tq4_1s.gguf"],
-        "local_repo_id": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
-    },
+    # {
+    #     "repo_id": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+    #     "filenames": ["Meta-Llama-3.1-8B-Instruct-Q8_0.gguf"],
+    # },
+    # {
+    #     "repo_id": "yosoyalguien/Meta-Llama-3.1-8B-Instruct-GGUF-TQ4_1S",
+    #     "filenames": ["Meta-Llama-3.1-8B-Instruct-tq4_1s.gguf"],
+    #     "local_repo_id": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+    # },
 ]
 
 
