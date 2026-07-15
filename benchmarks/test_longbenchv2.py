@@ -47,7 +47,14 @@ except ImportError:
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from backend.config import RESULTS_DIR, MODELS_DIR  # noqa: E402
+from backend.config import (
+    RESULTS_DIR,
+    MODELS_DIR,
+    N_GPU_LAYERS,
+    FLASH_ATTN,
+    N_BATCH,
+    N_UBATCH,
+)  # noqa: E402
 from backend.llama_server import (  # noqa: E402
     DEFAULT_HOST,
     DEFAULT_PORT,
@@ -56,6 +63,7 @@ from backend.llama_server import (  # noqa: E402
     stop_server,
     wait_for_server,
 )
+from backend.evaluate import build_server_args  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Default sweep configuration
@@ -407,6 +415,10 @@ def evaluate_longbench(
     temperature: float = DEFAULT_TEMPERATURE,
     host: str = DEFAULT_HOST,
     port: int = DEFAULT_PORT,
+    n_gpu_layers: int | None = None,
+    flash_attn: bool = False,
+    n_batch: int | None = None,
+    n_ubatch: int | None = None,
 ) -> tuple[list[dict], list[dict]]:
     """
     Returns ``(agg_rows, detail_rows)`` -- one aggregated row per cache
@@ -464,7 +476,16 @@ def evaluate_longbench(
             "notes": "",
         }
 
-        server_args = ["-c", str(n_ctx), "-np", "1", "--no-mmap"]
+        server_args = build_server_args(
+            n_ctx=n_ctx,
+            n_parallel=1,
+            no_mmap=True,
+            extra=None,
+            n_gpu_layers=n_gpu_layers,
+            flash_attn=flash_attn,
+            n_batch=n_batch,
+            n_ubatch=n_ubatch,
+        )
         proc, actual_port = run(
             model_id,  # only used for logging when model_path is passed
             host=host,
@@ -834,6 +855,30 @@ def parse_args() -> argparse.Namespace:
         default=str(RESULTS_DIR),
         help=f"Directory for output files. Default: {RESULTS_DIR}",
     )
+    parser.add_argument(
+        "--n-gpu-layers",
+        type=int,
+        default=N_GPU_LAYERS,
+        help="Number of layers to offload to GPU (-ngl). Defaults to N_GPU_LAYERS env var, or CPU if unset.",
+    )
+    parser.add_argument(
+        "--flash-attn",
+        action="store_true",
+        default=FLASH_ATTN,
+        help="Enable flash attention (-fa). Defaults to FLASH_ATTN env var (off if unset).",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=N_BATCH,
+        help="Logical batch size (-b). Defaults to N_BATCH env var, or llama.cpp default if unset.",
+    )
+    parser.add_argument(
+        "--ubatch-size",
+        type=int,
+        default=N_UBATCH,
+        help="Micro-batch size (-ub). Defaults to N_UBATCH env var, or llama.cpp default if unset.",
+    )
     return parser.parse_args()
 
 
@@ -910,6 +955,10 @@ def main() -> None:
                 temperature=args.temperature,
                 host=args.host,
                 port=args.port,
+                n_gpu_layers=args.n_gpu_layers,
+                flash_attn=args.flash_attn,
+                n_batch=args.batch_size,
+                n_ubatch=args.ubatch_size,
             )
             all_agg.extend(agg_rows)
             all_detail.extend(detail_rows)

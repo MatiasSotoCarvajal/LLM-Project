@@ -31,10 +31,26 @@ except ImportError:
     )
 
 try:
-    from backend.config import RESULTS_DIR, PERPLEXITY_BIN, DEFAULT_PPL_FILE
+    from backend.config import (
+        RESULTS_DIR,
+        PERPLEXITY_BIN,
+        DEFAULT_PPL_FILE,
+        N_GPU_LAYERS,
+        FLASH_ATTN,
+        N_BATCH,
+        N_UBATCH,
+    )
 except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    from backend.config import RESULTS_DIR, PERPLEXITY_BIN, DEFAULT_PPL_FILE
+    from backend.config import (
+        RESULTS_DIR,
+        PERPLEXITY_BIN,
+        DEFAULT_PPL_FILE,
+        N_GPU_LAYERS,
+        FLASH_ATTN,
+        N_BATCH,
+        N_UBATCH,
+    )
 
 
 DEFAULT_CACHE_CONFIGS = [
@@ -97,10 +113,27 @@ def get_props(host: str, port: int) -> dict:
         return {}
 
 
-def build_server_args(n_ctx: int, n_parallel: int, no_mmap: bool, extra: list[str] | None) -> list[str]:
+def build_server_args(
+    n_ctx: int,
+    n_parallel: int,
+    no_mmap: bool,
+    extra: list[str] | None,
+    n_gpu_layers: int | None = None,
+    flash_attn: bool = False,
+    n_batch: int | None = None,
+    n_ubatch: int | None = None,
+) -> list[str]:
     args = ["-c", str(n_ctx), "-np", str(n_parallel)]
     if no_mmap:
         args.append("--no-mmap")
+    if n_gpu_layers is not None:
+        args.extend(["-ngl", str(n_gpu_layers)])
+    if flash_attn:
+        args.append("-fa")
+    if n_batch is not None:
+        args.extend(["-b", str(n_batch)])
+    if n_ubatch is not None:
+        args.extend(["-ub", str(n_ubatch)])
     if extra:
         args.extend(extra)
     return args
@@ -157,6 +190,7 @@ def measure_perplexity_cli(
     ppl_file: Path,
     ppl_ctx: int,
     threads: int | None,
+    n_gpu_layers: int | None = None,
 ) -> dict:
     result = {"perplexity": None, "kv_cache_mib": None, "ppl_ctx": ppl_ctx, "ppl_note": ""}
 
@@ -178,6 +212,8 @@ def measure_perplexity_cli(
     ]
     if threads is not None:
         cmd += ["-t", str(threads)]
+    if n_gpu_layers is not None:
+        cmd += ["-ngl", str(n_gpu_layers)]
 
     try:
         proc = subprocess.run(
@@ -219,6 +255,10 @@ def evaluate_config(
     ppl_ctx: int,
     threads: int | None,
     extra_args: list[str] | None,
+    n_gpu_layers: int | None = None,
+    flash_attn: bool = False,
+    n_batch: int | None = None,
+    n_ubatch: int | None = None,
 ) -> dict:
     row: dict = {
         "model": model_id,
@@ -239,7 +279,9 @@ def evaluate_config(
         "notes": "",
     }
 
-    server_args = build_server_args(n_ctx, n_parallel, no_mmap, extra_args)
+    server_args = build_server_args(
+        n_ctx, n_parallel, no_mmap, extra_args, n_gpu_layers, flash_attn, n_batch, n_ubatch
+    )
     proc, actual_port = run(
         model_id,
         host=host,
@@ -280,7 +322,7 @@ def evaluate_config(
 
     if ppl_file is not None:
         ppl = measure_perplexity_cli(
-            model_path, cache_type_k, cache_type_v, ppl_file, ppl_ctx, threads
+            model_path, cache_type_k, cache_type_v, ppl_file, ppl_ctx, threads, n_gpu_layers
         )
         row["perplexity"] = ppl["perplexity"]
         row["ppl_ctx"] = ppl["ppl_ctx"]
@@ -414,6 +456,30 @@ def parse_args():
         default=None,
         help="Everything after this flag is passed verbatim to llama-server.",
     )
+    parser.add_argument(
+        "--n-gpu-layers",
+        type=int,
+        default=N_GPU_LAYERS,
+        help="Number of layers to offload to GPU (-ngl). Defaults to N_GPU_LAYERS env var, or CPU if unset.",
+    )
+    parser.add_argument(
+        "--flash-attn",
+        action="store_true",
+        default=FLASH_ATTN,
+        help="Enable flash attention (-fa). Defaults to FLASH_ATTN env var (off if unset).",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=N_BATCH,
+        help="Logical batch size (-b). Defaults to N_BATCH env var, or llama.cpp default if unset.",
+    )
+    parser.add_argument(
+        "--ubatch-size",
+        type=int,
+        default=N_UBATCH,
+        help="Micro-batch size (-ub). Defaults to N_UBATCH env var, or llama.cpp default if unset.",
+    )
     return parser.parse_args()
 
 
@@ -448,6 +514,10 @@ def main():
                 args.ppl_ctx,
                 args.threads,
                 args.extra_args,
+                args.n_gpu_layers,
+                args.flash_attn,
+                args.batch_size,
+                args.ubatch_size,
             )
             print(json.dumps(row, indent=2))
             rows.append(row)

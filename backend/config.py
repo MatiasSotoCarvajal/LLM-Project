@@ -25,6 +25,18 @@ QUANT_SUFFIXES: list[str] = [
     "Q4_K_M", "Q4_K_S", "Q5_K_M", "Q8_0",
 ]
 
+_N_GPU_LAYERS_ENV = os.environ.get("N_GPU_LAYERS", "")
+N_GPU_LAYERS: int | None = int(_N_GPU_LAYERS_ENV) if _N_GPU_LAYERS_ENV else None
+
+_N_BATCH_ENV = os.environ.get("N_BATCH", "")
+N_BATCH: int | None = int(_N_BATCH_ENV) if _N_BATCH_ENV else None
+
+_N_UBATCH_ENV = os.environ.get("N_UBATCH", "")
+N_UBATCH: int | None = int(_N_UBATCH_ENV) if _N_UBATCH_ENV else None
+
+_FLASH_ATTN_ENV = os.environ.get("FLASH_ATTN", "0")
+FLASH_ATTN: bool = _FLASH_ATTN_ENV in ("1", "true", "True", "yes")
+
 
 def local_folder(repo_id: str) -> Path:
     return MODELS_DIR / repo_id.replace("/", "__")

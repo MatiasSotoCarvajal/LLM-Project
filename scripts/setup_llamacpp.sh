@@ -51,7 +51,15 @@ pick_asset() {
             ;;
         Linux)
             case "${ARCH}" in
-                x86_64) echo "turboquant-plus-${RELEASE_TAG}-linux-x64-cpu.tar.gz" ;;
+                x86_64)
+                    if command -v nvidia-smi &>/dev/null; then
+                        echo "WARNING: No Linux CUDA binary available from ${REPO}." >&2
+                        echo "The CPU build will be used. For GPU acceleration, compile from source:" >&2
+                        echo "  https://github.com/${REPO}" >&2
+                        echo "  cmake -B build -DGGML_CUDA=ON && cmake --build build" >&2
+                    fi
+                    echo "turboquant-plus-${RELEASE_TAG}-linux-x64-cpu.tar.gz"
+                    ;;
                 *) echo "Error: unsupported Linux arch ${ARCH}" >&2; exit 1 ;;
             esac
             ;;

@@ -6,9 +6,9 @@ from pathlib import Path
 import requests
 
 try:
-    from backend.config import MODELS_DIR, QUANT_SUFFIXES, SERVER_BIN
+    from backend.config import MODELS_DIR, N_GPU_LAYERS, QUANT_SUFFIXES, SERVER_BIN
 except ImportError:
-    from config import MODELS_DIR, QUANT_SUFFIXES, SERVER_BIN
+    from config import MODELS_DIR, N_GPU_LAYERS, QUANT_SUFFIXES, SERVER_BIN
 
 DEFAULT_KV_CACHE_TYPE = "q8_0"
 DEFAULT_V_CACHE_TYPE = "turbo3"
@@ -72,6 +72,7 @@ def run(
     extra_args: list[str] | None = None,
     capture_output: bool = False,
     model_path: Path | None = None,
+    n_gpu_layers: int | None = N_GPU_LAYERS,
 ) -> tuple[subprocess.Popen, int]:
     if model_path is None:
         model_path = find_model(model_id)
@@ -91,6 +92,8 @@ def run(
         "--cache-type-k", cache_type_k,
         "--cache-type-v", cache_type_v,
     ]
+    if n_gpu_layers is not None:
+        cmd.extend(["-ngl", str(n_gpu_layers)])
     if extra_args:
         cmd.extend(extra_args)
 
@@ -135,6 +138,7 @@ def run_single(
     max_tokens: int = 512,
     temperature: float = 0.0,
     extra_args: list[str] | None = None,
+    n_gpu_layers: int | None = N_GPU_LAYERS,
 ) -> dict:
     proc, port = run(
         model_id,
@@ -143,6 +147,7 @@ def run_single(
         cache_type_k=cache_type_k,
         cache_type_v=cache_type_v,
         extra_args=extra_args,
+        n_gpu_layers=n_gpu_layers,
     )
     try:
         wait_for_server(host, port)
