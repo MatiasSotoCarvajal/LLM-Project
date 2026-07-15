@@ -465,7 +465,7 @@ def evaluate_longbench(
         }
 
         server_args = ["-c", str(n_ctx), "-np", "1", "--no-mmap"]
-        proc = run(
+        proc, actual_port = run(
             model_id,  # only used for logging when model_path is passed
             host=host,
             port=port,
@@ -478,7 +478,7 @@ def evaluate_longbench(
         logs = LogCollector(proc)
 
         try:
-            wait_for_server_safe(proc, host, port, STARTUP_TIMEOUT, log_collector=logs)
+            wait_for_server_safe(proc, host, actual_port, STARTUP_TIMEOUT, log_collector=logs)
 
             rss_after_load = read_rss_gb(proc.pid)
             row["rss_gb_after_load"] = rss_after_load
@@ -518,7 +518,7 @@ def evaluate_longbench(
 
                 try:
                     result = completion_request(
-                        host, port, prompt, n_predict, temperature
+                        host, actual_port, prompt, n_predict, temperature
                     )
                 except requests.HTTPError as e:
                     status_code = e.response.status_code if e.response else "?"
@@ -775,7 +775,12 @@ def parse_args() -> argparse.Namespace:
         help="Model IDs resolvable under ./Models.",
     )
     parser.add_argument("--host", default=DEFAULT_HOST)
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=DEFAULT_PORT,
+        help=f"Port for llama-server. Default: {DEFAULT_PORT} (0 = auto-detect free port).",
+    )
     parser.add_argument(
         "--cache-pairs",
         type=parse_cache_pairs,
