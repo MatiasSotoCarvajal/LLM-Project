@@ -419,6 +419,7 @@ def evaluate_longbench(
     flash_attn: bool = False,
     n_batch: int | None = None,
     n_ubatch: int | None = None,
+    no_warmup: bool = True,
 ) -> tuple[list[dict], list[dict]]:
     """
     Returns ``(agg_rows, detail_rows)`` -- one aggregated row per cache
@@ -485,6 +486,7 @@ def evaluate_longbench(
             flash_attn=flash_attn,
             n_batch=n_batch,
             n_ubatch=n_ubatch,
+            no_warmup=True,
         )
         proc, actual_port = run(
             model_id,  # only used for logging when model_path is passed

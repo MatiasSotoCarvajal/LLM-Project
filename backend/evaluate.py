@@ -122,6 +122,7 @@ def build_server_args(
     flash_attn: bool = False,
     n_batch: int | None = None,
     n_ubatch: int | None = None,
+    no_warmup: bool = True,
 ) -> list[str]:
     args = ["-c", str(n_ctx), "-np", str(n_parallel)]
     if no_mmap:
@@ -134,6 +135,8 @@ def build_server_args(
         args.extend(["-b", str(n_batch)])
     if n_ubatch is not None:
         args.extend(["-ub", str(n_ubatch)])
+    if no_warmup:
+        args.append("--no-warmup")
     if extra:
         args.extend(extra)
     return args
@@ -259,6 +262,7 @@ def evaluate_config(
     flash_attn: bool = False,
     n_batch: int | None = None,
     n_ubatch: int | None = None,
+    no_warmup: bool = True,
 ) -> dict:
     row: dict = {
         "model": model_id,
@@ -280,7 +284,7 @@ def evaluate_config(
     }
 
     server_args = build_server_args(
-        n_ctx, n_parallel, no_mmap, extra_args, n_gpu_layers, flash_attn, n_batch, n_ubatch
+        n_ctx, n_parallel, no_mmap, extra_args, n_gpu_layers, flash_attn, n_batch, n_ubatch, no_warmup
     )
     proc, actual_port = run(
         model_id,
@@ -518,6 +522,7 @@ def main():
                 args.flash_attn,
                 args.batch_size,
                 args.ubatch_size,
+                True,
             )
             print(json.dumps(row, indent=2))
             rows.append(row)
