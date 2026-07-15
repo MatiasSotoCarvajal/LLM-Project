@@ -2,6 +2,8 @@ import argparse
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from huggingface_hub import HfApi, create_repo, whoami
 
 from backend.config import MODELS_DIR, TQ_PATTERN, find_gguf_models, repo_id_from_folder

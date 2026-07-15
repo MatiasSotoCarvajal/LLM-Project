@@ -43,11 +43,13 @@ TurboQuant via `quantize_models.py`:
   `scripts/setup_llamacpp.sh`). Contains `llama-server` and `llama-quantize`.
 - `scripts/setup_llamacpp.sh` - Downloads TurboQuant+ prebuilt binaries for the
   current platform (macOS Metal, Linux CPU, Windows CUDA) into `bin/`.
-- `download_models.py` - Downloads GGUF model files from Hugging Face Hub into
+- `tools/download_models.py` - Downloads GGUF model files from Hugging Face Hub into
   `models/`. Supports individual repos or batch download of all configured models.
-- `quantize_models.py` - Quantizes every `.gguf` under `models/` using the
+  Quantized variants from `yosoyalguien/` repos are downloaded into the same
+  local folder as their parent baseline model.
+- `tools/quantize_models.py` - Quantizes every `.gguf` under `models/` using the
   TurboQuant `llama-quantize` binary. Supports all TQ and Q quantization types.
-- `upload_models.py` - Uploads TurboQuant-quantized GGUF files to Hugging Face,
+- `tools/upload_models.py` - Uploads TurboQuant-quantized GGUF files to Hugging Face,
   creating linked model repos with auto-generated model cards.
 - `main.py` - Entry point for single inference runs via `backend/llama_server.py`.
 - `main.ipynb` - Legacy transformers-based benchmark harness (model loading, GPU
@@ -64,8 +66,8 @@ TurboQuant via `quantize_models.py`:
 ## Evaluation workflow
 
 1. `scripts/setup_llamacpp.sh` - fetch the TurboQuant binaries into `bin/`.
-2. `python download_models.py` - fetch baseline GGUF models into `Models/`.
-3. `python quantize_models.py -t TQ4_1S` - optionally produce quantized variants.
+2. `python tools/download_models.py` - fetch baseline and quantized GGUF models into `models/`.
+3. `python tools/quantize_models.py -t TQ4_1S` - optionally produce quantized variants.
 4. `python -m backend.evaluate <model_id> [--cache-configs k:v,k:v]` - run the benchmark; results are written to `results/results.csv`.
 
 ## Environment setup
