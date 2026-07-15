@@ -1,3 +1,4 @@
+import socket
 import subprocess
 import time
 from pathlib import Path
@@ -12,9 +13,15 @@ except ImportError:
 DEFAULT_KV_CACHE_TYPE = "q8_0"
 DEFAULT_V_CACHE_TYPE = "turbo3"
 DEFAULT_HOST = "127.0.0.1"
-DEFAULT_PORT = 8080
+DEFAULT_PORT = 0
 STARTUP_TIMEOUT = 600
 REQUEST_TIMEOUT = 600
+
+
+def find_free_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
 
 
 def find_model(model_id: str) -> Path:
@@ -65,13 +72,16 @@ def run(
     extra_args: list[str] | None = None,
     capture_output: bool = False,
     model_path: Path | None = None,
-) -> subprocess.Popen:
+) -> tuple[subprocess.Popen, int]:
     if model_path is None:
         model_path = find_model(model_id)
     print(f"Using model: {model_path}")
 
     if not SERVER_BIN.exists():
         raise FileNotFoundError(f"Server binary not found: {SERVER_BIN}")
+
+    if port == 0:
+        port = find_free_port()
 
     cmd = [
         str(SERVER_BIN),
@@ -87,7 +97,7 @@ def run(
     print(f"Starting server: {' '.join(cmd)}")
     stdout = subprocess.PIPE if capture_output else subprocess.DEVNULL
     proc = subprocess.Popen(cmd, stdout=stdout, stderr=subprocess.STDOUT, text=True)
-    return proc
+    return proc, port
 
 
 def wait_for_server(host: str, port: int, timeout: int = STARTUP_TIMEOUT) -> None:
@@ -126,7 +136,7 @@ def run_single(
     temperature: float = 0.0,
     extra_args: list[str] | None = None,
 ) -> dict:
-    proc = run(
+    proc, port = run(
         model_id,
         host=host,
         port=port,

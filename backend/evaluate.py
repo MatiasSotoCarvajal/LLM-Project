@@ -240,7 +240,7 @@ def evaluate_config(
     }
 
     server_args = build_server_args(n_ctx, n_parallel, no_mmap, extra_args)
-    proc = run(
+    proc, actual_port = run(
         model_id,
         host=host,
         port=port,
@@ -252,17 +252,17 @@ def evaluate_config(
     logs = LogCollector(proc)
 
     try:
-        wait_for_server(host, port)
+        wait_for_server(host, actual_port)
 
         rss_after_load = read_rss_gb(proc.pid)
         row["rss_gb_after_load"] = rss_after_load
         peak = rss_after_load or 0.0
 
-        props = get_props(host, port)
+        props = get_props(host, actual_port)
         settings = props.get("default_generation_settings", {})
         row["n_ctx"] = settings.get("n_ctx") or props.get("n_ctx") or n_ctx
 
-        throughput = measure_throughput(host, port, throughput_prompt, n_predict)
+        throughput = measure_throughput(host, actual_port, throughput_prompt, n_predict)
         row.update(throughput)
 
         sample = read_rss_gb(proc.pid)
@@ -336,7 +336,12 @@ def parse_args():
         help="One or more model ids resolvable under ./models (see find_model).",
     )
     parser.add_argument("--host", default=DEFAULT_HOST)
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=DEFAULT_PORT,
+        help="Port for llama-server. Default: 0 (auto-detect free port).",
+    )
     parser.add_argument(
         "--cache-configs",
         type=parse_cache_configs,
