@@ -118,6 +118,14 @@ avoid a `fattn.cu:469` crash on Blackwell GPUs (RTX 5090) during warmup.
 The TurboQuant fork has no official Linux CUDA binary. Prebuilt CUDA 13.2
 binaries are hosted at `yosoyalguien/llama-binaries-cuda`. `scripts/setup_llamacpp.sh`
 detects `nvidia-smi` and downloads from HF instead of GitHub.
+This binaries are generic and universal ones. If possible, always try to build from source.
+The scripts/build_llamacpp_cuda.sh can work with this.
+If the build fails, try to execute this before/after the builds:
+```bash
+  echo "/usr/local/cuda/lib64" > /etc/ld.so.conf.d/cuda.conf && ldconfig
+  export LD_LIBRARY_PATH="/workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0:${LD_LIBRARY_PATH:-}"
+```
+In case of using a remote container rented from third parties (like Vast.ai), is possible that the root path is not the same. Ask and search for the specific location of the binaries on the container.
 
 Every new container requires this after `make setup`:
 

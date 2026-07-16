@@ -60,6 +60,30 @@ An abstract should concisely (less than 300 words) motivate the problem, describ
 \section{Introduction}
 The introduction explains the problem, why it's difficult, interesting, or important, how and why current methods succeed/fail at the problem, and explains the key ideas of your approach and results. Though an introduction covers similar material as an abstract, the introduction gives more space for motivation, detail, references to existing work, and to capture the reader's interest.
 
+(Quick introduction about KV Cache, memory usage, turboquant approach, and implementation of this.)
+
+On Large Language Models the tokens are computed sequencially during the inference.\cite{not-lain_2025}. Thanks to this behaviour the model is capable of remember things in the inference proccess
+in order to give more accurate answers and make a conversation with the user.
+
+The Key-Value Cache (KV Cache) works by ... (explain how kv cache works)
+
+The main problem with this approach is that in longer context scenarios (for example, a really long conversation between an AI agent and a user)
+this cache starts to use a lot of the VRAM of the device, and in the case of small weight models it can be higher that the memory usage of the own model.
+When this happens, the AI Agent starts to use multiple techniques in order to reduce the usage on memory. These methods can be:
+\begin{enumerate}
+  \item Summarize the entire conversation.
+  \item Drop central values.
+  \item etc.
+\end{enumerate}
+In any case, the result is the same: we lose information in favour of more free memory for saving more KV Cache.
+This can lead to serious problems during the inference, where the model can forget specific things and, by consecuense, start to hallucinate about it previous responses.
+Multiple approches we're made to reduce the impact of the KV Cache on memory.
+
+The most recent and relevant method on this topic is the TurboQuant method, researched and made by Google.
+This paper had some importants key finding on their research:
+finish this im lazy.
+
+
 \section{Related Work}
 This section helps the reader understand the research context of your work by providing an overview of existing work in the area.
 
@@ -71,6 +95,7 @@ For example, this is where you describe the architecture of your neural network(
 This section contains the following.
 
 \subsection{Data}
+The dataset for the main benchmark of the project is LongBench V2. This dataset is specialized on long context, hard to resolve problems.\citep{bai2025longbenchv2deeperunderstanding}.
 Describe the dataset(s) you are using (provide references). If it's not already clear, make sure the associated task is clearly described.
 Being precise about the exact form of the input and output can be very useful for readers attempting to understand your work, especially if you've defined your own task.
 
