@@ -11,3 +11,6 @@ unsloth/Qwen3.5-9B-GGUF
 bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
 ## datasets
 zai-org/LongBench-v2
+
+# Quick info annotation
+Weight quantization (TQ4_1S) on CUDA is broken. On Metal Works

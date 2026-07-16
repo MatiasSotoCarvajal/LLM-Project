@@ -151,6 +151,23 @@ def read_rss_gb(pid: int) -> float | None:
     return None
 
 
+def read_vram_mb() -> float | None:
+    try:
+        out = subprocess.run(
+            [
+                "nvidia-smi",
+                "--query-gpu=memory.used",
+                "--format=csv,noheader,nounits",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        return float(out.stdout.strip().split()[0])
+    except Exception:
+        return None
+
+
 # ---------------------------------------------------------------------------
 # Model resolution -- ensures the correct GGUF is picked per weight_quant
 # ---------------------------------------------------------------------------
@@ -468,6 +485,8 @@ def evaluate_longbench(
             "avg_prompt_tokens": None,
             "rss_gb_after_load": None,
             "rss_gb_peak": None,
+            "vram_mb_after_load": None,
+            "vram_mb_peak": None,
             "kv_cache_mib": None,
             "total_time_s": None,
             "sample_ids": [ex["_id"] for ex in examples],
@@ -504,6 +523,10 @@ def evaluate_longbench(
             rss_after_load = read_rss_gb(proc.pid)
             row["rss_gb_after_load"] = rss_after_load
             peak_rss = rss_after_load or 0.0
+
+            vram_after_load = read_vram_mb()
+            row["vram_mb_after_load"] = vram_after_load
+            peak_vram_mb = vram_after_load or 0.0
 
             total_start = time.monotonic()
 
@@ -627,6 +650,9 @@ def evaluate_longbench(
                 sample = read_rss_gb(proc.pid)
                 if sample is not None:
                     peak_rss = max(peak_rss, sample)
+                vram_sample = read_vram_mb()
+                if vram_sample is not None:
+                    peak_vram_mb = max(peak_vram_mb, vram_sample)
 
             total_elapsed = time.monotonic() - total_start
             row["total_time_s"] = round(total_elapsed, 2)
@@ -671,6 +697,11 @@ def evaluate_longbench(
                 round(peak_rss, 4)
                 if isinstance(peak_rss, (int, float))
                 else peak_rss
+            )
+            row["vram_mb_peak"] = (
+                round(peak_vram_mb, 4)
+                if isinstance(peak_vram_mb, (int, float))
+                else peak_vram_mb
             )
 
             kv_mib = parse_kv_cache_mib(logs.text())
