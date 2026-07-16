@@ -22,17 +22,18 @@ cmake --build "${BUILD_DIR}/build" \
     --target llama-server llama-quantize \
     -j"$(nproc)"
 
-echo "=== Installing binaries to ${BIN_DIR} ==="
+echo "=== Installing binaries and shared libraries to ${BIN_DIR} ==="
 mkdir -p "${BIN_DIR}"
-cp "${BUILD_DIR}/build/bin/llama-server" "${BIN_DIR}/"
-cp "${BUILD_DIR}/build/bin/llama-quantize" "${BIN_DIR}/"
+cp "${BUILD_DIR}/build/bin/"* "${BIN_DIR}/"
 
 echo "=== Cleanup ==="
 rm -rf "${BUILD_DIR}"
 
 echo ""
-echo "Done. Binaries:"
-echo "  ${BIN_DIR}/llama-server"
-echo "  ${BIN_DIR}/llama-quantize"
+echo "Done. Binaries and libraries installed to:"
+echo "  ${BIN_DIR}/"
+echo ""
+echo "Add to your shell or run before using:"
+echo "  export LD_LIBRARY_PATH=\"${BIN_DIR}:\${LD_LIBRARY_PATH:-}\""
 echo ""
 echo "Verify: ${BIN_DIR}/llama-server --version 2>&1 | head -1"
