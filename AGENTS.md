@@ -137,9 +137,7 @@ export LD_LIBRARY_PATH="/workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0:${
 
 ## Quantization pipeline
 
-**Critical:** Always quantize from unquantized sources (BF16/F32). Quantizing
-from Q8_0 to TQ4_1S produces corrupt models (token loops: `Atha Atha...`,
-`bahbah...`).
+**Critical:** Try to quantize from unquantized sources (BF16/F32). CUDA Linux is broken with TurboQuant specific weight quantizations (token loops: `Atha Atha...`, `bahbah...`).
 
 `tools/quantize_models.py` auto-selects the highest-precision GGUF per folder
 (F32 > BF16 > F16 > Q8_0). It skips `--allow-requantize` when the source
@@ -147,14 +145,14 @@ is unquantized.
 
 ## Model storage
 
-All 4 models (BF16/F32 + Q8_0 + TQ4_1S): ~97 GB total. Llama-3.1-8B F32 alone
+All 4 models (BF16/F32 + Q8_0 + TQ4_1S): ~120+ GB total. Llama-3.1-8B F32 alone
 is 32 GB. If disk-limited, skip F32 for Llama and quantize from Q8_0.
 
 ## Known limitations
 
 - **Blackwell (RTX 5090):** `fattn.cu:469` crash on 3 KV pairs (`f16:q8_0`,
   `f16:turbo2`, `q8_0:f16`). Exclude via `--cache-pairs`. Bug in upstream fork.
-- **TQ4_1S from Q8_0 produces garbage.** Always use BF16/F32 as source.
+- **TQ4_1S on Linux CUDA is broken.** It works on prebuilt official binaries. Tested on Metal.
 - **No official Linux CUDA binary.** Use `yosoyalguien/llama-binaries-cuda`
   or compile from source with `-DGGML_CUDA=ON`.
 

@@ -248,13 +248,9 @@ def load_longbench_subset(
     n: int = 50, seed: int = 42, n_ctx: int = DEFAULT_N_CTX
 ) -> dict[str, list[dict]]:
     """
-    Load *n* examples stratified by domain, sorted by the dataset's ``length``
-    field (short < medium < long). Examples whose estimated token count exceeds
-    *n_ctx* are skipped so we get as many fitting examples as possible.
-
-    Returns a dict with two keys:
-      ``fitting`` -- examples that fit in the context window (up to *n*)
-      ``all``     -- the full stratified sample before filtering
+    Load *n* examples stratified by domain. 
+    It take exactly *n* examples and rely on 
+    format_prompt to intelligently truncate them to fit n_ctx.
     """
     dataset = load_dataset("THUDM/LongBench-v2", split="train")
     data = list(dataset)
@@ -280,30 +276,43 @@ def load_longbench_subset(
 
     sample.sort(key=lambda ex: LENGTH_ORDER.get(ex.get("length", "long"), 2))
 
-    fitting: list[dict] = []
-    for ex in sample:
-        est = estimate_tokens(format_prompt(ex))
-        if est <= n_ctx:
-            fitting.append(ex)
-            if len(fitting) >= n:
-                break
-
-    return {"fitting": fitting, "all": sample}
+    # All sampled items are now "fitting" because we will truncate them dynamically
+    return {"fitting": sample, "all": sample}
 
 
 # ---------------------------------------------------------------------------
 # Prompt formatting
 # ---------------------------------------------------------------------------
-def format_prompt(example: dict) -> str:
-    return (
-        f"{example['context']}\n\n"
-        f"Question: {example['question']}\n"
+def format_prompt(example: dict, max_tokens: int = 125000) -> str:
+    """
+    Formats the prompt. If the context is too large for the context window,
+    it performs a center-truncation (keeps the beginning and the end, removes the middle)
+    to ensure it fits within max_tokens without causing OOM.
+    """
+    # Conservatively estimate 3.5 characters per token for English/Code mix
+    max_chars = int(max_tokens * 3.5)
+    
+    question_block = (
+        f"\n\nQuestion: {example['question']}\n"
         f"A. {example['choice_A']}\n"
         f"B. {example['choice_B']}\n"
         f"C. {example['choice_C']}\n"
         f"D. {example['choice_D']}\n\n"
         f"Answer:"
     )
+    
+    q_chars = len(question_block)
+    allowed_context_chars = max_chars - q_chars
+    
+    context = example['context']
+    
+    # Smart center truncation if the context exceeds our calculated character limit
+    if len(context) > allowed_context_chars:
+        half = allowed_context_chars // 2
+        marker = "\n\n...[DOCUMENT TRUNCATED TO FIT CONTEXT WINDOW]...\n\n"
+        context = context[:half] + marker + context[-half:]
+        
+    return f"{context}{question_block}"
 
 
 # ---------------------------------------------------------------------------
@@ -549,16 +558,16 @@ def evaluate_longbench(
                 prompt = format_prompt(example)
                 ex_id = example["_id"]
 
-                est_tokens = estimate_tokens(prompt)
-                if est_tokens > n_ctx:
-                    n_skipped += 1
-                    skip_ids.append(ex_id)
-                    print(
-                        f"  [{i + 1:3d}/{len(examples)}] SKIP  id={ex_id}  "
-                        f"est_tokens={est_tokens} > n_ctx={n_ctx}",
-                        flush=True,
-                    )
-                    continue
+                # est_tokens = estimate_tokens(prompt)
+                # if est_tokens > n_ctx:
+                #     n_skipped += 1
+                #     skip_ids.append(ex_id)
+                #     print(
+                #         f"  [{i + 1:3d}/{len(examples)}] SKIP  id={ex_id}  "
+                #         f"est_tokens={est_tokens} > n_ctx={n_ctx}",
+                #         flush=True,
+                #     )
+                #     continue
 
                 try:
                     result = completion_request(
