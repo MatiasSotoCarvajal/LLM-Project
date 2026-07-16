@@ -16,6 +16,7 @@ dependencies = [
     "python-dotenv==1.2.2",
     "dotenv==0.9.9",
     "sentencepiece>=0.2.0",
+    "lm-eval>=0.4.3",
     "jupyter>=1.0.0",
     "ipykernel>=6.29.0",
     "mlx-vlm",
