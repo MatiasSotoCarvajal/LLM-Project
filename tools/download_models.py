@@ -19,7 +19,7 @@ class ModelEntry(TypedDict, total=False):
 MODELS: list[ModelEntry] = [
     {
         "repo_id": "unsloth/gemma-4-E4B-it-GGUF",
-        "filenames": ["gemma-4-E4B-it-BF16.gguf", "gemma-4-E4B-it-Q8_0.gguf"],
+        "filenames": ["gemma-4-E4B-it-Q8_0.gguf"],
     },
     # {
     #     "repo_id": "yosoyalguien/gemma-4-E4B-it-GGUF-TQ4_1S",
@@ -28,16 +28,16 @@ MODELS: list[ModelEntry] = [
     # },
     {
         "repo_id": "unsloth/gemma-4-E2B-it-GGUF",
-        "filenames": ["gemma-4-E2B-it-BF16.gguf", "gemma-4-E2B-it-UD-Q8_K_XL.gguf"],
+        "filenames": ["gemma-4-E2B-it-Q8_0.gguf"],
     },
     # {
     #     "repo_id": "yosoyalguien/gemma-4-E2B-it-GGUF-TQ4_1S",
-    #     "filenames": ["gemma-4-E2B-it-UD-Q8_K_XL-tq4_1s.gguf"],
+    #     "filenames": ["gemma-4-E2B-it-tq4_1s.gguf"],
     #     "local_repo_id": "unsloth/gemma-4-E2B-it-GGUF",
     # },
     {
         "repo_id": "unsloth/Qwen3.5-9B-GGUF",
-        "filenames": ["Qwen3.5-9B-BF16.gguf", "Qwen3.5-9B-Q8_0.gguf"],
+        "filenames": ["Qwen3.5-9B-Q8_0.gguf"],
     },
     # {
     #     "repo_id": "yosoyalguien/Qwen3.5-9B-GGUF-TQ4_1S",
@@ -46,7 +46,7 @@ MODELS: list[ModelEntry] = [
     # },
     {
         "repo_id": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
-        "filenames": ["Meta-Llama-3.1-8B-Instruct-f32.gguf", "Meta-Llama-3.1-8B-Instruct-Q8_0.gguf"],
+        "filenames": ["Meta-Llama-3.1-8B-Instruct-Q8_0.gguf"],
     },
     # {
     #     "repo_id": "yosoyalguien/Meta-Llama-3.1-8B-Instruct-GGUF-TQ4_1S",
