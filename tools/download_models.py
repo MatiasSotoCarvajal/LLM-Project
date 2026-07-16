@@ -124,6 +124,11 @@ def parse_args():
         default=None,
         help="Optional local folder name under ./models. Defaults to the repo id with '/' replaced by '__'.",
     )
+    parser.add_argument(
+        "--q8-only",
+        action="store_true",
+        help="Download only Q8_0 (or Q8_K) quantizations, skipping BF16/F16/F32.",
+    )
     return parser.parse_args()
 
 
@@ -138,4 +143,11 @@ if __name__ == "__main__":
             entry["local_repo_id"] = args.name
         download_model(entry)
     else:
-        download_all()
+        targets = MODELS
+        if args.q8_only:
+            targets = []
+            for entry in MODELS:
+                q8_files = [f for f in entry["filenames"] if "Q8" in f or "q8" in f]
+                if q8_files:
+                    targets.append({**entry, "filenames": q8_files})
+        download_all(targets)
