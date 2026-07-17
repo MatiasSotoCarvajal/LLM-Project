@@ -98,6 +98,9 @@ DEFAULT_N_CTX = 4096
 DEFAULT_LIMIT: int | None = None
 DEFAULT_SEED = 42
 
+# lm-eval writes to its own folder so it never mixes with the LongBench CSVs.
+DEFAULT_OUT_DIR = RESULTS_DIR.parent / "results_lm_eval"
+
 _is_macos = platform.system() == "Darwin"
 
 # Metric-name preference when collapsing a task's metric dict to one headline
@@ -437,8 +440,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED,
                         help=f"Random seed. Default: {DEFAULT_SEED}")
-    parser.add_argument("--out-dir", default=str(RESULTS_DIR),
-                        help=f"Output directory. Default: {RESULTS_DIR}")
+    parser.add_argument("--out-dir", default=str(DEFAULT_OUT_DIR),
+                        help=f"Output directory. Default: {DEFAULT_OUT_DIR}")
     parser.add_argument("--n-gpu-layers", type=int, default=N_GPU_LAYERS,
                         help="Layers to offload to GPU (-ngl). Default: N_GPU_LAYERS env.")
     parser.add_argument("--flash-attn", action="store_true", default=FLASH_ATTN,
