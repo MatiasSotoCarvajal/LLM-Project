@@ -213,7 +213,12 @@ TurboQuant operates on two independent domains:
 2. `python tools/download_models.py` -- fetch GGUF files.
 3. `python tools/quantize_models.py -t TQ4_1S` -- produce quantized variants.
 4. `python -m backend.evaluate <model> [--cache-configs k:v,k:v]` -- basic benchmark.
-5. `python benchmarks/test_longbenchv2.py <model> --n-gpu-layers 999 --flash-attn` -- LongBench V2.
+5. `python benchmarks/test_longbenchv2.py <model> --n-gpu-layers 999 --flash-attn` -- LongBench V2 (long-context, exercises KV-cache compression).
+6. `python benchmarks/test_lm_eval.py <model> --limit 100` -- standardized accuracy
+   (MMLU / ARC-Challenge / GSM8K) via EleutherAI lm-evaluation-harness, run
+   through the same weight-quant x KV-cache sweep. Mainly reflects *weight*
+   quantization; use `--tasks` to change the suite and `--limit` to cap examples
+   (the gguf backend sends one HTTP request per sample, so full suites are slow).
 
 ## Cleaning up
 

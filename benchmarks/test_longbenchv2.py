@@ -102,7 +102,13 @@ for k in KEYS:
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-KV_SIZE_PATTERN = re.compile(r"KV\s+self\s+size\s*=\s*([\d.]+)\s*MiB", re.IGNORECASE)
+# llama.cpp reports KV-cache size in a few shapes depending on version/backend:
+#   "KV self size  =  1234.00 MiB"          (explicit total, older builds)
+#   "CUDA0 KV buffer size =   617.00 MiB"    (per-device components, newer/CUDA)
+#   "CPU KV buffer size =     12.00 MiB"
+# Prefer the explicit total; otherwise sum the per-device buffer lines.
+KV_SELF_PATTERN = re.compile(r"KV\s+self\s+size\s*=\s*([\d.]+)\s*MiB", re.IGNORECASE)
+KV_BUFFER_PATTERN = re.compile(r"KV\s+buffer\s+size\s*=\s*([\d.]+)\s*MiB", re.IGNORECASE)
 
 DEFAULT_N_CTX = 65536
 DEFAULT_N_EXAMPLES = 5
@@ -111,6 +117,9 @@ DEFAULT_TEMPERATURE = 0.0
 DEFAULT_SEED = 42
 REQUEST_TIMEOUT = 600
 STARTUP_CHECK_INTERVAL = 1.0
+# Tokens reserved below n_ctx so a slightly-underestimated prompt + the decoded
+# output still fit, instead of overflowing the server and being silently skipped.
+CTX_SAFETY_MARGIN = 256
 
 LENGTH_ORDER = {"short": 0, "medium": 1, "long": 2}
 
@@ -136,8 +145,13 @@ class LogCollector:
 
 
 def parse_kv_cache_mib(log_text: str) -> float | None:
-    matches = KV_SIZE_PATTERN.findall(log_text)
-    return float(matches[-1]) if matches else None
+    self_matches = KV_SELF_PATTERN.findall(log_text)
+    if self_matches:
+        return float(self_matches[-1])
+    buffer_matches = KV_BUFFER_PATTERN.findall(log_text)
+    if buffer_matches:
+        return round(sum(float(x) for x in buffer_matches), 2)
+    return None
 
 
 def read_rss_gb(pid: int) -> float | None:
@@ -191,6 +205,13 @@ def resolve_model_path(model_id: str, weight_quant: str) -> Path:
             matches = [f for f in ggufs if sub in f.name.lower()]
         if weight_quant == "Q8_0" and not matches:
             matches = [f for f in ggufs if "q8_k" in f.name.lower()]
+            if matches:
+                print(
+                    f"  [WARN] No true Q8_0 GGUF in {folder.name}; falling back to "
+                    f"'{matches[0].name}'. Results are labelled Q8_0 but use this "
+                    f"file's actual quantization.",
+                    file=sys.stderr,
+                )
         if matches:
             return matches[0]
         raise FileNotFoundError(
@@ -554,8 +575,14 @@ def evaluate_longbench(
             skip_ids: list[str] = []
             error_ids: list[str] = []
 
+            # Truncate prompts to the *actual* window: n_ctx minus room for the
+            # decoded answer and a safety margin. Prompts overflowing the server
+            # were the cause of the silent HTTP skips, so tie truncation to n_ctx
+            # instead of format_prompt's hardcoded default.
+            prompt_budget = max(1000, n_ctx - n_predict - CTX_SAFETY_MARGIN)
+
             for i, example in enumerate(examples):
-                prompt = format_prompt(example)
+                prompt = format_prompt(example, max_tokens=prompt_budget)
                 ex_id = example["_id"]
 
                 # est_tokens = estimate_tokens(prompt)
