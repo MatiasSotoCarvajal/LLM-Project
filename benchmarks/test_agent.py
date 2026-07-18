@@ -51,6 +51,9 @@ from test_longbenchv2 import (  # noqa: E402
     parse_kv_cache_mib, read_rss_gb, read_vram_mb,
     parse_cache_pairs, format_default_pairs,
 )
+# Tasks + scoring live in a shared module so this harness and any external agent
+# runner use identical data (same as benchmarks/agent_tasks.pdf).
+from agent_tasks_data import TASKS, SYSTEM_PROMPT, score  # noqa: E402
 
 DEFAULT_OUT_DIR = RESULTS_DIR.parent / "results_agent"
 DEFAULT_CACHE_PAIRS = [
@@ -92,19 +95,26 @@ def safe_calc(expression: str) -> str:
     return str(val)
 
 
-TOOLS_SCHEMA = [
-    {"type": "function", "function": {
+TOOL_SCHEMAS = {
+    "lookup": {"type": "function", "function": {
         "name": "lookup",
         "description": "Look up the numeric value of a named fact for this task.",
         "parameters": {"type": "object", "properties": {
             "key": {"type": "string", "description": "The fact name to look up."}},
             "required": ["key"]}}},
-    {"type": "function", "function": {
+    "calculator": {"type": "function", "function": {
         "name": "calculator",
         "description": "Evaluate an arithmetic expression, e.g. '(68 + 83) * 2'.",
         "parameters": {"type": "object", "properties": {
             "expression": {"type": "string"}}, "required": ["expression"]}}},
-]
+}
+
+
+def tools_for(task: dict) -> list[dict]:
+    """Only expose the tools a task allows -- recall/state get calculator only, so
+    the model must recall facts from context (stressing the KV cache), not look
+    them up. multihop gets lookup + calculator."""
+    return [TOOL_SCHEMAS[name] for name in task["tools"]]
 
 
 def dispatch_tool(name: str, args: dict, facts: dict) -> str:
@@ -119,38 +129,7 @@ def dispatch_tool(name: str, args: dict, facts: dict) -> str:
     return f"ERROR: unknown tool '{name}'"
 
 
-# ---------------------------------------------------------------------------
-# Tasks: each needs >=1 lookup + >=1 calculation. expected is the final number.
-# ---------------------------------------------------------------------------
-TASKS = [
-    {"id": "sum_x2", "facts": {"france_m": 68, "germany_m": 83}, "expected": 302,
-     "prompt": "Look up 'france_m' and 'germany_m', add them, then multiply the sum by 2. Give the final number."},
-    {"id": "mul_sub", "facts": {"a": 15, "b": 4}, "expected": 50,
-     "prompt": "Look up 'a' and 'b', multiply them, then subtract 10. Give the final number."},
-    {"id": "distance", "facts": {"speed": 60, "time": 3}, "expected": 180,
-     "prompt": "Look up 'speed' and 'time', multiply them to get distance. Give the final number."},
-    {"id": "price_tax", "facts": {"price": 25, "qty": 6}, "expected": 165,
-     "prompt": "Look up 'price' and 'qty', multiply for subtotal, then add 10% tax. Give the final number."},
-    {"id": "div_add", "facts": {"x": 100, "y": 25}, "expected": 29,
-     "prompt": "Look up 'x' and 'y', divide x by y, then add y to the result. Give the final number."},
-    {"id": "days", "facts": {"pages": 320, "per_day": 40}, "expected": 8,
-     "prompt": "Look up 'pages' and 'per_day', divide pages by per_day. Give the final number."},
-    {"id": "year", "facts": {"start": 2020, "years": 45}, "expected": 2065,
-     "prompt": "Look up 'start' and 'years', add them. Give the final number."},
-    {"id": "three_hop", "facts": {"aa": 7, "bb": 8, "cc": 9}, "expected": 65,
-     "prompt": "Look up 'aa', 'bb' and 'cc', compute aa*bb then add cc. Give the final number."},
-    {"id": "rate", "facts": {"base": 50, "rate_pct": 20}, "expected": 80,
-     "prompt": "Look up 'base' and 'rate_pct'. Compute base * (rate_pct/100), multiply that by 3, then add base. Give the final number."},
-    {"id": "fuel", "facts": {"liters": 12, "price_per": 3}, "expected": 36,
-     "prompt": "Look up 'liters' and 'price_per', multiply them. Give the final number."},
-]
-
-SYSTEM_PROMPT = (
-    "You are a precise tool-using assistant. Use the `lookup` tool to get fact "
-    "values (you are NOT told them) and the `calculator` tool for arithmetic. "
-    "Do not guess numbers. When you have the final number, reply with just that "
-    "number and nothing else."
-)
+# TASKS and SYSTEM_PROMPT are imported from agent_tasks_data (shared with the PDF).
 
 # Hermes-style inline tool call, in case --jinja structured tool_calls aren't emitted.
 _HERMES_TOOLCALL = re.compile(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", re.DOTALL)
@@ -177,12 +156,6 @@ def extract_tool_calls(message: dict) -> list[dict]:
     return calls
 
 
-def final_number(text: str) -> float | None:
-    """Pull the last number out of the model's final answer."""
-    nums = re.findall(r"-?\d+(?:\.\d+)?", text.replace(",", ""))
-    return float(nums[-1]) if nums else None
-
-
 def run_agent(base_url: str, task: dict, seed: int, temperature: float,
               max_steps: int) -> dict:
     """Run one agent episode. Returns success/steps/validity/latency for one trial."""
@@ -198,7 +171,7 @@ def run_agent(base_url: str, task: dict, seed: int, temperature: float,
     try:
         for _ in range(max_steps):
             payload = {
-                "messages": messages, "tools": TOOLS_SCHEMA, "tool_choice": "auto",
+                "messages": messages, "tools": tools_for(task), "tool_choice": "auto",
                 "temperature": temperature, "seed": seed, "max_tokens": 512,
             }
             r = requests.post(f"{base_url}/v1/chat/completions",
@@ -217,9 +190,9 @@ def run_agent(base_url: str, task: dict, seed: int, temperature: float,
                              "tool_calls": msg.get("tool_calls")})
             for c in calls:
                 tool_calls += 1
-                if c["name"] not in ("lookup", "calculator"):
+                if c["name"] not in task["tools"]:
                     invalid_tool_calls += 1
-                result = dispatch_tool(c["name"], c["args"], task["facts"])
+                result = dispatch_tool(c["name"], c["args"], task.get("facts") or {})
                 if result.startswith("ERROR"):
                     invalid_tool_calls += 1
                 tool_msg = {"role": "tool", "content": result}
@@ -232,8 +205,7 @@ def run_agent(base_url: str, task: dict, seed: int, temperature: float,
         error = f"error: {exc}"
 
     latency = round(time.monotonic() - start, 3)
-    got = final_number(final_text)
-    success = got is not None and abs(got - task["expected"]) < 1e-6
+    success = score(task, final_text)
     return {
         "success": bool(success), "steps": llm_calls, "tool_calls": tool_calls,
         "invalid_tool_calls": invalid_tool_calls, "latency_s": latency,
@@ -244,8 +216,8 @@ def run_agent(base_url: str, task: dict, seed: int, temperature: float,
 
 ROW_FIELDNAMES = [
     "model", "weight_quant", "cache_type_k", "cache_type_v",
-    "task_id", "trial", "success", "steps", "tool_calls", "invalid_tool_calls",
-    "latency_s", "final_answer", "expected", "notes",
+    "task_id", "section", "trial", "success", "steps", "tool_calls",
+    "invalid_tool_calls", "latency_s", "final_answer", "expected", "notes",
     "rss_gb_peak", "kv_cache_mib",
 ]
 
@@ -286,7 +258,8 @@ def evaluate_config(model_id, weight_quant, k_type, v_type, n_ctx, trials,
                 rows.append({
                     "model": model_id, "weight_quant": weight_quant,
                     "cache_type_k": k_type, "cache_type_v": v_type,
-                    "task_id": task["id"], "trial": trial, **res,
+                    "task_id": task["id"], "section": task["section"],
+                    "trial": trial, **res,
                     "rss_gb_peak": None, "kv_cache_mib": None,
                 })
                 s = read_rss_gb(proc.pid)
