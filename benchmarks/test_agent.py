@@ -3,7 +3,7 @@ tool-using agent more than it degrades single-shot accuracy?
 
 Same model weights throughout; only the KV cache config (cache_type_k /
 cache_type_v) varies. For each config this script:
-  1. starts a llama-server with the Hermes model + that K/V cache type
+  1. starts a llama-server with the model + that K/V cache type
   2. runs a set of verifiable multi-step tool tasks through a small agent loop,
      N trials each (agents are stochastic, so we need a distribution)
   3. records per-trial success / steps / tool-call validity / latency, plus the
@@ -15,7 +15,7 @@ errors compound -- which is exactly where KV-cache compression should show up
 if it hurts, and where long accumulating agent context stresses the KV cache.
 
 Usage:
-    python benchmarks/test_agent.py NousResearch/Hermes-... \\
+    python benchmarks/test_agent.py bartowski/Meta-Llama-3.1-8B-Instruct-GGUF \\
         --cache-pairs f16:f16,q8_0:q8_0,turbo4:turbo4 \\
         --trials 5 --n-gpu-layers 999 --flash-attn
 
@@ -67,6 +67,11 @@ DEFAULT_N_CTX = 8192
 DEFAULT_TEMPERATURE = 0.7   # >0 so trials differ -> a real success distribution
 DEFAULT_WEIGHT_QUANT = "Q8_0"
 REQUEST_TIMEOUT = 300
+# llama-server intermittently returns 5xx (esp. under flash-attn on Blackwell and
+# on the turbo/--jinja tool path). A single transient 500 must NOT be scored as a
+# model failure -- retry the request before giving up on the episode.
+MAX_RETRIES = 4
+RETRY_BACKOFF_S = 1.5
 
 # ---------------------------------------------------------------------------
 # Tools the agent can call (deterministic, local, safe). The model must LOOK UP
@@ -131,7 +136,9 @@ def dispatch_tool(name: str, args: dict, facts: dict) -> str:
 
 # TASKS and SYSTEM_PROMPT are imported from agent_tasks_data (shared with the PDF).
 
-# Hermes-style inline tool call, in case --jinja structured tool_calls aren't emitted.
+# Fallback: inline "<tool_call>{...}</tool_call>" tags, for models that emit tool
+# calls in content instead of as structured tool_calls. Llama-3.1 returns structured
+# tool_calls via --jinja, so this is inert for it but kept for other models.
 _HERMES_TOOLCALL = re.compile(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", re.DOTALL)
 
 
@@ -156,6 +163,32 @@ def extract_tool_calls(message: dict) -> list[dict]:
     return calls
 
 
+def chat_completion(base_url: str, payload: dict) -> dict:
+    """POST to /v1/chat/completions, retrying transient server failures.
+
+    Returns the parsed JSON response. Retries on connection/timeout errors and
+    HTTP 5xx (transient server-side faults), but raises immediately on 4xx (a
+    genuine bad request that retrying won't fix). Raises the last error if every
+    attempt fails so the caller records a real, persistent failure.
+    """
+    last_exc: Exception | None = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            r = requests.post(f"{base_url}/v1/chat/completions",
+                              json=payload, timeout=REQUEST_TIMEOUT)
+            if r.status_code >= 500:
+                last_exc = requests.HTTPError(
+                    f"{r.status_code} Server Error: {r.reason}")
+                time.sleep(RETRY_BACKOFF_S * (attempt + 1))
+                continue
+            r.raise_for_status()
+            return r.json()
+        except (requests.ConnectionError, requests.Timeout) as exc:
+            last_exc = exc
+            time.sleep(RETRY_BACKOFF_S * (attempt + 1))
+    raise last_exc if last_exc else RuntimeError("chat completion failed")
+
+
 def run_agent(base_url: str, task: dict, seed: int, temperature: float,
               max_steps: int) -> dict:
     """Run one agent episode. Returns success/steps/validity/latency for one trial."""
@@ -174,20 +207,23 @@ def run_agent(base_url: str, task: dict, seed: int, temperature: float,
                 "messages": messages, "tools": tools_for(task), "tool_choice": "auto",
                 "temperature": temperature, "seed": seed, "max_tokens": 512,
             }
-            r = requests.post(f"{base_url}/v1/chat/completions",
-                              json=payload, timeout=REQUEST_TIMEOUT)
-            r.raise_for_status()
+            data = chat_completion(base_url, payload)
             llm_calls += 1
-            msg = r.json()["choices"][0]["message"]
+            msg = data["choices"][0]["message"]
             calls = extract_tool_calls(msg)
 
             if not calls:
                 final_text = msg.get("content") or ""
                 break
 
-            # append assistant turn, then a tool result per call
-            messages.append({"role": "assistant", "content": msg.get("content") or "",
-                             "tool_calls": msg.get("tool_calls")})
+            # append assistant turn, then a tool result per call. Only attach
+            # tool_calls when the server actually emitted structured ones --
+            # sending "tool_calls": null back into history makes the --jinja
+            # template render fail with a 500 on the next request.
+            assistant_msg = {"role": "assistant", "content": msg.get("content") or ""}
+            if msg.get("tool_calls"):
+                assistant_msg["tool_calls"] = msg["tool_calls"]
+            messages.append(assistant_msg)
             for c in calls:
                 tool_calls += 1
                 if c["name"] not in task["tools"]:
@@ -301,7 +337,7 @@ def evaluate_config(model_id, weight_quant, k_type, v_type, n_ctx, trials,
 def main():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("model", help="Hermes model id resolvable under ./models.")
+    p.add_argument("model", help="Model id resolvable under ./models.")
     p.add_argument("--weight-quant", default=DEFAULT_WEIGHT_QUANT)
     p.add_argument("--cache-pairs", type=parse_cache_pairs, default=DEFAULT_CACHE_PAIRS,
                    help="K:V pairs to compare. Default: f16:f16,q8_0:q8_0,turbo4:turbo4")
