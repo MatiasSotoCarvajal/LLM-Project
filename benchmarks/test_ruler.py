@@ -54,13 +54,15 @@ from backend.config import (  # noqa: E402
     RESULTS_DIR, N_GPU_LAYERS, FLASH_ATTN, N_BATCH, N_UBATCH,
 )
 from backend.llama_server import (  # noqa: E402
-    DEFAULT_HOST, DEFAULT_PORT, STARTUP_TIMEOUT, run, stop_server,
+    DEFAULT_HOST, DEFAULT_PORT, STARTUP_TIMEOUT, run, stop_server, find_model,
 )
-from backend.evaluate import build_server_args  # noqa: E402
-from test_longbenchv2 import (  # noqa: E402
-    LogCollector, resolve_model_path, wait_for_server_safe,
-    parse_kv_cache_mib, read_rss_gb, estimate_tokens, completion_request,
+from backend.evaluate import (  # noqa: E402
+    build_server_args, LogCollector, read_rss_gb, parse_kv_cache_mib,
 )
+# NOTE: RULER is deliberately standalone -- it does NOT import test_longbenchv2,
+# which pulls in the heavy `datasets` package (and sys.exit()s if it's missing).
+# The two helpers it needs from there (completion_request, a health-check waiter)
+# are small and inlined below, so RULER runs with just `requests` + `dotenv`.
 
 DEFAULT_OUT_DIR = RESULTS_DIR.parent / "results_ruler"
 DEFAULT_CACHE_PAIRS = [
@@ -83,6 +85,80 @@ REQUEST_TIMEOUT = 300
 # 500 should not be scored as a model failure -- retry before giving up.
 MAX_RETRIES = 4
 RETRY_BACKOFF_S = 1.5
+
+# ---------------------------------------------------------------------------
+# Server / request helpers (inlined so RULER doesn't depend on test_longbenchv2)
+# ---------------------------------------------------------------------------
+def estimate_tokens(text: str) -> int:
+    return len(text) // 4
+
+
+def resolve_model_path(model_id: str, weight_quant: str):
+    """Locate the GGUF for model_id under ./models. weight_quant is accepted for
+    signature parity; the downloaded folder holds the (Q8_0) GGUF. Raises
+    FileNotFoundError if nothing is found."""
+    return find_model(model_id)
+
+
+def wait_for_server_safe(proc, host: str, port: int, timeout: int,
+                         log_collector: LogCollector | None = None) -> None:
+    """Poll /health until 200, or fail fast if the server process dies first."""
+    url = f"http://{host}:{port}/health"
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if proc.poll() is not None:
+            tail = "\n".join(log_collector.lines[-40:]) if log_collector else ""
+            raise RuntimeError(
+                f"Server process exited with rc={proc.returncode} before "
+                f"becoming healthy.\nLast log lines:\n{tail}")
+        try:
+            if requests.get(url, timeout=2).status_code == 200:
+                return
+        except requests.RequestException:
+            pass
+        time.sleep(1.0)
+    raise TimeoutError(f"Server did not become healthy at {url} within {timeout}s")
+
+
+def completion_request(host: str, port: int, prompt: str, n_predict: int,
+                       temperature: float) -> dict:
+    """Stream from llama.cpp's raw /completion endpoint (no chat template, no
+    tools). Returns the generated text plus timing info."""
+    payload = {
+        "prompt": prompt, "n_predict": n_predict, "temperature": temperature,
+        "cache_prompt": False, "stream": True,
+    }
+    url = f"http://{host}:{port}/completion"
+    full_content: list[str] = []
+    ttft = None
+    timings: dict = {}
+    start = time.monotonic()
+    with requests.post(url, json=payload, stream=True, timeout=REQUEST_TIMEOUT) as r:
+        r.raise_for_status()
+        for raw in r.iter_lines():
+            if not raw:
+                continue
+            line = raw.decode("utf-8")
+            if line.startswith("data: "):
+                line = line[len("data: "):]
+            try:
+                chunk = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if chunk.get("content"):
+                full_content.append(chunk["content"])
+                if ttft is None:
+                    ttft = time.monotonic() - start
+            if chunk.get("timings"):
+                timings = chunk["timings"]
+    return {
+        "output": "".join(full_content),
+        "ttft_s": ttft,
+        "prompt_tokens": timings.get("prompt_n"),
+        "decode_tokens_per_second": timings.get("predicted_per_second"),
+        "predicted_tokens": timings.get("predicted_n"),
+    }
+
 
 # Innocuous filler sentences -- the "haystack" the needles are hidden in. Same
 # style as the original needle-in-a-haystack noise; deterministic and cheap.
@@ -240,8 +316,8 @@ def score_recall(expected: list[str], output: str) -> float:
 # ---------------------------------------------------------------------------
 def complete_with_retry(host: str, port: int, prompt: str, n_predict: int,
                         temperature: float) -> dict:
-    """Call llama.cpp's /completion (via test_longbenchv2.completion_request),
-    retrying transient 5xx / connection failures. A 4xx raises immediately."""
+    """Call llama.cpp's raw /completion (see completion_request above), retrying
+    transient 5xx / connection failures. A 4xx raises immediately."""
     last_exc: Exception | None = None
     for attempt in range(MAX_RETRIES):
         try:
