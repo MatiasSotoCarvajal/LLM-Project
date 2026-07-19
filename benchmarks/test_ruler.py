@@ -94,13 +94,16 @@ def estimate_tokens(text: str) -> int:
 
 
 def parse_kv_cache_mib(log_text: str) -> float | None:
-    """Extract the KV-cache size (MiB) from the server log, robust to the several
-    formats llama.cpp / the turboquant fork emit. The shared backend parser only
-    matched 'KV self size = X MiB', which this fork apparently doesn't print
-    (kv_cache_mib came back null). Try, in order:
+    """Extract an *absolute* KV-cache size (MiB) reported once at load, if the
+    build prints it. Robust to the several formats stock llama.cpp emits:
       1. 'KV self size = X MiB'                      (single total)
       2. sum of 'KV buffer size = X MiB'             (per-device K/V buffers)
       3. sum of 'K (...): X MiB' + 'V (...): Y MiB'  (split K/V lines)
+
+    The turboquant fork used here prints NONE of these, which is why
+    kv_cache_mib came back null for every run. For that case the real footprint
+    is recovered per-token from the prompt-cache lines -- see
+    parse_kv_cache_kib_per_token().
     """
     m = re.findall(r"KV\s+self\s+size\s*=\s*([\d.]+)\s*MiB", log_text, re.I)
     if m:
@@ -112,6 +115,44 @@ def parse_kv_cache_mib(log_text: str) -> float | None:
     if kv:
         return sum(float(x) for x in kv)
     return None
+
+
+def parse_kv_cache_kib_per_token(log_text: str) -> float | None:
+    """KV-cache cost in **KiB per token** -- the length-independent metric.
+
+    This fork's llama-server never prints a one-shot 'KV self size = ...'. The KV
+    footprint instead shows up in the prompt-cache lines, e.g.:
+        'saving prompt with length 3864, total state size = 28.691 MiB'   (f16)
+        'saving prompt with length 3864, total state size = 15.266 MiB'   (q8_0)
+        'saving prompt with length 3864, total state size = 11.350 MiB'   (turbo4)
+    That serialized slot state IS the KV cache for those tokens. Since KV memory
+    scales linearly with context length, we normalize each sample to KiB/token
+    and take the median -- a single number that is directly comparable across
+    context lengths and across KV-quant configs (f16 ~7.6, q8_0 ~4.0,
+    turbo4 ~3.0 KiB/tok on gemma-4-E2B). Returns None if no sample is found.
+    """
+    samples: list[float] = []
+    # Preferred: full per-prompt KV state (excludes the duplicate context
+    # checkpoint copies that inflate the later 'cache state' totals).
+    for length, mib in re.findall(
+            r"saving prompt with length\s+(\d+),\s*total state size\s*=\s*([\d.]+)\s*MiB",
+            log_text, re.I):
+        n = int(length)
+        if n > 0:
+            samples.append(float(mib) * 1024.0 / n)
+    # Fallback: individual context checkpoints, normalized by their covered span.
+    if not samples:
+        for pos_min, pos_max, mib in re.findall(
+                r"context checkpoint.*?pos_min\s*=\s*(\d+),\s*pos_max\s*=\s*(\d+)"
+                r".*?size\s*=\s*([\d.]+)\s*MiB",
+                log_text, re.I):
+            span = int(pos_max) - int(pos_min) + 1
+            if span > 0:
+                samples.append(float(mib) * 1024.0 / span)
+    if not samples:
+        return None
+    samples.sort()
+    return samples[len(samples) // 2]  # median
 
 
 def resolve_model_path(model_id: str, weight_quant: str):
@@ -389,7 +430,7 @@ ROW_FIELDNAMES = [
     "task", "length", "sample", "recall", "correct",
     "n_expected", "n_found", "prompt_tokens", "completion_tokens",
     "latency_s", "output", "expected", "notes",
-    "rss_gb_peak", "kv_cache_mib",
+    "rss_gb_peak", "kv_cache_mib", "kv_cache_kib_per_token",
 ]
 
 
@@ -442,6 +483,7 @@ def evaluate_config(model_id, weight_quant, k_type, v_type, tasks, lengths,
                         "model": model_id, "weight_quant": weight_quant,
                         "cache_type_k": k_type, "cache_type_v": v_type,
                         **res, "rss_gb_peak": None, "kv_cache_mib": None,
+                        "kv_cache_kib_per_token": None,
                     })
                     s = read_rss_gb(proc.pid)
                     if s:
@@ -458,13 +500,22 @@ def evaluate_config(model_id, weight_quant, k_type, v_type, tasks, lengths,
         time.sleep(0.5)
 
     log_text = logs.text()
+    # KV footprint: prefer a build-reported absolute; otherwise recover the real
+    # per-token cost from this fork's prompt-cache lines and project it to the
+    # largest length actually tested so kv_cache_mib is comparable across configs.
+    kv_kib_per_tok = parse_kv_cache_kib_per_token(log_text)
+    ref_len = max(usable_lengths) if usable_lengths else 0
     kv_mib = parse_kv_cache_mib(log_text)
+    if kv_mib is None and kv_kib_per_tok is not None and ref_len:
+        kv_mib = kv_kib_per_tok * ref_len / 1024.0
     # Keep the raw memory-report lines so the KV size can be diagnosed even if the
     # parser misses this fork's exact format (kv_cache_mib was null before).
     mem_log_lines = [ln.strip() for ln in log_text.splitlines() if "MiB" in ln][:25]
     for row in rows:
         row["rss_gb_peak"] = round(peak_rss, 4) if peak_rss else None
         row["kv_cache_mib"] = round(kv_mib, 2) if kv_mib is not None else None
+        row["kv_cache_kib_per_token"] = (
+            round(kv_kib_per_tok, 3) if kv_kib_per_tok is not None else None)
 
     # per-(task, length) breakdown + overall
     by_task_length = []
@@ -489,11 +540,15 @@ def evaluate_config(model_id, weight_quant, k_type, v_type, tasks, lengths,
         "errors": sum(1 for r in rows if r["notes"]),
         "rss_gb_peak": round(peak_rss, 4) if peak_rss else None,
         "kv_cache_mib": round(kv_mib, 2) if kv_mib is not None else None,
+        "kv_cache_kib_per_token": (
+            round(kv_kib_per_tok, 3) if kv_kib_per_tok is not None else None),
+        "kv_cache_ref_tokens": ref_len,
         "mem_log_lines": mem_log_lines,
         "by_task_length": by_task_length,
     }
     print(f"\n  accuracy={summary['accuracy']}  recall={summary['recall']}  "
-          f"errors={summary['errors']}  kv_cache_mib={summary['kv_cache_mib']}",
+          f"errors={summary['errors']}  kv_cache_mib={summary['kv_cache_mib']} "
+          f"({summary['kv_cache_kib_per_token']} KiB/tok @ {ref_len} tok)",
           flush=True)
     return rows, summary
 
