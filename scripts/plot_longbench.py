@@ -164,7 +164,10 @@ def generate_multi_model_plots(input_folder, csv_filename, summary_filename=None
                     f"~{n} examples/config — small sample, small gaps may be noise. "
                     f"Memory = whole-process RSS (kv_cache_mib not logged).",
                     ha="center", fontsize=8, color="0.45")
-        plt.legend(title="KV config (key/value)", loc="upper right", fontsize=9)
+        # Legend outside the axes (right side) so it never overlaps the bars,
+        # regardless of which metric group is tallest.
+        plt.legend(title="KV config (key/value)", fontsize=9,
+                   loc="upper left", bbox_to_anchor=(1.01, 1), borderaxespad=0)
         plt.tight_layout(rect=(0, 0.03, 1, 1))
 
         safe = f"relative_{clean_title.replace('.', '_').replace('/', '_')}.png"

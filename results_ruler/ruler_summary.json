@@ -1,0 +1,629 @@
+{
+  "model": "unsloth/gemma-4-E2B-it-GGUF",
+  "weight_quant": "Q8_0",
+  "tasks": [
+    "niah_single",
+    "niah_multikey",
+    "niah_multivalue",
+    "niah_multiquery",
+    "vt"
+  ],
+  "lengths": [
+    4096,
+    8192,
+    16384,
+    32768
+  ],
+  "samples": 20,
+  "results": [
+    {
+      "model": "unsloth/gemma-4-E2B-it-GGUF",
+      "weight_quant": "Q8_0",
+      "cache_type_k": "f16",
+      "cache_type_v": "f16",
+      "n_samples_total": 400,
+      "accuracy": 0.73,
+      "recall": 0.8375,
+      "errors": 0,
+      "rss_gb_peak": 14.4249,
+      "kv_cache_mib": 242.88,
+      "mem_log_lines": [
+        "0.00.435.530 I   - CUDA0   : NVIDIA GeForce RTX 5090 (32109 MiB, 31601 MiB free)",
+        "0.00.435.548 I   - CPU     : AMD EPYC 7B12 64-Core Processor (515761 MiB, 515761 MiB free)",
+        "0.07.425.456 I srv    load_model: prompt cache is enabled, size limit: 8192 MiB",
+        "0.08.279.170 I srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 34816 tokens, 8589934592 est)",
+        "0.08.690.571 I slot create_check: id  0 | task 0 | created context checkpoint 1 of 32 (pos_min = 2316, pos_max = 3339, n_tokens = 3340, size = 6.006 MiB)",
+        "0.08.715.815 I slot create_check: id  0 | task 0 | created context checkpoint 2 of 32 (pos_min = 2828, pos_max = 3851, n_tokens = 3852, size = 6.006 MiB)",
+        "0.08.808.156 W srv   prompt_save:  - saving prompt with length 3864, total state size = 28.691 MiB (draft: 0.000 MiB)",
+        "0.08.835.130 I srv        update:  - cache state: 1 prompts, 40.703 MiB (limits: 8192.000 MiB, 34816 tokens, 777671 est)",
+        "0.08.835.132 I srv        update:    - prompt 0x55a7b0e4c460:    3864 tokens, checkpoints:  2,    40.703 MiB",
+        "0.08.835.192 W slot update_slots: id  0 | task 13 | erased invalidated context checkpoint (pos_min = 2316, pos_max = 3339, n_tokens = 3340, n_swa = 512, pos_next = 0, size = 6.006 MiB)",
+        "0.08.835.199 W slot update_slots: id  0 | task 13 | erased invalidated context checkpoint (pos_min = 2828, pos_max = 3851, n_tokens = 3852, n_swa = 512, pos_next = 0, size = 6.006 MiB)",
+        "0.08.961.774 I slot create_check: id  0 | task 13 | created context checkpoint 1 of 32 (pos_min = 2349, pos_max = 3372, n_tokens = 3373, size = 6.006 MiB)",
+        "0.08.988.910 I slot create_check: id  0 | task 13 | created context checkpoint 2 of 32 (pos_min = 2861, pos_max = 3884, n_tokens = 3885, size = 6.006 MiB)",
+        "0.09.064.228 W srv   prompt_save:  - saving prompt with length 3897, total state size = 28.885 MiB (draft: 0.000 MiB)",
+        "0.09.092.147 I srv        update:  - cache state: 2 prompts, 81.601 MiB (limits: 8192.000 MiB, 34816 tokens, 779138 est)",
+        "0.09.092.149 I srv        update:    - prompt 0x55a7b0e4c460:    3864 tokens, checkpoints:  2,    40.703 MiB",
+        "0.09.092.150 I srv        update:    - prompt 0x55a7c6160520:    3897 tokens, checkpoints:  2,    40.897 MiB",
+        "0.09.092.206 W slot update_slots: id  0 | task 26 | erased invalidated context checkpoint (pos_min = 2349, pos_max = 3372, n_tokens = 3373, n_swa = 512, pos_next = 0, size = 6.006 MiB)",
+        "0.09.092.208 W slot update_slots: id  0 | task 26 | erased invalidated context checkpoint (pos_min = 2861, pos_max = 3884, n_tokens = 3885, n_swa = 512, pos_next = 0, size = 6.006 MiB)",
+        "0.09.218.898 I slot create_check: id  0 | task 26 | created context checkpoint 1 of 32 (pos_min = 2350, pos_max = 3373, n_tokens = 3374, size = 6.006 MiB)",
+        "0.09.244.252 I slot create_check: id  0 | task 26 | created context checkpoint 2 of 32 (pos_min = 2862, pos_max = 3885, n_tokens = 3886, size = 6.006 MiB)",
+        "0.09.318.111 W srv   prompt_save:  - saving prompt with length 3898, total state size = 28.891 MiB (draft: 0.000 MiB)",
+        "0.09.349.600 I srv        update:  - cache state: 3 prompts, 122.504 MiB (limits: 8192.000 MiB, 34816 tokens, 779655 est)",
+        "0.09.349.602 I srv        update:    - prompt 0x55a7b0e4c460:    3864 tokens, checkpoints:  2,    40.703 MiB",
+        "0.09.349.603 I srv        update:    - prompt 0x55a7c6160520:    3897 tokens, checkpoints:  2,    40.897 MiB"
+      ],
+      "by_task_length": [
+        {
+          "task": "niah_single",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.15,
+          "recall": 0.7625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.6625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.6375,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.75,
+          "recall": 0.9375,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.5,
+          "recall": 0.5,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.55,
+          "recall": 0.55,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.45,
+          "recall": 0.45,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.3,
+          "recall": 0.3,
+          "errors": 0
+        }
+      ],
+      "kv_cache_kib_per_token": 7.59,
+      "kv_cache_ref_tokens": 32768
+    },
+    {
+      "model": "unsloth/gemma-4-E2B-it-GGUF",
+      "weight_quant": "Q8_0",
+      "cache_type_k": "q8_0",
+      "cache_type_v": "q8_0",
+      "n_samples_total": 400,
+      "accuracy": 0.73,
+      "recall": 0.8375,
+      "errors": 0,
+      "rss_gb_peak": 14.7564,
+      "kv_cache_mib": 129.23,
+      "mem_log_lines": [
+        "0.00.353.586 I   - CUDA0   : NVIDIA GeForce RTX 5090 (32109 MiB, 31601 MiB free)",
+        "0.00.353.612 I   - CPU     : AMD EPYC 7B12 64-Core Processor (515761 MiB, 515761 MiB free)",
+        "0.07.482.053 I srv    load_model: prompt cache is enabled, size limit: 8192 MiB",
+        "0.08.337.696 I srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 34816 tokens, 8589934592 est)",
+        "0.08.766.875 I slot create_check: id  0 | task 0 | created context checkpoint 1 of 32 (pos_min = 2316, pos_max = 3339, n_tokens = 3340, size = 3.194 MiB)",
+        "0.08.794.562 I slot create_check: id  0 | task 0 | created context checkpoint 2 of 32 (pos_min = 2828, pos_max = 3851, n_tokens = 3852, size = 3.194 MiB)",
+        "0.08.877.077 W srv   prompt_save:  - saving prompt with length 3864, total state size = 15.266 MiB (draft: 0.000 MiB)",
+        "0.08.894.988 I srv        update:  - cache state: 1 prompts, 21.653 MiB (limits: 8192.000 MiB, 34816 tokens, 1461863 est)",
+        "0.08.894.990 I srv        update:    - prompt 0x563bfb85b200:    3864 tokens, checkpoints:  2,    21.653 MiB",
+        "0.08.895.066 W slot update_slots: id  0 | task 13 | erased invalidated context checkpoint (pos_min = 2316, pos_max = 3339, n_tokens = 3340, n_swa = 512, pos_next = 0, size = 3.194 MiB)",
+        "0.08.895.072 W slot update_slots: id  0 | task 13 | erased invalidated context checkpoint (pos_min = 2828, pos_max = 3851, n_tokens = 3852, n_swa = 512, pos_next = 0, size = 3.194 MiB)",
+        "0.09.026.108 I slot create_check: id  0 | task 13 | created context checkpoint 1 of 32 (pos_min = 2349, pos_max = 3372, n_tokens = 3373, size = 3.194 MiB)",
+        "0.09.052.017 I slot create_check: id  0 | task 13 | created context checkpoint 2 of 32 (pos_min = 2861, pos_max = 3884, n_tokens = 3885, size = 3.194 MiB)",
+        "0.09.131.539 W srv   prompt_save:  - saving prompt with length 3897, total state size = 15.369 MiB (draft: 0.000 MiB)",
+        "0.09.146.547 I srv        update:  - cache state: 2 prompts, 43.409 MiB (limits: 8192.000 MiB, 34816 tokens, 1464619 est)",
+        "0.09.146.548 I srv        update:    - prompt 0x563bfb85b200:    3864 tokens, checkpoints:  2,    21.653 MiB",
+        "0.09.146.549 I srv        update:    - prompt 0x563be53054e0:    3897 tokens, checkpoints:  2,    21.756 MiB",
+        "0.09.146.604 W slot update_slots: id  0 | task 26 | erased invalidated context checkpoint (pos_min = 2349, pos_max = 3372, n_tokens = 3373, n_swa = 512, pos_next = 0, size = 3.194 MiB)",
+        "0.09.146.606 W slot update_slots: id  0 | task 26 | erased invalidated context checkpoint (pos_min = 2861, pos_max = 3884, n_tokens = 3885, n_swa = 512, pos_next = 0, size = 3.194 MiB)",
+        "0.09.275.511 I slot create_check: id  0 | task 26 | created context checkpoint 1 of 32 (pos_min = 2350, pos_max = 3373, n_tokens = 3374, size = 3.194 MiB)",
+        "0.09.303.143 I slot create_check: id  0 | task 26 | created context checkpoint 2 of 32 (pos_min = 2862, pos_max = 3885, n_tokens = 3886, size = 3.194 MiB)",
+        "0.09.379.691 W srv   prompt_save:  - saving prompt with length 3898, total state size = 15.372 MiB (draft: 0.000 MiB)",
+        "0.09.396.852 I srv        update:  - cache state: 3 prompts, 65.169 MiB (limits: 8192.000 MiB, 34816 tokens, 1465590 est)",
+        "0.09.396.854 I srv        update:    - prompt 0x563bfb85b200:    3864 tokens, checkpoints:  2,    21.653 MiB",
+        "0.09.396.855 I srv        update:    - prompt 0x563be53054e0:    3897 tokens, checkpoints:  2,    21.756 MiB"
+      ],
+      "by_task_length": [
+        {
+          "task": "niah_single",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.2,
+          "recall": 0.775,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.675,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.7,
+          "recall": 0.925,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.5,
+          "recall": 0.5,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.45,
+          "recall": 0.45,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.55,
+          "recall": 0.55,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.3,
+          "recall": 0.3,
+          "errors": 0
+        }
+      ],
+      "kv_cache_kib_per_token": 4.038,
+      "kv_cache_ref_tokens": 32768
+    },
+    {
+      "model": "unsloth/gemma-4-E2B-it-GGUF",
+      "weight_quant": "Q8_0",
+      "cache_type_k": "turbo4",
+      "cache_type_v": "turbo4",
+      "n_samples_total": 400,
+      "accuracy": 0.5475,
+      "recall": 0.7306,
+      "errors": 0,
+      "rss_gb_peak": 14.5712,
+      "kv_cache_mib": 96.08,
+      "mem_log_lines": [
+        "0.00.351.603 I   - CUDA0   : NVIDIA GeForce RTX 5090 (32109 MiB, 31601 MiB free)",
+        "0.00.351.624 I   - CPU     : AMD EPYC 7B12 64-Core Processor (515761 MiB, 515761 MiB free)",
+        "0.07.377.736 I srv    load_model: prompt cache is enabled, size limit: 8192 MiB",
+        "0.08.246.762 I srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 34816 tokens, 8589934592 est)",
+        "0.08.669.236 I slot create_check: id  0 | task 0 | created context checkpoint 1 of 32 (pos_min = 2316, pos_max = 3339, n_tokens = 3340, size = 2.373 MiB)",
+        "0.08.695.852 I slot create_check: id  0 | task 0 | created context checkpoint 2 of 32 (pos_min = 2828, pos_max = 3851, n_tokens = 3852, size = 2.373 MiB)",
+        "0.08.796.237 W srv   prompt_save:  - saving prompt with length 3864, total state size = 11.350 MiB (draft: 0.000 MiB)",
+        "0.08.809.875 I srv        update:  - cache state: 1 prompts, 16.097 MiB (limits: 8192.000 MiB, 34816 tokens, 1966474 est)",
+        "0.08.809.876 I srv        update:    - prompt 0x55878af1d810:    3864 tokens, checkpoints:  2,    16.097 MiB",
+        "0.08.809.948 W slot update_slots: id  0 | task 13 | erased invalidated context checkpoint (pos_min = 2316, pos_max = 3339, n_tokens = 3340, n_swa = 512, pos_next = 0, size = 2.373 MiB)",
+        "0.08.809.952 W slot update_slots: id  0 | task 13 | erased invalidated context checkpoint (pos_min = 2828, pos_max = 3851, n_tokens = 3852, n_swa = 512, pos_next = 0, size = 2.373 MiB)",
+        "0.08.942.263 I slot create_check: id  0 | task 13 | created context checkpoint 1 of 32 (pos_min = 2349, pos_max = 3372, n_tokens = 3373, size = 2.373 MiB)",
+        "0.08.968.824 I slot create_check: id  0 | task 13 | created context checkpoint 2 of 32 (pos_min = 2861, pos_max = 3884, n_tokens = 3885, size = 2.373 MiB)",
+        "0.09.047.164 W srv   prompt_save:  - saving prompt with length 3897, total state size = 11.427 MiB (draft: 0.000 MiB)",
+        "0.09.058.758 I srv        update:  - cache state: 2 prompts, 32.270 MiB (limits: 8192.000 MiB, 34816 tokens, 1970180 est)",
+        "0.09.058.759 I srv        update:    - prompt 0x55878af1d810:    3864 tokens, checkpoints:  2,    16.097 MiB",
+        "0.09.058.760 I srv        update:    - prompt 0x5587ad9a3d50:    3897 tokens, checkpoints:  2,    16.173 MiB",
+        "0.09.058.813 W slot update_slots: id  0 | task 26 | erased invalidated context checkpoint (pos_min = 2349, pos_max = 3372, n_tokens = 3373, n_swa = 512, pos_next = 0, size = 2.373 MiB)",
+        "0.09.058.817 W slot update_slots: id  0 | task 26 | erased invalidated context checkpoint (pos_min = 2861, pos_max = 3884, n_tokens = 3885, n_swa = 512, pos_next = 0, size = 2.373 MiB)",
+        "0.09.191.432 I slot create_check: id  0 | task 26 | created context checkpoint 1 of 32 (pos_min = 2350, pos_max = 3373, n_tokens = 3374, size = 2.373 MiB)",
+        "0.09.217.110 I slot create_check: id  0 | task 26 | created context checkpoint 2 of 32 (pos_min = 2862, pos_max = 3885, n_tokens = 3886, size = 2.373 MiB)",
+        "0.09.294.134 W srv   prompt_save:  - saving prompt with length 3898, total state size = 11.429 MiB (draft: 0.000 MiB)",
+        "0.09.305.563 I srv        update:  - cache state: 3 prompts, 48.446 MiB (limits: 8192.000 MiB, 34816 tokens, 1971485 est)",
+        "0.09.305.565 I srv        update:    - prompt 0x55878af1d810:    3864 tokens, checkpoints:  2,    16.097 MiB",
+        "0.09.305.566 I srv        update:    - prompt 0x5587ad9a3d50:    3897 tokens, checkpoints:  2,    16.173 MiB"
+      ],
+      "by_task_length": [
+        {
+          "task": "niah_single",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.95,
+          "recall": 0.95,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.25,
+          "recall": 0.725,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.725,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.15,
+          "recall": 0.6625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.6875,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.75,
+          "recall": 0.925,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.45,
+          "recall": 0.85,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.45,
+          "recall": 0.8125,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.25,
+          "recall": 0.775,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.1,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.0,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.2,
+          "recall": 0.2,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.2,
+          "recall": 0.2,
+          "errors": 0
+        }
+      ],
+      "kv_cache_kib_per_token": 3.003,
+      "kv_cache_ref_tokens": 32768
+    }
+  ]
+}
