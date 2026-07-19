@@ -91,6 +91,32 @@ This section helps the reader understand the research context of your work by pr
 This section details your approach(es) to the problem. 
 For example, this is where you describe the architecture of your neural network(s), and any other key methods or algorithms.
 
+Para experimentar y descubrir si existe algún beneficio real aplicando las cuantizacionea de TurboQuant es necesario tener una base sólida por donde partir.
+Los beneficios teóricos de TurboQuant se empiezan a mostrar en la compresión de memoria durante un trabajo de largo contexto.
+\subsection{Dataset}
+Se decidio utilizar principalmente el dataset LongBench V2 \cite{bai2025longbenchv2deeperunderstanding} debido a sus problemas complejos y largos que junto con su metodologia de seleccion multiple permite poner a prueba
+rapidamente a los LLM y comprobar si la compresion del KV Cache afecta negativamente en su rendimiento.
+\subsection{Models}
+Para la ejecucion de los benchmarks se utilizaron los siguientes modelos de peso abierto:
+\begin{enumerate}
+  \item Gemma 4 (E4B y E2B) Q8
+  \item Qwen 3.5 9B Q8
+  \item Llama 3.1 8B Q8
+\end{enumerate}
+Todos estos modelos fueron descargados directamente desde HuggingFace.
+Estos modelos fueron seleccionados ya que son los mas populares dentro de la comunidad de modelos de peso abierto, tienen una buena relacion calidad/tamaño del modelo, y son los mas compatibles con el fork de TurboQuant.
+
+\subsection{Framework}
+Se utilizo el fork Llama-cpp-turboquant. Este fork agrega el codec stack de TurboQuant a Llama.cpp, permitiendo poder cuantizar tanto los pesos como el KV Cache de los modelos. Ademas, al ser un fork directo de Llama.cpp, hereda todo lo bueno de este,
+como lo es la compatibilidad con distintos backends de inferencia (CUDA, Vulkan, Metal), iniciar servidores de LLM, y la compatibilidad con multiples modelos de distintos provedores.
+
+\subsection{Entorno de trabajo}
+Todas las pruebas fuerron ejecutadas dentro de una instancia rentada de Vast.ai, con la que se tuvo acceso a una RTX 5090 32GB. 
+Gracias a esto se pudo aumentar la muestra de las pruebas para poder tener resultados mas precisos.
+Desafortunadamente, el fork de Llama.cpp.turboquant no trae consigo binarios prebuildeados de los binarios, por lo que fue necesario buildearlas desde el mismo contenedor
+para poder utilizar los binarios mas importantes para las pruebas.
+
+
 \section{Experiments}
 This section contains the following.
 

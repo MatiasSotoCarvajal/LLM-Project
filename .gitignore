@@ -346,3 +346,6 @@ TSWLatexianTemp*
 
 # Domain specific
 !/results_cuda/*
+!/results_cuda/old/first run/*
+!/results_cuda/old/second run (100 samples)/*
+!/results_cuda/only q8_0/*

@@ -1,0 +1,642 @@
+Loading LongBench V2 subset (n=30, seed=42, n_ctx=131072)...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  17/30 sampled examples fit in n_ctx=131072
+    by length: {'short': 10, 'medium': 7}
+    by domain: {'Multi-Document QA': 4, 'Single-Document QA': 8, 'Long In-context Learning': 1, 'Long-dialogue History Understanding': 1, 'Code Repository Understanding': 2, 'Long Structured Data Understanding': 1}
+
+  Sweep: 4 model(s) x 1 weight quant(s) x 6 KV pair(s) = 24 config(s)
+  Models: ['unsloth/Qwen3.5-9B-GGUF', 'unsloth/gemma-4-E4B-it-GGUF', 'unsloth/gemma-4-E2B-it-GGUF', '... (+1 more)']
+  Weight quants: ['Q8_0']
+  KV pairs: [{'K': 'f16', 'V': 'f16'}, {'K': 'q8_0', 'V': 'q8_0'}, {'K': 'q8_0', 'V': 'turbo3'}, {'K': 'f16', 'V': 'turbo4'}, {'K': 'turbo4', 'V': 'q8_0'}, {'K': 'turbo4', 'V': 'turbo4'}]
+
+  Model file: /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf
+
+=============================================================
+Model: unsloth/Qwen3.5-9B-GGUF  Weight: Q8_0  KV: k=f16 v=f16
+=============================================================
+Using model: /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf --host 127.0.0.1 --port 43635 --cache-type-k f16 --cache-type-v f16 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] OK  pred=A  expected=A  ttft=4.86s
+  [  2/17] FAIL  pred=?  expected=C  ttft=5.57s
+         raw: Based on the provided documents, here is the analysis:\n\n1.  **Dalian Maritime Court (Document 1):**\n    *   **Judicial Openness Section:** States that 1,011 trials were broadcast live (66.97% live rat
+  [  3/17] FAIL  pred=B  expected=C  ttft=10.18s
+  [  4/17] FAIL  pred=A  expected=C  ttft=3.64s
+  [  5/17] FAIL  pred=?  expected=D  ttft=5.73s
+         raw: <think>\nThe user wants to identify the correct chronological order of the provided narratives based on the text of the book "The Invisible Thread".\n\n**Narrative 1:** "The team arrives at the cruise sh
+  [  6/17] OK  pred=B  expected=B  ttft=3.11s
+  [  7/17] OK  pred=B  expected=B  ttft=2.22s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.09s
+  [  9/17] FAIL  pred=A  expected=B  ttft=3.42s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=5.35s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=25.34s
+  [ 13/17] OK  pred=D  expected=D  ttft=18.98s
+  [ 14/17] FAIL  pred=A  expected=D  ttft=23.32s
+  [ 15/17] FAIL  pred=A  expected=D  ttft=24.32s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=20.58s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 10.9141s  Avg decode: 87.03 tok/s  Total time: 191.1s
+
+===============================================================
+Model: unsloth/Qwen3.5-9B-GGUF  Weight: Q8_0  KV: k=q8_0 v=q8_0
+===============================================================
+Using model: /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf --host 127.0.0.1 --port 33567 --cache-type-k q8_0 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] OK  pred=A  expected=A  ttft=4.98s
+  [  2/17] FAIL  pred=?  expected=C  ttft=5.35s
+         raw: Based on the provided documents, here is the analysis:\n\n1.  **Dalian Maritime Court (Document 1):**\n    *   **Judicial Openness Section:** States that 1,011 trials were broadcast live (66.97% live rat
+  [  3/17] FAIL  pred=B  expected=C  ttft=10.32s
+  [  4/17] FAIL  pred=A  expected=C  ttft=3.23s
+  [  5/17] FAIL  pred=?  expected=D  ttft=5.72s
+         raw: <think>\nThe user wants to identify the correct chronological order of the provided narratives based on the text of the book "The Invisible Thread".\n\n**Narrative 1:** "The team arrives at the cruise sh
+  [  6/17] OK  pred=B  expected=B  ttft=2.81s
+  [  7/17] OK  pred=B  expected=B  ttft=2.10s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.19s
+  [  9/17] FAIL  pred=A  expected=B  ttft=2.89s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=5.14s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=26.78s
+  [ 13/17] OK  pred=D  expected=D  ttft=18.48s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=23.47s
+  [ 15/17] FAIL  pred=A  expected=D  ttft=24.27s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=21.71s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 10.9638s  Avg decode: 77.31 tok/s  Total time: 193.2s
+
+=================================================================
+Model: unsloth/Qwen3.5-9B-GGUF  Weight: Q8_0  KV: k=q8_0 v=turbo3
+=================================================================
+Using model: /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf --host 127.0.0.1 --port 35897 --cache-type-k q8_0 --cache-type-v turbo3 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] OK  pred=A  expected=A  ttft=5.17s
+  [  2/17] FAIL  pred=?  expected=C  ttft=5.39s
+         raw: Based on the provided documents, here is the analysis:\n\n1.  **Dalian Maritime Court (Document 1):**\n    *   **Judicial Openness Section:** States that 3,305 judgment documents were issued on China Jud
+  [  3/17] FAIL  pred=B  expected=C  ttft=10.29s
+  [  4/17] FAIL  pred=D  expected=C  ttft=2.97s
+  [  5/17] FAIL  pred=?  expected=D  ttft=5.69s
+         raw: <think>\nThe user wants to identify the correct chronological order of the provided narratives based on the text of the book "The Invisible Thread".\n\n**Narrative 1:** "The team arrives at the cruise sh
+  [  6/17] OK  pred=B  expected=B  ttft=2.72s
+  [  7/17] OK  pred=B  expected=B  ttft=2.06s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.21s
+  [  9/17] FAIL  pred=D  expected=B  ttft=2.76s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=5.12s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=26.98s
+  [ 13/17] OK  pred=D  expected=D  ttft=18.18s
+  [ 14/17] FAIL  pred=A  expected=D  ttft=23.59s
+  [ 15/17] FAIL  pred=A  expected=D  ttft=24.08s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=22.08s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 10.9525s  Avg decode: 82.59 tok/s  Total time: 190.8s
+
+================================================================
+Model: unsloth/Qwen3.5-9B-GGUF  Weight: Q8_0  KV: k=f16 v=turbo4
+================================================================
+Using model: /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf --host 127.0.0.1 --port 52699 --cache-type-k f16 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] OK  pred=A  expected=A  ttft=5.12s
+  [  2/17] FAIL  pred=A  expected=C  ttft=5.49s
+  [  3/17] FAIL  pred=B  expected=C  ttft=10.40s
+  [  4/17] FAIL  pred=A  expected=C  ttft=3.29s
+  [  5/17] FAIL  pred=A  expected=D  ttft=5.80s
+  [  6/17] OK  pred=B  expected=B  ttft=2.91s
+  [  7/17] OK  pred=B  expected=B  ttft=2.16s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.27s
+  [  9/17] FAIL  pred=D  expected=B  ttft=3.03s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=5.24s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=26.75s
+  [ 13/17] OK  pred=D  expected=D  ttft=19.23s
+  [ 14/17] FAIL  pred=A  expected=D  ttft=23.97s
+  [ 15/17] FAIL  pred=C  expected=D  ttft=24.63s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=21.91s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 11.1481s  Avg decode: 77.15 tok/s  Total time: 195.5s
+
+=================================================================
+Model: unsloth/Qwen3.5-9B-GGUF  Weight: Q8_0  KV: k=turbo4 v=q8_0
+=================================================================
+Using model: /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf --host 127.0.0.1 --port 39585 --cache-type-k turbo4 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] OK  pred=A  expected=A  ttft=5.26s
+  [  2/17] FAIL  pred=?  expected=C  ttft=5.47s
+         raw: Based on the provided documents, here is the analysis:\n\n1.  **Dalian Maritime Court (Document 1):**\n    *   **Judicial Openness Section:** States that 1,011 trials were broadcast live (66.97% live rat
+  [  3/17] FAIL  pred=B  expected=C  ttft=10.63s
+  [  4/17] FAIL  pred=A  expected=C  ttft=3.08s
+  [  5/17] FAIL  pred=?  expected=D  ttft=5.89s
+         raw: <think>\nThe user wants to identify the correct chronological order of the provided narratives based on the text of the book "The Invisible Thread".\n\n**Narrative 1:** "The team arrives at the cruise sh
+  [  6/17] OK  pred=B  expected=B  ttft=2.81s
+  [  7/17] OK  pred=B  expected=B  ttft=2.15s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.46s
+  [  9/17] FAIL  pred=A  expected=B  ttft=2.87s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=5.31s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=27.76s
+  [ 13/17] OK  pred=D  expected=D  ttft=18.80s
+  [ 14/17] OK  pred=D  expected=D  ttft=23.99s
+  [ 15/17] OK  pred=D  expected=D  ttft=24.72s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=22.48s
+
+  Accuracy: 0.4 (6/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 11.2469s  Avg decode: 65.97 tok/s  Total time: 202.2s
+
+===================================================================
+Model: unsloth/Qwen3.5-9B-GGUF  Weight: Q8_0  KV: k=turbo4 v=turbo4
+===================================================================
+Using model: /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__Qwen3.5-9B-GGUF/Qwen3.5-9B-Q8_0.gguf --host 127.0.0.1 --port 53931 --cache-type-k turbo4 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] OK  pred=A  expected=A  ttft=5.24s
+  [  2/17] FAIL  pred=?  expected=C  ttft=5.42s
+         raw: Based on the provided documents, here is the analysis:\n\n1.  **Dalian Maritime Court (Document 1):**\n    *   **Judicial Openness Section:** States that 3,305 judgment documents were issued on China Jud
+  [  3/17] FAIL  pred=B  expected=C  ttft=10.66s
+  [  4/17] FAIL  pred=D  expected=C  ttft=2.95s
+  [  5/17] FAIL  pred=A  expected=D  ttft=5.89s
+  [  6/17] OK  pred=B  expected=B  ttft=2.74s
+  [  7/17] OK  pred=B  expected=B  ttft=2.11s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.49s
+  [  9/17] FAIL  pred=A  expected=B  ttft=2.76s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=5.31s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=28.12s
+  [ 13/17] OK  pred=D  expected=D  ttft=18.69s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=23.96s
+  [ 15/17] OK  pred=D  expected=D  ttft=24.31s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=22.58s
+
+  Accuracy: 0.3333 (5/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 11.2156s  Avg decode: 76.24 tok/s  Total time: 196.5s
+  Model file: /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf
+
+=================================================================
+Model: unsloth/gemma-4-E4B-it-GGUF  Weight: Q8_0  KV: k=f16 v=f16
+=================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf --host 127.0.0.1 --port 55113 --cache-type-k f16 --cache-type-v f16 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=D  expected=A  ttft=4.34s
+  [  2/17] OK  pred=C  expected=C  ttft=4.25s
+  [  3/17] FAIL  pred=B  expected=C  ttft=7.91s
+  [  4/17] OK  pred=C  expected=C  ttft=2.41s
+  [  5/17] OK  pred=D  expected=D  ttft=4.28s
+  [  6/17] OK  pred=B  expected=B  ttft=2.15s
+  [  7/17] FAIL  pred=A  expected=B  ttft=1.53s
+  [  8/17] FAIL  pred=B  expected=A  ttft=5.38s
+  [  9/17] OK  pred=B  expected=B  ttft=2.10s
+  [ 10/17] OK  pred=C  expected=C  ttft=4.27s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=20.41s
+  [ 13/17] FAIL  pred=A  expected=D  ttft=13.66s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=19.05s
+  [ 15/17] OK  pred=D  expected=D  ttft=18.99s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=16.73s
+
+  Accuracy: 0.4667 (7/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 8.4969s  Avg decode: 117.71 tok/s  Total time: 144.7s
+
+===================================================================
+Model: unsloth/gemma-4-E4B-it-GGUF  Weight: Q8_0  KV: k=q8_0 v=q8_0
+===================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf --host 127.0.0.1 --port 55657 --cache-type-k q8_0 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=D  expected=A  ttft=4.28s
+  [  2/17] OK  pred=C  expected=C  ttft=3.90s
+  [  3/17] FAIL  pred=B  expected=C  ttft=7.54s
+  [  4/17] OK  pred=C  expected=C  ttft=2.06s
+  [  5/17] OK  pred=D  expected=D  ttft=4.08s
+  [  6/17] OK  pred=B  expected=B  ttft=1.90s
+  [  7/17] FAIL  pred=A  expected=B  ttft=1.38s
+  [  8/17] FAIL  pred=B  expected=A  ttft=5.17s
+  [  9/17] OK  pred=B  expected=B  ttft=1.81s
+  [ 10/17] OK  pred=C  expected=C  ttft=4.17s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=20.55s
+  [ 13/17] FAIL  pred=A  expected=D  ttft=13.24s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=18.83s
+  [ 15/17] OK  pred=D  expected=D  ttft=18.38s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=16.96s
+
+  Accuracy: 0.4667 (7/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 8.2841s  Avg decode: 98.73 tok/s  Total time: 144.5s
+
+=====================================================================
+Model: unsloth/gemma-4-E4B-it-GGUF  Weight: Q8_0  KV: k=q8_0 v=turbo3
+=====================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf --host 127.0.0.1 --port 60347 --cache-type-k q8_0 --cache-type-v turbo3 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=D  expected=A  ttft=4.32s
+  [  2/17] OK  pred=C  expected=C  ttft=3.98s
+  [  3/17] FAIL  pred=B  expected=C  ttft=7.61s
+  [  4/17] FAIL  pred=D  expected=C  ttft=2.00s
+  [  5/17] OK  pred=D  expected=D  ttft=4.14s
+  [  6/17] OK  pred=B  expected=B  ttft=1.87s
+  [  7/17] FAIL  pred=A  expected=B  ttft=1.38s
+  [  8/17] FAIL  pred=B  expected=A  ttft=5.24s
+  [  9/17] OK  pred=B  expected=B  ttft=1.78s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=4.21s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=20.84s
+  [ 13/17] FAIL  pred=B  expected=D  ttft=13.26s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=18.95s
+  [ 15/17] FAIL  pred=A  expected=D  ttft=18.46s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=D  expected=B  ttft=17.10s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 8.3417s  Avg decode: 90.61 tok/s  Total time: 148.8s
+
+====================================================================
+Model: unsloth/gemma-4-E4B-it-GGUF  Weight: Q8_0  KV: k=f16 v=turbo4
+====================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf --host 127.0.0.1 --port 51669 --cache-type-k f16 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=D  expected=A  ttft=4.26s
+  [  2/17] OK  pred=C  expected=C  ttft=4.02s
+  [  3/17] FAIL  pred=B  expected=C  ttft=7.72s
+  [  4/17] OK  pred=C  expected=C  ttft=2.17s
+  [  5/17] OK  pred=D  expected=D  ttft=4.17s
+  [  6/17] OK  pred=B  expected=B  ttft=1.98s
+  [  7/17] FAIL  pred=A  expected=B  ttft=1.46s
+  [  8/17] FAIL  pred=B  expected=A  ttft=5.29s
+  [  9/17] OK  pred=B  expected=B  ttft=1.90s
+  [ 10/17] OK  pred=C  expected=C  ttft=4.26s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=B  expected=D  ttft=20.81s
+  [ 13/17] FAIL  pred=A  expected=D  ttft=13.60s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=19.17s
+  [ 15/17] FAIL  pred=?  expected=D  ttft=18.75s
+         raw: Towels.\n\nFinal Answer: The final answer was the swimsuit.\n\nThe final answer was the swimsuit.\n\nThe final answer was the swimsuit.\n\nThe final answer was the swimsuit.\n\nThe final answer was the swimsuit
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=?  expected=B  ttft=17.09s
+         raw: The final deduction of the victim's cousin, Arisa Jomine, was the key to the entire case.\nThe final deduction of the victim’s cousin, Arisa Jomine, was the key to the entire case.\nThe final deduction 
+
+  Accuracy: 0.4 (6/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 8.4441s  Avg decode: 88.85 tok/s  Total time: 150.1s
+
+=====================================================================
+Model: unsloth/gemma-4-E4B-it-GGUF  Weight: Q8_0  KV: k=turbo4 v=q8_0
+=====================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf --host 127.0.0.1 --port 55115 --cache-type-k turbo4 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=C  expected=A  ttft=4.35s
+  [  2/17] OK  pred=C  expected=C  ttft=4.01s
+  [  3/17] FAIL  pred=B  expected=C  ttft=7.68s
+  [  4/17] OK  pred=C  expected=C  ttft=2.03s
+  [  5/17] OK  pred=D  expected=D  ttft=4.16s
+  [  6/17] OK  pred=B  expected=B  ttft=1.92s
+  [  7/17] FAIL  pred=A  expected=B  ttft=1.39s
+  [  8/17] FAIL  pred=B  expected=A  ttft=5.29s
+  [  9/17] OK  pred=B  expected=B  ttft=1.79s
+  [ 10/17] OK  pred=C  expected=C  ttft=4.24s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=A  expected=D  ttft=21.01s
+  [ 13/17] FAIL  pred=A  expected=D  ttft=13.43s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=19.17s
+  [ 15/17] OK  pred=D  expected=D  ttft=18.65s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=C  expected=B  ttft=17.23s
+
+  Accuracy: 0.4667 (7/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 8.4228s  Avg decode: 84.41 tok/s  Total time: 149.5s
+
+=======================================================================
+Model: unsloth/gemma-4-E4B-it-GGUF  Weight: Q8_0  KV: k=turbo4 v=turbo4
+=======================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q8_0.gguf --host 127.0.0.1 --port 53755 --cache-type-k turbo4 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=C  expected=A  ttft=4.41s
+  [  2/17] OK  pred=C  expected=C  ttft=4.01s
+  [  3/17] FAIL  pred=B  expected=C  ttft=7.80s
+  [  4/17] OK  pred=C  expected=C  ttft=1.99s
+  [  5/17] OK  pred=D  expected=D  ttft=4.24s
+  [  6/17] OK  pred=B  expected=B  ttft=1.88s
+  [  7/17] FAIL  pred=A  expected=B  ttft=1.40s
+  [  8/17] FAIL  pred=B  expected=A  ttft=5.38s
+  [  9/17] OK  pred=B  expected=B  ttft=1.75s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=4.31s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] FAIL  pred=A  expected=D  ttft=21.43s
+  [ 13/17] FAIL  pred=A  expected=D  ttft=13.54s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=19.39s
+  [ 15/17] OK  pred=D  expected=D  ttft=18.88s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=?  expected=B  ttft=17.73s
+         raw: ***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n***\n
+
+  Accuracy: 0.4 (6/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 8.5426s  Avg decode: 78.42 tok/s  Total time: 155.4s
+  Model file: /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf
+
+=================================================================
+Model: unsloth/gemma-4-E2B-it-GGUF  Weight: Q8_0  KV: k=f16 v=f16
+=================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 53025 --cache-type-k f16 --cache-type-v f16 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=C  expected=A  ttft=3.11s
+  [  2/17] FAIL  pred=D  expected=C  ttft=2.78s
+  [  3/17] FAIL  pred=B  expected=C  ttft=5.17s
+  [  4/17] FAIL  pred=D  expected=C  ttft=1.43s
+  [  5/17] FAIL  pred=C  expected=D  ttft=2.84s
+  [  6/17] FAIL  pred=D  expected=B  ttft=1.34s
+  [  7/17] FAIL  pred=D  expected=B  ttft=0.97s
+  [  8/17] FAIL  pred=B  expected=A  ttft=3.53s
+  [  9/17] FAIL  pred=D  expected=B  ttft=1.27s
+  [ 10/17] OK  pred=C  expected=C  ttft=2.86s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=14.23s
+  [ 13/17] OK  pred=D  expected=D  ttft=9.12s
+  [ 14/17] FAIL  pred=B  expected=D  ttft=12.97s
+  [ 15/17] OK  pred=D  expected=D  ttft=12.65s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=D  expected=B  ttft=11.59s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 5.7234s  Avg decode: 203.72 tok/s  Total time: 93.5s
+
+===================================================================
+Model: unsloth/gemma-4-E2B-it-GGUF  Weight: Q8_0  KV: k=q8_0 v=q8_0
+===================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 33067 --cache-type-k q8_0 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=C  expected=A  ttft=3.14s
+  [  2/17] FAIL  pred=D  expected=C  ttft=2.72s
+  [  3/17] FAIL  pred=B  expected=C  ttft=5.19s
+  [  4/17] FAIL  pred=D  expected=C  ttft=1.34s
+  [  5/17] FAIL  pred=C  expected=D  ttft=2.85s
+  [  6/17] FAIL  pred=D  expected=B  ttft=1.29s
+  [  7/17] FAIL  pred=D  expected=B  ttft=0.95s
+  [  8/17] FAIL  pred=B  expected=A  ttft=3.58s
+  [  9/17] FAIL  pred=D  expected=B  ttft=1.21s
+  [ 10/17] OK  pred=C  expected=C  ttft=2.88s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=14.54s
+  [ 13/17] OK  pred=D  expected=D  ttft=9.09s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=13.08s
+  [ 15/17] OK  pred=D  expected=D  ttft=12.73s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=D  expected=B  ttft=11.85s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 5.762s  Avg decode: 180.16 tok/s  Total time: 94.4s
+
+=====================================================================
+Model: unsloth/gemma-4-E2B-it-GGUF  Weight: Q8_0  KV: k=q8_0 v=turbo3
+=====================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 39025 --cache-type-k q8_0 --cache-type-v turbo3 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=D  expected=A  ttft=3.19s
+  [  2/17] OK  pred=C  expected=C  ttft=2.75s
+  [  3/17] FAIL  pred=B  expected=C  ttft=5.26s
+  [  4/17] FAIL  pred=D  expected=C  ttft=1.31s
+  [  5/17] FAIL  pred=C  expected=D  ttft=2.90s
+  [  6/17] FAIL  pred=D  expected=B  ttft=1.29s
+  [  7/17] FAIL  pred=D  expected=B  ttft=0.95s
+  [  8/17] FAIL  pred=B  expected=A  ttft=3.63s
+  [  9/17] FAIL  pred=D  expected=B  ttft=1.18s
+  [ 10/17] OK  pred=C  expected=C  ttft=2.93s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=14.76s
+  [ 13/17] OK  pred=D  expected=D  ttft=9.16s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=13.21s
+  [ 15/17] OK  pred=D  expected=D  ttft=12.85s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=D  expected=B  ttft=12.03s
+
+  Accuracy: 0.3333 (5/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 5.8285s  Avg decode: 161.48 tok/s  Total time: 98.9s
+
+====================================================================
+Model: unsloth/gemma-4-E2B-it-GGUF  Weight: Q8_0  KV: k=f16 v=turbo4
+====================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 45887 --cache-type-k f16 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=C  expected=A  ttft=3.18s
+  [  2/17] FAIL  pred=D  expected=C  ttft=2.78s
+  [  3/17] FAIL  pred=B  expected=C  ttft=5.28s
+  [  4/17] FAIL  pred=D  expected=C  ttft=1.38s
+  [  5/17] FAIL  pred=C  expected=D  ttft=2.91s
+  [  6/17] FAIL  pred=D  expected=B  ttft=1.35s
+Exception in thread Thread-16 (_drain):
+Traceback (most recent call last):
+  File "/.uv/python_install/cpython-3.11.15-linux-x86_64-gnu/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+  [  7/17] FAIL  pred=D  expected=B  ttft=0.97s
+    self.run()
+  File "/.uv/python_install/cpython-3.11.15-linux-x86_64-gnu/lib/python3.11/threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "/workspace/LLM-Project/benchmarks/test_longbenchv2.py", line 131, in _drain
+    for line in self.proc.stdout:
+  File "<frozen codecs>", line 322, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x80 in position 90: invalid start byte
+  [  8/17] FAIL  pred=B  expected=A  ttft=3.63s
+  [  9/17] FAIL  pred=?  expected=B  ttft=1.22s
+         raw: **The correct statement is the one that is the one that is the one that is the one that is one of the one that is one of the one that is one of the one that is one of the one that is one of the one th
+  [ 10/17] OK  pred=C  expected=C  ttft=2.94s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=14.67s
+  [ 13/17] OK  pred=D  expected=D  ttft=9.24s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=13.24s
+  [ 15/17] FAIL  pred=C  expected=D  ttft=12.90s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=D  expected=B  ttft=11.96s
+
+  Accuracy: 0.2 (3/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 5.8432s  Avg decode: 157.43 tok/s  Total time: 99.7s
+
+=====================================================================
+Model: unsloth/gemma-4-E2B-it-GGUF  Weight: Q8_0  KV: k=turbo4 v=q8_0
+=====================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 53687 --cache-type-k turbo4 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=C  expected=A  ttft=3.21s
+  [  2/17] OK  pred=C  expected=C  ttft=2.78s
+  [  3/17] FAIL  pred=B  expected=C  ttft=5.31s
+  [  4/17] OK  pred=C  expected=C  ttft=1.35s
+  [  5/17] FAIL  pred=C  expected=D  ttft=2.93s
+  [  6/17] FAIL  pred=D  expected=B  ttft=1.31s
+  [  7/17] FAIL  pred=D  expected=B  ttft=0.96s
+  [  8/17] FAIL  pred=B  expected=A  ttft=3.67s
+  [  9/17] FAIL  pred=D  expected=B  ttft=1.19s
+  [ 10/17] OK  pred=C  expected=C  ttft=2.96s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=14.85s
+  [ 13/17] OK  pred=D  expected=D  ttft=9.25s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=13.34s
+  [ 15/17] OK  pred=D  expected=D  ttft=12.95s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=D  expected=B  ttft=12.12s
+
+  Accuracy: 0.4 (6/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 5.8787s  Avg decode: 153.83 tok/s  Total time: 96.9s
+
+=======================================================================
+Model: unsloth/gemma-4-E2B-it-GGUF  Weight: Q8_0  KV: k=turbo4 v=turbo4
+=======================================================================
+Using model: /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/unsloth__gemma-4-E2B-it-GGUF/gemma-4-E2B-it-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 35061 --cache-type-k turbo4 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=C  expected=A  ttft=3.21s
+  [  2/17] FAIL  pred=D  expected=C  ttft=2.77s
+  [  3/17] FAIL  pred=B  expected=C  ttft=5.29s
+  [  4/17] FAIL  pred=D  expected=C  ttft=1.35s
+  [  5/17] FAIL  pred=C  expected=D  ttft=2.92s
+  [  6/17] FAIL  pred=D  expected=B  ttft=1.33s
+  [  7/17] FAIL  pred=D  expected=B  ttft=0.96s
+  [  8/17] FAIL  pred=B  expected=A  ttft=3.65s
+  [  9/17] FAIL  pred=?  expected=B  ttft=1.19s
+         raw: **The correct statement is the one that is the one that is the one that is the one that is one of the one that is one of the one that is one of the one that is one of the one that is one of the one th
+  [ 10/17] OK  pred=C  expected=C  ttft=2.95s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=14.81s
+  [ 13/17] OK  pred=D  expected=D  ttft=9.21s
+  [ 14/17] FAIL  pred=C  expected=D  ttft=13.29s
+  [ 15/17] OK  pred=D  expected=D  ttft=12.92s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=D  expected=B  ttft=12.08s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 5.8616s  Avg decode: 158.32 tok/s  Total time: 101.3s
+  Model file: /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf
+
+===============================================================================
+Model: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF  Weight: Q8_0  KV: k=f16 v=f16
+===============================================================================
+Using model: /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf --host 127.0.0.1 --port 36627 --cache-type-k f16 --cache-type-v f16 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=B  expected=A  ttft=5.02s
+  [  2/17] OK  pred=C  expected=C  ttft=7.56s
+  [  3/17] FAIL  pred=B  expected=C  ttft=13.76s
+  [  4/17] FAIL  pred=D  expected=C  ttft=7.02s
+  [  5/17] FAIL  pred=C  expected=D  ttft=7.07s
+  [  6/17] OK  pred=B  expected=B  ttft=4.59s
+  [  7/17] FAIL  pred=C  expected=B  ttft=2.73s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.42s
+  [  9/17] OK  pred=B  expected=B  ttft=5.70s
+  [ 10/17] OK  pred=C  expected=C  ttft=5.94s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=43.89s
+  [ 13/17] OK  pred=D  expected=D  ttft=33.03s
+  [ 14/17] FAIL  pred=B  expected=D  ttft=41.82s
+  [ 15/17] FAIL  pred=B  expected=D  ttft=45.17s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=C  expected=B  ttft=34.58s
+
+  Accuracy: 0.4 (6/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 17.6889s  Avg decode: 69.21 tok/s  Total time: 304.8s
+
+=================================================================================
+Model: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF  Weight: Q8_0  KV: k=q8_0 v=q8_0
+=================================================================================
+Using model: /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf --host 127.0.0.1 --port 38771 --cache-type-k q8_0 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=B  expected=A  ttft=5.80s
+  [  2/17] OK  pred=C  expected=C  ttft=6.96s
+  [  3/17] FAIL  pred=B  expected=C  ttft=13.40s
+  [  4/17] FAIL  pred=D  expected=C  ttft=4.72s
+  [  5/17] FAIL  pred=C  expected=D  ttft=6.55s
+  [  6/17] FAIL  pred=D  expected=B  ttft=3.81s
+  [  7/17] FAIL  pred=C  expected=B  ttft=2.30s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.88s
+  [  9/17] OK  pred=B  expected=B  ttft=3.74s
+  [ 10/17] OK  pred=C  expected=C  ttft=5.80s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=49.41s
+  [ 13/17] OK  pred=D  expected=D  ttft=32.20s
+  [ 14/17] FAIL  pred=B  expected=D  ttft=42.49s
+  [ 15/17] FAIL  pred=B  expected=D  ttft=45.36s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=C  expected=B  ttft=38.20s
+
+  Accuracy: 0.3333 (5/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 17.9063s  Avg decode: 61.23 tok/s  Total time: 305.7s
+
+===================================================================================
+Model: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF  Weight: Q8_0  KV: k=q8_0 v=turbo3
+===================================================================================
+Using model: /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf --host 127.0.0.1 --port 59387 --cache-type-k q8_0 --cache-type-v turbo3 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=B  expected=A  ttft=6.24s
+  [  2/17] OK  pred=C  expected=C  ttft=6.84s
+  [  3/17] FAIL  pred=B  expected=C  ttft=13.75s
+  [  4/17] FAIL  pred=D  expected=C  ttft=4.09s
+  [  5/17] FAIL  pred=C  expected=D  ttft=6.41s
+  [  6/17] OK  pred=B  expected=B  ttft=3.24s
+  [  7/17] FAIL  pred=C  expected=B  ttft=2.38s
+  [  8/17] FAIL  pred=B  expected=A  ttft=7.83s
+  [  9/17] OK  pred=B  expected=B  ttft=3.58s
+  [ 10/17] OK  pred=C  expected=C  ttft=6.16s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=52.53s
+  [ 13/17] OK  pred=D  expected=D  ttft=32.01s
+  [ 14/17] FAIL  pred=B  expected=D  ttft=44.17s
+  [ 15/17] FAIL  pred=B  expected=D  ttft=46.95s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=40.95s
+
+  Accuracy: 0.4 (6/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 18.4743s  Avg decode: 56.08 tok/s  Total time: 316.4s
+
+==================================================================================
+Model: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF  Weight: Q8_0  KV: k=f16 v=turbo4
+==================================================================================
+Using model: /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf --host 127.0.0.1 --port 49685 --cache-type-k f16 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=B  expected=A  ttft=6.54s
+  [  2/17] OK  pred=C  expected=C  ttft=7.97s
+  [  3/17] FAIL  pred=B  expected=C  ttft=14.99s
+  [  4/17] FAIL  pred=D  expected=C  ttft=5.70s
+  [  5/17] FAIL  pred=C  expected=D  ttft=7.36s
+  [  6/17] OK  pred=B  expected=B  ttft=4.51s
+  [  7/17] FAIL  pred=C  expected=B  ttft=2.61s
+  [  8/17] FAIL  pred=B  expected=A  ttft=8.23s
+  [  9/17] OK  pred=B  expected=B  ttft=4.39s
+  [ 10/17] OK  pred=C  expected=C  ttft=6.59s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=53.95s
+  [ 13/17] OK  pred=D  expected=D  ttft=35.53s
+  [ 14/17] FAIL  pred=B  expected=D  ttft=46.98s
+  [ 15/17] FAIL  pred=B  expected=D  ttft=50.02s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=C  expected=B  ttft=40.83s
+
+  Accuracy: 0.4 (6/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 19.7475s  Avg decode: 48.69 tok/s  Total time: 350.0s
+
+===================================================================================
+Model: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF  Weight: Q8_0  KV: k=turbo4 v=q8_0
+===================================================================================
+Using model: /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf --host 127.0.0.1 --port 60753 --cache-type-k turbo4 --cache-type-v q8_0 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=B  expected=A  ttft=6.51s
+  [  2/17] OK  pred=C  expected=C  ttft=7.22s
+  [  3/17] FAIL  pred=B  expected=C  ttft=14.44s
+  [  4/17] OK  pred=C  expected=C  ttft=4.35s
+  [  5/17] FAIL  pred=C  expected=D  ttft=6.75s
+  [  6/17] FAIL  pred=D  expected=B  ttft=3.60s
+  [  7/17] FAIL  pred=C  expected=B  ttft=2.33s
+  [  8/17] FAIL  pred=B  expected=A  ttft=8.33s
+  [  9/17] OK  pred=B  expected=B  ttft=3.88s
+  [ 10/17] FAIL  pred=D  expected=C  ttft=6.01s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=54.07s
+  [ 13/17] FAIL  pred=C  expected=D  ttft=33.15s
+  [ 14/17] FAIL  pred=B  expected=D  ttft=45.10s
+  [ 15/17] FAIL  pred=B  expected=D  ttft=47.53s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=41.11s
+
+  Accuracy: 0.2667 (4/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 18.9579s  Avg decode: 44.05 tok/s  Total time: 334.8s
+
+=====================================================================================
+Model: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF  Weight: Q8_0  KV: k=turbo4 v=turbo4
+=====================================================================================
+Using model: /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf
+Starting server: /workspace/LLM-Project/bin/turboquant-plus-tqp-v0.3.0/llama-server -m /workspace/LLM-Project/models/bartowski__Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q8_0.gguf --host 127.0.0.1 --port 58891 --cache-type-k turbo4 --cache-type-v turbo4 -c 131072 -np 1 --no-mmap -ngl 999 -fa on --no-warmup
+  [  1/17] FAIL  pred=D  expected=A  ttft=6.65s
+  [  2/17] FAIL  pred=A  expected=C  ttft=7.05s
+  [  3/17] FAIL  pred=B  expected=C  ttft=14.58s
+  [  4/17] FAIL  pred=A  expected=C  ttft=3.84s
+  [  5/17] FAIL  pred=C  expected=D  ttft=6.83s
+  [  6/17] OK  pred=B  expected=B  ttft=3.15s
+  [  7/17] FAIL  pred=C  expected=B  ttft=2.21s
+  [  8/17] FAIL  pred=B  expected=A  ttft=8.33s
+  [  9/17] OK  pred=B  expected=B  ttft=3.21s
+  [ 10/17] OK  pred=C  expected=C  ttft=6.28s
+  [ 11/17] SKIP  id=67285f8ebb02136c067d905d  HTTP ?: 
+  [ 12/17] OK  pred=D  expected=D  ttft=56.22s
+  [ 13/17] OK  pred=D  expected=D  ttft=32.76s
+  [ 14/17] FAIL  pred=B  expected=D  ttft=45.04s
+  [ 15/17] FAIL  pred=B  expected=D  ttft=48.49s
+  [ 16/17] SKIP  id=67239fd9bb02136c067d6ff7  HTTP ?: 
+  [ 17/17] FAIL  pred=A  expected=B  ttft=42.60s
+
+  Accuracy: 0.3333 (5/15 fitted)  Skipped: 2  Errors: 0  Avg TTFT: 19.1498s  Avg decode: 51.48 tok/s  Total time: 328.2s
+Results saved to /workspace/LLM-Project/results/longbench.csv
+Per-example details saved to /workspace/LLM-Project/results/longbench_examples.csv
+Summary JSON saved to /workspace/LLM-Project/results/longbench_summary.json
