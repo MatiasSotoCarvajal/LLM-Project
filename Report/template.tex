@@ -175,7 +175,15 @@ Se diseño un codigo Python para correr automaticamente las pruebas en todos los
 Fill this
 
 \subsubsection{Hermes Agent}
-Also fill this
+
+We evaluated Qwen3.5-9B and Meta-Llama-3.1-8B-Instruct on an
+NVIDIA GeForce RTX 5090 using a 65,536-token context window, full GPU
+offloading, flash attention, and Hermes Agent. Both configurations used the
+same Q8\_0 model weights. The controlled variable within each model pair was
+the KV-cache format: the traditional configuration used Q8\_0 for both the
+key and value caches, whereas the TurboQuant configuration used Turbo4 for
+both caches. Consequently, these experiments evaluate Turbo4 KV-cache
+compression rather than TurboQuant weight quantization.
 
 
 \subsection{Experimental details}
@@ -188,11 +196,139 @@ Report the quantitative results that you have found. Use a table or plot to comp
     \item Comment on your quantitative results. Are they what you expected? Better than you expected? Worse than you expected? Why do you think that is? What does that tell you about your approach?
 \end{itemize}
 
+\subsubsection{Hermes Agent: Qwen and Llama KV-Cache Comparison}
+
+\paragraph{GPU-memory results}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Idle GPU-memory allocation with traditional and Turbo4 KV caches.}
+\label{tab:combined-kv-memory}
+\begin{tabular}{lrrrr}
+\toprule
+Model & Traditional & Turbo4 & Saving & Reduction \\
+\midrule
+Qwen3.5-9B & 10,310 MiB & 9,662 MiB & 648 MiB & 6.29\% \\
+Llama 3.1 8B & 12,900 MiB & 10,672 MiB & 2,228 MiB & 17.27\% \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Turbo4 reduced idle GPU-memory allocation for both models. Qwen3.5-9B
+saved 648 MiB, corresponding to a 6.29\% reduction, while Llama 3.1 8B
+saved 2,228 MiB, corresponding to a 17.27\% reduction. The larger reduction
+for Llama indicates that the benefit of KV-cache compression depends on the
+model architecture and cache dimensions. This is the clearest improvement
+demonstrated by the experiments.
+
+\paragraph{Runtime, utilization, and power}
+
+For the Qwen travel-planning task, the traditional configuration completed
+in 2,199.93 seconds, whereas Turbo4 required 2,269.75 seconds. Turbo4 was
+therefore approximately 69.82 seconds, or 3.17\%, slower in this run.
+Average GPU utilization was similar at 92.50\% and 93.33\%, respectively.
+Average power also remained effectively unchanged, decreasing from
+563.19 W to 561.48 W. Because the Turbo4 run lasted longer, its estimated
+energy consumption increased slightly from approximately 0.344 kWh to
+0.353 kWh.
+
+For Llama, both configurations repeatedly reached 99--100\% GPU utilization
+and consumed approximately 575 W during active inference. However, the
+available records did not contain sufficiently consistent execution-time,
+average-power, or energy measurements for a controlled Llama speed
+comparison. Therefore, no speed improvement can be claimed for Llama.
+
+The Qwen document-analysis run also does not demonstrate a raw inference
+speed advantage. The traditional run required approximately 884 seconds,
+while the recorded Turbo4 run required 2,504.23 seconds and encountered
+output truncation and four context-compression events. This difference
+includes agent orchestration, continuation, file operations, and context
+management, so it must not be interpreted as a direct measurement of token
+generation speed.
+
+\paragraph{Agent-task quality}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Summary of the autonomous travel-planning results.}
+\label{tab:combined-agent-quality}
+\begin{tabular}{llll}
+\toprule
+Configuration & File generation & Main correctness problem & Result \\
+\midrule
+Qwen traditional & 9/9 files & Final cost was \texteuro{}9,290 & Failed \\
+Qwen Turbo4 & 9/9 files & Detailed cost was about \texteuro{}6,947.50 & Failed \\
+Llama traditional & 1/9 files & Paris-only itinerary and unsupported budget & Failed \\
+Llama Turbo4 & Claimed complete & Minimum stated cost was \texteuro{}5,800 & Failed \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Neither cache configuration consistently satisfied the autonomous travel
+task. Both Qwen runs created all nine required files, but both exceeded the
+\texteuro{}5,000 budget and contained unreliable final verification. The
+traditional Qwen run calculated a total of \texteuro{}9,290. The Turbo4
+Qwen run reported \texteuro{}3,968.50, although its detailed CSV values
+totaled approximately \texteuro{}6,947.50.
+
+The traditional Llama run performed substantially worse: it created only
+one of nine required files and produced a 30-day itinerary limited to Paris,
+despite requiring eight European countries. The Llama Turbo4 response was
+more complete, but its reported accommodation and transportation costs
+already totaled \texteuro{}5,800, exceeding the complete task budget before
+food, attractions, and other expenses were included.
+
+The apparent quality differences cannot be attributed confidently to
+KV-cache format. Quantization changes memory representation, while agent
+quality is also affected by sampling variation, generated output length,
+tool-call behavior, conversation state, and context compression.
+
 \section{Analysis}
 Your report should include \textit{qualitative evaluation}. That is, try to understand your system (e.g., how it works, when it succeeds and when it fails) by inspecting key characteristics or outputs of your model.
 
+\subsection{Context behavior}
+
+Both model families experienced pressure on the 65,536-token context limit.
+Hermes used response continuation and context compression when the
+conversation and tool history became too large. Turbo4 reduces the physical
+GPU memory occupied by the KV cache, but it does not increase the logical
+context limit configured by the server. Consequently, Turbo4 did not prevent
+output truncation or context compression.
+
+Repeated context compression can also reduce agent reliability because exact
+requirements, file paths, calculations, and completed steps may be shortened
+or omitted from the retained summary. This behavior likely contributed to
+some of the inconsistencies observed in the generated outputs.
+
+\subsection{Limitations}
+
+The GPU-memory comparison is reasonably controlled because each model pair
+used the same weights, hardware, context size, and server settings, with the
+KV-cache format as the intended changed variable. The end-to-end runtime and
+quality comparisons are less conclusive because most configurations were
+tested only once, generated-token counts were not matched, tool-call paths
+differed, context-compression events were inconsistent, and outputs were not
+verified equally.
+
+Furthermore, \texttt{nvidia-smi} measures total GPU allocation rather than
+the exact amount of KV cache occupied by active tokens. Time to first token,
+prompt-processing throughput, decode throughput, and exact KV-cache buffer
+sizes were not measured consistently across all configurations.
+
 \section{Conclusion}
 Summarize the main findings of your project and what you have learned. Highlight your achievements, and note the primary limitations of your work. If you'd like, you can describe avenues for future work.
+
+Turbo4 provided a clear GPU-memory benefit for both evaluated models. It
+reduced idle allocation by 6.29\% for Qwen3.5-9B and 17.27\% for Llama 3.1
+8B, with Llama saving more than 2.2 GiB. However, the current experiments do
+not demonstrate a consistent improvement in end-to-end execution time,
+energy consumption, or autonomous-task quality. The evidence therefore
+supports Turbo4 primarily as a VRAM-efficiency optimization. Repeated trials
+with matched token counts, fresh agent sessions, exact KV-cache measurements,
+time-to-first-token measurements, and decode-throughput measurements are
+required for a definitive performance comparison.
 
 \section{Ethics Statement}
 What are the ethical challenges and possible societal risks of your project, and
