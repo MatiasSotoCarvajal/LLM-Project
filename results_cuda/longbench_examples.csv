@@ -44,6 +44,51 @@ unsloth/Qwen3.5-9B-GGUF,Q8_0,f16,f16,131072,66fa2734bb02136c067c627a,Code Reposi
 unsloth/Qwen3.5-9B-GGUF,Q8_0,f16,f16,131072,66f24538821e116aacb2865e,Multi-Document QA,Academic,hard,long,C,D,False,18.20711924805073,108.35758680881828,109651,128
 unsloth/Qwen3.5-9B-GGUF,Q8_0,f16,f16,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,D,D,True,17.12766720901709,107.27167893586494,116684,128
 unsloth/Qwen3.5-9B-GGUF,Q8_0,f16,f16,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,C,B,False,18.54265255999053,108.78507468775284,111751,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,A,B,False,2.4765044020023197,125.76700679436603,27426,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,A,B,False,1.8060701680369675,133.5925864464059,16621,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,?,B,False,3.673697793041356,120.97258175336528,36251,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f9625fbb02136c067c5456,Long In-context Learning,User guide QA,easy,short,B,B,True,1.5909156299894676,137.92300879043677,13174,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ebe68d5a08c7b9b35e190b,Single-Document QA,Legal,hard,short,A,C,False,1.7263267520465888,133.44912825399538,17240,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ed3e90821e116aacb1f82f,Code Repository Understanding,Code repo QA,easy,short,D,C,False,7.594111102051102,106.86855918639631,64818,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f8c6b4bb02136c067c4480,Multi-Document QA,Multi-news,hard,short,A,C,False,1.9573578900308348,135.77142032816377,13829,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,6725e2febb02136c067d8717,Single-Document QA,Event ordering,hard,short,?,D,False,3.666661577008199,121.2440396240677,36781,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ec7ba6821e116aacb1d114,Multi-Document QA,Academic,hard,short,A,C,False,4.185907533974387,120.19084051896152,39112,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,6703a0ecbb02136c067cd11b,Long Structured Data Understanding,Table QA,hard,short,B,A,False,9.652085769979749,102.06490051861728,75900,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f39aa7821e116aacb2da76,Single-Document QA,Financial,hard,short,B,B,True,2.3056825610110536,132.1484026561829,16594,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f6bcf3bb02136c067c2703,Multi-Document QA,Governmental,hard,short,A,A,True,1.2929223930113949,136.55445375551417,11085,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66fa7c81bb02136c067c6e09,Code Repository Understanding,Code repo QA,hard,short,D,B,False,10.19973456102889,101.92924995202159,80143,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ed0cb0821e116aacb1e6c1,Single-Document QA,Financial,hard,short,D,A,False,6.647148315038066,113.08919026372753,53398,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,671b2c67bb02136c067d50f7,Long-dialogue History Understanding,Agent history QA,hard,short,B,D,False,5.161484626994934,117.05907367862713,45131,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ec3aff821e116aacb1c52e,Single-Document QA,Literary,easy,medium,D,D,True,11.562206605973188,98.19497686664431,85264,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,67246a00bb02136c067d759f,Single-Document QA,Event ordering,hard,medium,B,B,True,21.618639427004382,89.1486305779803,129541,9
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,67286634bb02136c067d91f0,Long In-context Learning,Many-shot learning,hard,medium,B,D,False,19.136663044977468,112.9815840018077,116688,3
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,670fb8dfbb02136c067d2c48,Single-Document QA,Detective,easy,medium,A,D,False,14.51399131398648,92.74952339063273,102590,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ebd2975a08c7b9b35e01e3,Single-Document QA,Academic,hard,medium,C,C,True,9.630307860963512,105.89066457973814,70220,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,6725dc6abb02136c067d8586,Long In-context Learning,Many-shot learning,easy,medium,B,C,False,14.646592759003397,93.05287584274646,99070,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,671b56cfbb02136c067d54e9,Long-dialogue History Understanding,Dialogue history QA,easy,medium,C,D,False,15.106749877973925,92.61295886826964,99482,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ec31eb821e116aacb1bf28,Single-Document QA,Literary,easy,medium,D,B,False,15.463505489984527,91.7912122822379,101483,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ec1aef821e116aacb1aa1a,Multi-Document QA,Academic,hard,medium,A,C,False,8.609858872019686,108.20827387514117,64459,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ed211f821e116aacb1ee0d,Single-Document QA,Literary,hard,medium,D,C,False,13.549088286003098,94.3865794082404,94373,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f3c806821e116aacb2ed77,Multi-Document QA,Financial,hard,medium,C,C,True,11.045409808051772,101.92040334999625,78683,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ece28e821e116aacb1db1f,Single-Document QA,Literary,easy,medium,D,D,True,6.936399785976391,110.29681044028246,55731,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66ec2df6821e116aacb1bb7b,Long In-context Learning,User guide QA,hard,medium,B,C,False,14.119264993991237,93.42936119864031,100703,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,67192e81bb02136c067d427f,Long-dialogue History Understanding,Dialogue history QA,easy,medium,D,A,False,15.794778533047065,92.4061626247393,102816,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,672468b1bb02136c067d74bd,Single-Document QA,Event ordering,hard,medium,B,B,True,18.3601380729815,86.79313601908365,120135,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,6725d7a9bb02136c067d822d,Long In-context Learning,Many-shot learning,hard,medium,C,A,False,19.14280999195762,86.73126790949863,116696,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,67239fd9bb02136c067d6ff7,Single-Document QA,Event ordering,easy,medium,D,A,False,21.073828919033986,83.83122678267978,130976,96
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,671a4444bb02136c067d4a40,Long-dialogue History Understanding,Dialogue history QA,hard,medium,B,B,True,16.25883036002051,91.3935154872738,103095,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,670cf1c0bb02136c067d26e5,Single-Document QA,Detective,hard,medium,A,A,True,13.76775302097667,95.07299080317365,92853,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f41108821e116aacb30c41,Multi-Document QA,Financial,easy,medium,A,D,False,17.058037198963575,89.68333375372397,109738,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f19f04821e116aacb27bab,Long In-context Learning,User guide QA,hard,medium,D,A,False,13.201573616010137,97.58261931571712,90005,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f17aab821e116aacb2772d,Single-Document QA,Financial,hard,medium,B,D,False,18.491528354003094,89.14629882675112,115585,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f950acbb02136c067c5021,Single-Document QA,Governmental,easy,medium,B,A,False,10.043850358983036,105.9180905616224,72374,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,67066b87bb02136c067cfaa3,Code Repository Understanding,Code repo QA,hard,long,B,B,True,16.04094456601888,92.19530711481269,105569,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f94f9ebb02136c067c4fde,Multi-Document QA,Governmental,hard,long,C,D,False,17.208059349970426,89.65129847298626,109090,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,6708ae87bb02136c067d1847,Code Repository Understanding,Code repo QA,hard,long,D,C,False,18.297933135007042,89.34058721262411,114175,124
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66fa2734bb02136c067c627a,Code Repository Understanding,Code repo QA,easy,long,D,A,False,19.573886914004106,87.45534994438385,119386,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f24538821e116aacb2865e,Multi-Document QA,Academic,hard,long,C,D,False,17.419656554993708,91.04183870373492,109651,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,D,D,True,17.62144834600622,86.74849037295074,116684,128
+unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,q8_0,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,C,B,False,18.340376654989086,89.71589499315215,111751,128
 unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,turbo3,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,A,B,False,2.5493232830194756,132.9320447233248,27426,128
 unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,turbo3,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,D,B,False,1.7972514310386032,138.4708919039964,16621,128
 unsloth/Qwen3.5-9B-GGUF,Q8_0,q8_0,turbo3,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,D,B,False,3.723174645972904,126.84934955022986,36251,128
@@ -220,6 +265,47 @@ unsloth/gemma-4-E4B-it-GGUF,Q8_0,f16,f16,131072,66f94f9ebb02136c067c4fde,Multi-D
 unsloth/gemma-4-E4B-it-GGUF,Q8_0,f16,f16,131072,66f24538821e116aacb2865e,Multi-Document QA,Academic,hard,long,C,D,False,12.657550831965636,130.28109163340937,110456,128
 unsloth/gemma-4-E4B-it-GGUF,Q8_0,f16,f16,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,D,D,True,13.447668334003538,128.9437392274054,115257,128
 unsloth/gemma-4-E4B-it-GGUF,Q8_0,f16,f16,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,C,B,False,15.036103420017753,128.22041088631357,116367,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,C,B,False,2.223573230963666,140.86522059713647,29987,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,B,B,True,1.144590720999986,155.39675949194972,16219,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,C,B,False,2.613185374997556,135.6888062035226,36118,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f9625fbb02136c067c5456,Long In-context Learning,User guide QA,easy,short,A,B,False,1.020473276032135,164.98383158450474,13335,10
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ebe68d5a08c7b9b35e190b,Single-Document QA,Legal,hard,short,C,C,True,1.1991529439692385,155.07914488390267,17774,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ed3e90821e116aacb1f82f,Code Repository Understanding,Code repo QA,easy,short,C,C,True,7.876002814969979,104.35987851857891,79530,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f8c6b4bb02136c067c4480,Multi-Document QA,Multi-news,hard,short,C,C,True,1.2424104810343124,157.47411519231525,13608,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,6725e2febb02136c067d8717,Single-Document QA,Event ordering,hard,short,D,D,True,2.6614940669969656,233.78141437755698,36794,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec7ba6821e116aacb1d114,Multi-Document QA,Academic,hard,short,A,C,False,3.791008732980117,125.99057629861342,47074,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,6703a0ecbb02136c067cd11b,Long Structured Data Understanding,Table QA,hard,short,B,A,False,9.383832732972223,100.09916073109925,88493,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f39aa7821e116aacb2da76,Single-Document QA,Financial,hard,short,B,B,True,1.5486641080351546,154.38594798399694,17543,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f6bcf3bb02136c067c2703,Multi-Document QA,Governmental,hard,short,D,A,False,0.7769375009811483,158.51471710076584,11120,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66fa7c81bb02136c067c6e09,Code Repository Understanding,Code repo QA,hard,short,D,B,False,10.093408405024093,97.01644125502894,94158,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ed0cb0821e116aacb1e6c1,Single-Document QA,Financial,hard,short,A,A,True,5.21967601502547,118.76594757596845,57130,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,671b2c67bb02136c067d50f7,Long-dialogue History Understanding,Agent history QA,hard,short,B,D,False,3.6365833550225943,214.27040925648168,45042,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec3aff821e116aacb1c52e,Single-Document QA,Literary,easy,medium,A,D,False,8.676672746019904,102.13013134094467,83652,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,67286634bb02136c067d91f0,Long In-context Learning,Many-shot learning,hard,medium,B,D,False,14.328235527034849,157.66653527788725,117407,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,670fb8dfbb02136c067d2c48,Single-Document QA,Detective,easy,medium,D,D,True,12.095410509034991,94.73105852484797,104666,25
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ebd2975a08c7b9b35e01e3,Single-Document QA,Academic,hard,medium,B,C,False,7.150965390959755,194.4390433599067,71404,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,6725dc6abb02136c067d8586,Long In-context Learning,Many-shot learning,easy,medium,B,C,False,11.443930970039219,169.52025767079166,99123,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,671b56cfbb02136c067d54e9,Long-dialogue History Understanding,Dialogue history QA,easy,medium,B,D,False,11.96205354097765,168.66250632484397,101281,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec31eb821e116aacb1bf28,Single-Document QA,Literary,easy,medium,D,B,False,11.976273173000664,89.702377323239,100718,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec1aef821e116aacb1aa1a,Multi-Document QA,Academic,hard,medium,A,C,False,7.0583506069961,193.9487975174554,62962,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ed211f821e116aacb1ee0d,Single-Document QA,Literary,hard,medium,C,C,True,11.192889325961005,96.90465339173858,93011,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f3c806821e116aacb2ed77,Multi-Document QA,Financial,hard,medium,C,C,True,8.778018431039527,103.00699964752292,82770,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ece28e821e116aacb1db1f,Single-Document QA,Literary,easy,medium,B,D,False,5.140246900031343,119.35410778608386,56078,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec2df6821e116aacb1bb7b,Long In-context Learning,User guide QA,hard,medium,B,C,False,13.667828166973777,88.93106938916166,114046,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,67192e81bb02136c067d427f,Long-dialogue History Understanding,Dialogue history QA,easy,medium,B,A,False,12.598843151994515,166.61112962345885,104389,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,672468b1bb02136c067d74bd,Single-Document QA,Event ordering,hard,medium,B,B,True,15.000393429014366,155.24334394162852,120131,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,6725d7a9bb02136c067d822d,Long In-context Learning,Many-shot learning,hard,medium,C,A,False,15.00681639398681,154.41630636195183,117412,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,671a4444bb02136c067d4a40,Long-dialogue History Understanding,Dialogue history QA,hard,medium,?,B,False,12.05162962101167,94.91793553490211,104666,24
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,670cf1c0bb02136c067d26e5,Single-Document QA,Detective,hard,medium,B,A,False,10.728693231008947,97.37542791936097,93625,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f41108821e116aacb30c41,Multi-Document QA,Financial,easy,medium,A,D,False,14.641547595965676,87.43564811674166,116471,116
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f19f04821e116aacb27bab,Long In-context Learning,User guide QA,hard,medium,D,A,False,10.817908688040916,96.66680763909447,94962,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f17aab821e116aacb2772d,Single-Document QA,Financial,hard,medium,C,D,False,14.713535199000034,157.92798483891346,116753,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f950acbb02136c067c5021,Single-Document QA,Governmental,easy,medium,B,A,False,7.21119101595832,109.9037912514865,70752,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,67066b87bb02136c067cfaa3,Code Repository Understanding,Code repo QA,hard,long,D,B,False,15.368019832007121,155.7996416608242,121051,2
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f94f9ebb02136c067c4fde,Multi-Document QA,Governmental,hard,long,C,D,False,14.822125597973354,87.74677924761251,115677,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f24538821e116aacb2865e,Multi-Document QA,Academic,hard,long,D,D,True,13.022477984952275,89.43331418901452,110456,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,D,D,True,13.90514416800579,88.20462922701735,115257,128
+unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,C,B,False,14.988472490978893,87.4858946082033,116367,128
 unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,turbo3,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,C,B,False,2.329142728995066,137.8778445384216,29987,128
 unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,turbo3,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,B,B,True,1.136862774961628,150.5386460930517,16219,128
 unsloth/gemma-4-E4B-it-GGUF,Q8_0,q8_0,turbo3,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,C,B,False,2.6573138960520737,134.22706185350793,36118,128
@@ -384,6 +470,47 @@ unsloth/gemma-4-E2B-it-GGUF,Q8_0,f16,f16,131072,66f94f9ebb02136c067c4fde,Multi-D
 unsloth/gemma-4-E2B-it-GGUF,Q8_0,f16,f16,131072,66f24538821e116aacb2865e,Multi-Document QA,Academic,hard,long,A,D,False,8.883486420032568,216.0570930868482,110456,128
 unsloth/gemma-4-E2B-it-GGUF,Q8_0,f16,f16,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,D,D,True,9.666273692040704,213.06735425277444,115257,128
 unsloth/gemma-4-E2B-it-GGUF,Q8_0,f16,f16,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,D,B,False,10.204572316957638,208.03536601222208,116367,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,B,B,True,1.8656818880117498,211.25981821752828,29987,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,D,B,False,0.8728032640065067,224.98413686066277,16219,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,D,B,False,1.947983898979146,212.2325538208492,36118,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f9625fbb02136c067c5456,Long In-context Learning,User guide QA,easy,short,D,B,False,0.7694326980272308,228.08999575895163,13335,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ebe68d5a08c7b9b35e190b,Single-Document QA,Legal,hard,short,D,C,False,0.8811957470024936,301.9779556092405,17774,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ed3e90821e116aacb1f82f,Code Repository Understanding,Code repo QA,easy,short,B,C,False,5.723589622997679,165.9996420632718,79530,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f8c6b4bb02136c067c4480,Multi-Document QA,Multi-news,hard,short,B,C,False,0.9897086879936978,392.61876717707105,13608,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,6725e2febb02136c067d8717,Single-Document QA,Event ordering,hard,short,C,D,False,1.9128846499952488,363.6363636363636,36794,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec7ba6821e116aacb1d114,Multi-Document QA,Academic,hard,short,D,C,False,2.555868210969493,214.53185127579408,47074,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,6703a0ecbb02136c067cd11b,Long Structured Data Understanding,Table QA,hard,short,D,A,False,6.387128621980082,300.4356316659156,88493,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f39aa7821e116aacb2da76,Single-Document QA,Financial,hard,short,D,B,False,0.9682650729664601,243.88245627740108,17543,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f6bcf3bb02136c067c2703,Multi-Document QA,Governmental,hard,short,C,A,False,0.5395818260149099,248.03269380945275,11120,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66fa7c81bb02136c067c6e09,Code Repository Understanding,Code repo QA,hard,short,D,B,False,7.015947067004163,292.48318221702255,94158,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ed0cb0821e116aacb1e6c1,Single-Document QA,Financial,hard,short,A,A,True,3.5170435460167937,343.0531732418525,57130,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,671b2c67bb02136c067d50f7,Long-dialogue History Understanding,Agent history QA,hard,short,B,D,False,2.476961790001951,361.92544335866813,45042,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec3aff821e116aacb1c52e,Single-Document QA,Literary,easy,medium,D,D,True,5.971788141992874,208.62308762169675,83652,3
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,67286634bb02136c067d91f0,Long In-context Learning,Many-shot learning,hard,medium,B,D,False,10.045633518020622,259.4370216629913,117407,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,670fb8dfbb02136c067d2c48,Single-Document QA,Detective,easy,medium,D,D,True,8.396759408002254,176.14420338784015,104666,6
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ebd2975a08c7b9b35e01e3,Single-Document QA,Academic,hard,medium,B,C,False,4.839078904013149,322.7888960619755,71404,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,6725dc6abb02136c067d8586,Long In-context Learning,Many-shot learning,easy,medium,B,C,False,8.330053255951498,225.42831379621282,99123,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,671b56cfbb02136c067d54e9,Long-dialogue History Understanding,Dialogue history QA,easy,medium,C,D,False,8.968329393013846,221.87708009762594,101281,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec31eb821e116aacb1bf28,Single-Document QA,Literary,easy,medium,D,B,False,8.70209336798871,172.95053614666205,100718,4
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec1aef821e116aacb1aa1a,Multi-Document QA,Academic,hard,medium,D,C,False,4.566993554006331,180.67178852367152,62962,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ed211f821e116aacb1ee0d,Single-Document QA,Literary,hard,medium,B,C,False,7.568242323992308,178.26583000570452,93011,5
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f3c806821e116aacb2ed77,Multi-Document QA,Financial,hard,medium,B,C,False,6.398609222960658,271.1864406779661,82770,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ece28e821e116aacb1db1f,Single-Document QA,Literary,easy,medium,D,D,True,3.475553627999034,213.55076684139001,56078,11
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66ec2df6821e116aacb1bb7b,Long In-context Learning,User guide QA,hard,medium,C,C,True,9.58828980603721,157.78664779801338,114046,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,67192e81bb02136c067d427f,Long-dialogue History Understanding,Dialogue history QA,easy,medium,B,A,False,8.577633234963287,279.4857462269424,104389,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,672468b1bb02136c067d74bd,Single-Document QA,Event ordering,hard,medium,B,B,True,10.499517418036703,263.60880453407145,120131,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,6725d7a9bb02136c067d822d,Long In-context Learning,Many-shot learning,hard,medium,C,A,False,10.363887365034316,268.2763246143528,117412,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,671a4444bb02136c067d4a40,Long-dialogue History Understanding,Dialogue history QA,hard,medium,B,B,True,8.420890126028098,165.809981760902,104666,39
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,670cf1c0bb02136c067d26e5,Single-Document QA,Detective,hard,medium,D,A,False,7.2805956460069865,171.42780612586552,93625,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f41108821e116aacb30c41,Multi-Document QA,Financial,easy,medium,B,D,False,10.084307637007441,270.8925910876338,116471,2
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f19f04821e116aacb27bab,Long In-context Learning,User guide QA,hard,medium,B,A,False,7.307634135009721,170.01065222992878,94962,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f17aab821e116aacb2772d,Single-Document QA,Financial,hard,medium,B,D,False,10.115653084008954,154.83335180776737,116753,88
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f950acbb02136c067c5021,Single-Document QA,Governmental,easy,medium,D,A,False,4.743144675041549,190.63618870599728,70752,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,67066b87bb02136c067cfaa3,Code Repository Understanding,Code repo QA,hard,long,D,B,False,10.693834436999168,176.96765916028843,121051,4
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f94f9ebb02136c067c4fde,Multi-Document QA,Governmental,hard,long,C,D,False,10.087154197972268,181.24971679731752,115677,4
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f24538821e116aacb2865e,Multi-Document QA,Academic,hard,long,A,D,False,9.130635709967464,160.00560019600687,110456,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,B,D,False,9.705557178007439,157.26631822348037,115257,128
+unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,q8_0,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,D,B,False,10.11393302999204,155.88084857636943,116367,128
 unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,turbo3,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,D,B,False,1.7695733250002377,219.6278680311048,29987,128
 unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,turbo3,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,A,B,False,0.7641420389991254,237.75956192800714,16219,128
 unsloth/gemma-4-E2B-it-GGUF,Q8_0,q8_0,turbo3,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,A,B,False,1.8503842410282232,218.7050949743961,36118,128
@@ -554,6 +681,53 @@ bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,f16,f16,131072,66f24538821e116aac
 bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,f16,f16,131072,66f3e604821e116aacb2fadf,Multi-Document QA,Academic,hard,long,C,D,False,47.05480109201744,57.95253687230158,129267,128
 bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,f16,f16,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,C,D,False,42.20137586898636,61.61468008262143,117578,128
 bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,f16,f16,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,C,B,False,35.16340898699127,65.8827216330368,106227,37
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,C,B,False,2.5353342869784683,112.67565959274792,25899,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,B,B,True,2.3468656949698925,130.17165369865467,15452,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,B,B,True,4.177678534993902,103.55961919186281,33057,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f9625fbb02136c067c5456,Long In-context Learning,User guide QA,easy,short,C,B,False,2.3069823859841563,135.16924139431296,12532,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ebe68d5a08c7b9b35e190b,Single-Document QA,Legal,hard,short,D,C,False,1.9141878800000995,127.3437974119363,16556,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ed3e90821e116aacb1f82f,Code Repository Understanding,Code repo QA,easy,short,B,C,False,9.763740282971412,79.99530027610878,60952,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f8c6b4bb02136c067c4480,Multi-Document QA,Multi-news,hard,short,D,C,False,3.9120089339558035,135.2149336443277,12936,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,6725e2febb02136c067d8717,Single-Document QA,Event ordering,hard,short,C,D,False,4.050521839002613,103.90917688507888,32845,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ec7ba6821e116aacb1d114,Multi-Document QA,Academic,hard,short,A,C,False,5.589497269014828,100.39570024040064,36735,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,6703a0ecbb02136c067cd11b,Long Structured Data Understanding,Table QA,hard,short,B,A,False,12.04786559700733,76.75407036429401,65561,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f39aa7821e116aacb2da76,Single-Document QA,Financial,hard,short,D,B,False,4.146749189996626,130.2677001237543,15677,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f6bcf3bb02136c067c2703,Multi-Document QA,Governmental,hard,short,B,A,False,1.4730818459647708,139.5717546023241,10708,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66fa7c81bb02136c067c6e09,Code Repository Understanding,Code repo QA,hard,short,D,B,False,13.496632375987247,73.88923370531285,74353,35
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ed0cb0821e116aacb1e6c1,Single-Document QA,Financial,hard,short,B,A,False,8.754094477044418,93.8279532531544,43227,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,671b2c67bb02136c067d50f7,Long-dialogue History Understanding,Agent history QA,hard,short,B,D,False,6.462911608978175,97.58358644076067,38889,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ec3aff821e116aacb1c52e,Single-Document QA,Literary,easy,medium,D,D,True,18.068227256007958,68.96513674407313,83760,25
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,67246a00bb02136c067d759f,Single-Document QA,Event ordering,hard,medium,B,B,True,36.88680267496966,54.97750432196201,117037,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,67286634bb02136c067d91f0,Long In-context Learning,Many-shot learning,hard,medium,D,D,True,32.97018543398008,58.128102530706855,107515,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,670fb8dfbb02136c067d2c48,Single-Document QA,Detective,easy,medium,B,D,False,23.19447545998264,61.188978335277355,99259,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ebd2975a08c7b9b35e01e3,Single-Document QA,Academic,hard,medium,C,C,True,14.714024609012995,77.39961481597939,64756,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,6725dc6abb02136c067d8586,Long In-context Learning,Many-shot learning,easy,medium,B,C,False,24.019864683039486,62.577580310746576,94773,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,671b56cfbb02136c067d54e9,Long-dialogue History Understanding,Dialogue history QA,easy,medium,C,D,False,25.934617171995342,61.885915249172996,96559,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ec31eb821e116aacb1bf28,Single-Document QA,Literary,easy,medium,D,B,False,27.23714475997258,60.97886320154276,98568,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ec1aef821e116aacb1aa1a,Multi-Document QA,Academic,hard,medium,B,C,False,13.452503138047177,80.33282895195156,60285,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ed211f821e116aacb1ee0d,Single-Document QA,Literary,hard,medium,C,C,True,23.15815268899314,64.58760812214014,93505,26
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f3c806821e116aacb2ed77,Multi-Document QA,Financial,hard,medium,A,C,False,14.752227658987977,76.49650775513228,66971,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ece28e821e116aacb1db1f,Single-Document QA,Literary,easy,medium,D,D,True,10.706223927962128,84.05440489142408,54459,124
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66ec2df6821e116aacb1bb7b,Long In-context Learning,User guide QA,hard,medium,B,C,False,22.874799914949108,61.337698532878925,98797,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,67192e81bb02136c067d427f,Long-dialogue History Understanding,Dialogue history QA,easy,medium,B,A,False,27.648541035014205,61.175642917772294,99377,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,67039cfabb02136c067cd04e,Long Structured Data Understanding,Table QA,easy,medium,B,C,False,42.44306083099218,52.972743454245,124126,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,672468b1bb02136c067d74bd,Single-Document QA,Event ordering,hard,medium,B,B,True,35.04374499799451,56.648751711583344,111322,111
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,6725d7a9bb02136c067d822d,Long In-context Learning,Many-shot learning,hard,medium,B,A,False,32.88224300299771,58.15002069323002,107520,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,67239fd9bb02136c067d6ff7,Single-Document QA,Event ordering,easy,medium,C,A,False,33.92434687097557,54.73039508076368,118284,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,671a4444bb02136c067d4a40,Long-dialogue History Understanding,Dialogue history QA,hard,medium,B,B,True,28.90149489796022,60.90493310925393,100158,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,670cf1c0bb02136c067d26e5,Single-Document QA,Detective,hard,medium,B,A,False,24.710926784959156,63.467067038081225,92911,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f41108821e116aacb30c41,Multi-Document QA,Financial,easy,medium,B,D,False,27.90357333503198,60.48571922718152,100493,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f19f04821e116aacb27bab,Long In-context Learning,User guide QA,hard,medium,D,A,False,19.54341561498586,68.68511470145855,80722,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f17aab821e116aacb2772d,Single-Document QA,Financial,hard,medium,C,D,False,28.269713764020707,60.133760032472225,101778,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f950acbb02136c067c5021,Single-Document QA,Governmental,easy,medium,B,A,False,14.870231627020985,76.88860643004999,65542,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,67066b87bb02136c067cfaa3,Code Repository Understanding,Code repo QA,hard,long,B,B,True,25.927343249029946,62.46297360841767,98339,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f94f9ebb02136c067c4fde,Multi-Document QA,Governmental,hard,long,C,D,False,28.284924792009406,60.07423861769177,101005,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,6708ae87bb02136c067d1847,Code Repository Understanding,Code repo QA,hard,long,D,C,False,31.313739742035978,59.474800341236666,106196,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66fa2734bb02136c067c627a,Code Repository Understanding,Code repo QA,easy,long,B,A,False,33.523625277972315,57.99284060259998,109883,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f24538821e116aacb2865e,Multi-Document QA,Academic,hard,long,D,D,True,30.61928760999581,59.70169055287083,104239,54
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f3e604821e116aacb2fadf,Multi-Document QA,Academic,hard,long,C,D,False,45.81610672798706,51.34608989496916,129267,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f55828821e116aacb3363e,Multi-Document QA,Governmental,hard,long,C,D,False,39.4358442700468,54.94868737030178,117578,128
+bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,q8_0,131072,66f2adaf821e116aacb2aca9,Multi-Document QA,Academic,hard,long,C,B,False,32.30540639598621,58.98228459111726,106227,37
 bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,turbo3,131072,66fb6d71bb02136c067c7c34,Multi-Document QA,Legal,hard,short,B,B,True,2.565865233016666,112.72666425948269,25899,128
 bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,turbo3,131072,66ebd3075a08c7b9b35e02bd,Single-Document QA,Academic,hard,short,B,B,True,2.0127315070130862,128.91633732571114,15452,128
 bartowski/Meta-Llama-3.1-8B-Instruct-GGUF,Q8_0,q8_0,turbo3,131072,66f95c18bb02136c067c52e1,Single-Document QA,Legal,hard,short,B,B,True,4.04980635701213,101.70571609961758,33057,128
