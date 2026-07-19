@@ -1,0 +1,542 @@
+{
+  "model": "unsloth/gemma-4-E2B-it-GGUF",
+  "weight_quant": "Q8_0",
+  "tasks": [
+    "niah_single",
+    "niah_multikey",
+    "niah_multivalue",
+    "niah_multiquery",
+    "vt"
+  ],
+  "lengths": [
+    4096,
+    8192,
+    16384,
+    32768
+  ],
+  "samples": 20,
+  "results": [
+    {
+      "model": "unsloth/gemma-4-E2B-it-GGUF",
+      "weight_quant": "Q8_0",
+      "cache_type_k": "f16",
+      "cache_type_v": "f16",
+      "n_samples_total": 400,
+      "accuracy": 0.64,
+      "recall": 0.7981,
+      "errors": 0,
+      "rss_gb_peak": 14.441,
+      "kv_cache_mib": null,
+      "by_task_length": [
+        {
+          "task": "niah_single",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.15,
+          "recall": 0.7625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.6625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.6375,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.75,
+          "recall": 0.9375,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.2625,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.25,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.25,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.25,
+          "errors": 0
+        }
+      ]
+    },
+    {
+      "model": "unsloth/gemma-4-E2B-it-GGUF",
+      "weight_quant": "Q8_0",
+      "cache_type_k": "q8_0",
+      "cache_type_v": "q8_0",
+      "n_samples_total": 400,
+      "accuracy": 0.64,
+      "recall": 0.7975,
+      "errors": 0,
+      "rss_gb_peak": 14.7834,
+      "kv_cache_mib": null,
+      "by_task_length": [
+        {
+          "task": "niah_single",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.2,
+          "recall": 0.775,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.675,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.9,
+          "recall": 0.975,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.7,
+          "recall": 0.925,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.2625,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.25,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.2375,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.25,
+          "errors": 0
+        }
+      ]
+    },
+    {
+      "model": "unsloth/gemma-4-E2B-it-GGUF",
+      "weight_quant": "Q8_0",
+      "cache_type_k": "turbo4",
+      "cache_type_v": "turbo4",
+      "n_samples_total": 400,
+      "accuracy": 0.5275,
+      "recall": 0.7981,
+      "errors": 0,
+      "rss_gb_peak": 14.5919,
+      "kv_cache_mib": null,
+      "by_task_length": [
+        {
+          "task": "niah_single",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_single",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.95,
+          "recall": 0.95,
+          "errors": 0
+        },
+        {
+          "task": "niah_multikey",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 1.0,
+          "recall": 1.0,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.25,
+          "recall": 0.725,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.725,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.15,
+          "recall": 0.6625,
+          "errors": 0
+        },
+        {
+          "task": "niah_multivalue",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.1,
+          "recall": 0.6875,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.75,
+          "recall": 0.925,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.45,
+          "recall": 0.85,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.45,
+          "recall": 0.8125,
+          "errors": 0
+        },
+        {
+          "task": "niah_multiquery",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.25,
+          "recall": 0.775,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 4096,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.425,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 8192,
+          "n": 20,
+          "accuracy": 0.0,
+          "recall": 0.4375,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 16384,
+          "n": 20,
+          "accuracy": 0.05,
+          "recall": 0.4625,
+          "errors": 0
+        },
+        {
+          "task": "vt",
+          "length": 32768,
+          "n": 20,
+          "accuracy": 0.05,
+          "recall": 0.525,
+          "errors": 0
+        }
+      ]
+    }
+  ]
+}

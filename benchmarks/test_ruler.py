@@ -57,7 +57,7 @@ from backend.llama_server import (  # noqa: E402
     DEFAULT_HOST, DEFAULT_PORT, STARTUP_TIMEOUT, run, stop_server, find_model,
 )
 from backend.evaluate import (  # noqa: E402
-    build_server_args, LogCollector, read_rss_gb, parse_kv_cache_mib,
+    build_server_args, LogCollector, read_rss_gb,
 )
 # NOTE: RULER is deliberately standalone -- it does NOT import test_longbenchv2,
 # which pulls in the heavy `datasets` package (and sys.exit()s if it's missing).
@@ -91,6 +91,27 @@ RETRY_BACKOFF_S = 1.5
 # ---------------------------------------------------------------------------
 def estimate_tokens(text: str) -> int:
     return len(text) // 4
+
+
+def parse_kv_cache_mib(log_text: str) -> float | None:
+    """Extract the KV-cache size (MiB) from the server log, robust to the several
+    formats llama.cpp / the turboquant fork emit. The shared backend parser only
+    matched 'KV self size = X MiB', which this fork apparently doesn't print
+    (kv_cache_mib came back null). Try, in order:
+      1. 'KV self size = X MiB'                      (single total)
+      2. sum of 'KV buffer size = X MiB'             (per-device K/V buffers)
+      3. sum of 'K (...): X MiB' + 'V (...): Y MiB'  (split K/V lines)
+    """
+    m = re.findall(r"KV\s+self\s+size\s*=\s*([\d.]+)\s*MiB", log_text, re.I)
+    if m:
+        return float(m[-1])
+    b = re.findall(r"KV\s+buffer\s+size\s*=\s*([\d.]+)\s*MiB", log_text, re.I)
+    if b:
+        return sum(float(x) for x in b)
+    kv = re.findall(r"\b[KV]\s*\([^)]*\)\s*:\s*([\d.]+)\s*MiB", log_text, re.I)
+    if kv:
+        return sum(float(x) for x in kv)
+    return None
 
 
 def resolve_model_path(model_id: str, weight_quant: str):
@@ -269,15 +290,20 @@ def generate_sample(task: str, length: int, idx: int, seed: int) -> dict:
                 "expected": list(pairs.values())}
 
     if task == "vt":
-        # Variable tracking: one chain resolves to the queried value; distractor
-        # chains resolve to other values. Multi-hop -> sharp KV-degradation probe.
+        # Variable tracking (single-target multi-hop): a chain
+        # VAR_0=<value>, VAR_1=VAR_0, ..., VAR_k=VAR_{k-1} resolves the LAST
+        # variable back to <value>. Distractor chains use other values. We ask
+        # for the last variable's value -> one gradable number that requires
+        # tracing the whole chain (stresses long-range KV access). The previous
+        # "list ALL variables" form floored at 0 -- models answered with just the
+        # first name -- so it measured formatting, not tracking.
         value = _magic_number(rng)
         chain_len = 4
         names = [f"VAR_{i}" for i in range(chain_len)]
         needles = [f"{names[0]} = {value}."]
         for a, b in zip(names, names[1:]):
             needles.append(f"{b} = {a}.")
-        # two distractor chains
+        # two distractor chains (their own values, never equal to `value`)
         for d in range(2):
             dval = _magic_number(rng)
             dnames = [f"DST{d}_{i}" for i in range(3)]
@@ -285,14 +311,13 @@ def generate_sample(task: str, length: int, idx: int, seed: int) -> dict:
             for a, b in zip(dnames, dnames[1:]):
                 needles.append(f"{b} = {a}.")
         rng.shuffle(needles)
-        preamble = ("Track the following variable assignments. A variable may be "
-                    "assigned a number, or assigned to another variable.\n\n")
+        preamble = ("Track the following variable assignments. A variable is "
+                    "assigned either a number or the value of another variable.\n\n")
         haystack = _insert_needles(filler, needles, rng)
-        question = (f"Find ALL variables that are assigned the value {value}, "
-                    f"directly or through a chain of assignments. "
-                    f"List every such variable name.")
+        question = (f"What is the numeric value of {names[-1]}? Trace it back "
+                    f"through the chain of assignments. Answer with just the number.")
         return {"prompt": preamble + haystack + "\n\n" + question,
-                "expected": names}
+                "expected": [value]}
 
     raise ValueError(f"unknown task: {task}")
 
@@ -432,7 +457,11 @@ def evaluate_config(model_id, weight_quant, k_type, v_type, tasks, lengths,
         stop_server(proc)
         time.sleep(0.5)
 
-    kv_mib = parse_kv_cache_mib(logs.text())
+    log_text = logs.text()
+    kv_mib = parse_kv_cache_mib(log_text)
+    # Keep the raw memory-report lines so the KV size can be diagnosed even if the
+    # parser misses this fork's exact format (kv_cache_mib was null before).
+    mem_log_lines = [ln.strip() for ln in log_text.splitlines() if "MiB" in ln][:25]
     for row in rows:
         row["rss_gb_peak"] = round(peak_rss, 4) if peak_rss else None
         row["kv_cache_mib"] = round(kv_mib, 2) if kv_mib is not None else None
@@ -460,6 +489,7 @@ def evaluate_config(model_id, weight_quant, k_type, v_type, tasks, lengths,
         "errors": sum(1 for r in rows if r["notes"]),
         "rss_gb_peak": round(peak_rss, 4) if peak_rss else None,
         "kv_cache_mib": round(kv_mib, 2) if kv_mib is not None else None,
+        "mem_log_lines": mem_log_lines,
         "by_task_length": by_task_length,
     }
     print(f"\n  accuracy={summary['accuracy']}  recall={summary['recall']}  "
