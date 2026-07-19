@@ -60,41 +60,29 @@ An abstract should concisely (less than 300 words) motivate the problem, describ
 \section{Introduction}
 The introduction explains the problem, why it's difficult, interesting, or important, how and why current methods succeed/fail at the problem, and explains the key ideas of your approach and results. Though an introduction covers similar material as an abstract, the introduction gives more space for motivation, detail, references to existing work, and to capture the reader's interest.
 
-Hoy en dia los Large Language Models (LLM) estan bastante avanzados. Son capaces de realizar tareas muy complejas de analisis y comprension
-de distintas areas, como tambien son capaces, gracias a los agentes de IA, de poder codificar, manipular archivos dentro de un sistema operativo,
-e incluso controlar la misma computadora a traves de multiples herramientas disponibles en el agente de IA.
-Estas ultimas tareas, al ser demasiado complejas, requieren almacenar y procesar una gran cantidad de tokens durante la inferencia y guardar el contexto
-de la conversacion para mantener la coherencia durante la sesion de un agente de IA. Para esto, los modelos utilizan una tecnica llamada Key-Value Cache, donde se almacenan
-las representaciones matematica de los tokens anteriores. Gracias a esto, en vez de volver a procesar absolutamente todos los tokens anteriores cada vez que queramos generar un nuevo token, simplemente
-buscamos en la VRAM del dispositivo las representaciones matematicas de los tokens anteriores, y usamos este cache para generar los nuevos tokens, ahorrando de manera significativa
-espacio en la memoria y tiempo.
-Con esta tecnica aplicada, el modelo es capaz de tener ventanas de contexto mucho mas largos y mantener la coherencia durante la sesion o conversacion.
+Today, Large Language Models (LLMs) are highly advanced. They are capable of performing highly complex analysis and comprehension tasks across various domains. Furthermore, thanks to AI agents, they can write code, manipulate files within an operating system, and even control a computer using multiple tools available to the agent.
+These latter tasks, being highly complex, require storing and processing a massive amount of tokens during inference, as well as preserving the conversation context to maintain coherence throughout an AI agent's session. To achieve this, models utilize a technique called Key-Value (KV) Cache, which stores the mathematical representations of previously processed tokens. By doing so, instead of reprocessing all past tokens every time a new token is generated, the model simply retrieves their mathematical representations from the device's VRAM. Using this cache to generate new tokens significantly saves both memory space and computation time.
+With this technique applied, models are able to support much longer context windows and maintain coherence during a session or conversation.
 
-La gran desventaja de almacenar este cache en la VRAM es que una vez se haya procesado una gran cantidad de tokens durante la sesion del LLM, este cache puede llegar a pesar GB de memoria e incluso
-superar el uso de memoria de los pesos del modelo mismo, requiriendo que para tareas complejas y/o de agentes de IA actuales se deba considerar una gran cantidad de VRAM aparte de cargar el modelo mismo.
+The major drawback of storing this cache in VRAM is that, once a large number of tokens have been processed during an LLM session, the cache can grow to several gigabytes. It can even exceed the memory footprint of the model weights themselves. This means that for current complex tasks and AI agents, a substantial amount of VRAM must be provisioned just for the cache, in addition to loading the model.
 
-Para este problema se han buscado multiples soluciones. La mas comun es cuantizar el KV Cache de manera que se pueda reducir el tamaño de la informacion sin que el modelo pierda calidad en su respuestas.
-La mas simple de estas soluciones es cuantizar los valores Key y Value en niveles de bits mas bajos. Esto tiene una ganancia importante y una perdida de calidad minima al bajar de 16 bits a 8 bits, pero 
-bajo los 8 bits los modelos empiezan a tener una perdida en la calidad de sus respuestas muy notorias, y con niveles de bits muy bajos el modelo se empieza a romper al generar
-la sintaxis de sus respuestas, provocando que herramientas como el Tool Calling empiecen a fallar de manera muy recurrente.
-Actualmente el metodo mas utilizado es cuantizar el KV Cache a Q8, puesto que permite reducir bastante el uso de memoria y tener un minimo impacto en la calidad de los modelos.
+Multiple solutions have been proposed for this problem. The most common approach is to quantize the KV Cache, reducing the size of the information without significantly degrading the quality of the model's responses.
+The simplest of these solutions involves quantizing the Key and Value matrices to lower bit levels. Dropping from 16 bits to 8 bits provides significant memory gains with minimal quality loss. However, below 8 bits, models begin to experience a very noticeable degradation in response quality. At extremely low bit levels, the model's syntax generation starts to break down, causing features like Tool Calling to fail frequently.
+Currently, the most widely used method is quantizing the KV Cache to Q8, as it significantly reduces memory usage while having a minimal impact on model quality.
 
-Frente a este problema es que Google, el 24 de marzo de 2026, lanzo su paper sobre TurboQuant. Un metodo avanzado de optimizacion de memoria.
+To address this problem, Google released their paper on TurboQuant on March 24, 2026. This is an advanced memory optimization method.
 
 \subsection{TurboQuant}
-TurboQuant es un metodo que tiene muchas caracteristicas novedosas que lo hacen teoricamente eficaz con respecto a soluciones mas simples
+TurboQuant is a method that introduces several novel features, making it theoretically much more effective than simpler solutions:
 \begin{enumerate}
-  \item Permite comprimir dinamicamente la memoria durante la ejecucion.
-  \item Aplica PolarQuant: Rota dinamicamente los vectores de memoria y aplica una transformacion de coordenadas cartesianas a polares. Esta transformacion permite comprimir aun mas la memoria.
-  \item Utiliza una tecnica de correción QJL de un solo bit para disminuir la perdida de calidad obtenidas en los pasos anteriores.
+  \item It allows for dynamic memory compression during execution.
+  \item It applies PolarQuant: it dynamically rotates memory vectors and applies a transformation from Cartesian to polar coordinates. This transformation enables even further memory compression.
+  \item It uses a single-bit QJL correction technique to mitigate the quality loss incurred in the previous steps.
 \end{enumerate}
-Durante los experimentos de esta tecnica los investigadores se dieron cuenta de algo muy importante:
-\textbf{V es libre, K lo es todo.} Solamente es posible cuantizar K hasta un limite razonable (como Q8), pero V soporta compresiones muy agresivas sin perder casi nada de calidad
-en las respuestas. Esto es revelador ya que, ademas de las transformaciones previas, permite realizar una cuantizacion asincronica en los modelos combinando distintos metodos de compresion tanto en K como en V
-en busca de un par ideal que maximice el ahorro en memoria y minimize la perdida de la informacion.
+During their experiments with this technique, the researchers realized something crucial:
+\textbf{V is free, K is everything.} It is only possible to quantize K up to a reasonable limit (such as Q8), whereas V tolerates highly aggressive compression with almost no loss in response quality. This is a significant revelation because, alongside the aforementioned transformations, it enables asynchronous quantization in models by combining different compression methods for K and V. This allows the search for an ideal pair that maximizes memory savings while minimizing information loss.
 
-De esto tratara principalmente el proyecto actual. Se probara con distintos modelos de LLM distintas combinaciones de cuantizacion de KV Cache y se analizara los resultados
-para comprobar si efectivamente existe una mejoria notable al momento de usar esta tecnica.
+This is the primary focus of the current project. Different combinations of KV Cache quantization will be tested across various LLMs, and the results will be analyzed to verify whether there is indeed a notable improvement when using this technique.
 
 \section{Related Work}
 This section helps the reader understand the research context of your work by providing an overview of existing work in the area.
@@ -103,46 +91,44 @@ This section helps the reader understand the research context of your work by pr
 This section details your approach(es) to the problem. 
 For example, this is where you describe the architecture of your neural network(s), and any other key methods or algorithms.
 
-Para experimentar y descubrir si existe algún beneficio real aplicando las cuantizacionea de TurboQuant es necesario tener una base sólida por donde partir.
-Los beneficios teóricos de TurboQuant se empiezan a mostrar en la compresión de memoria durante un trabajo de largo contexto.
+To experiment and determine whether there is any real benefit to applying TurboQuant quantizations, it is necessary to establish a solid baseline.
+The theoretical benefits of TurboQuant start to become apparent in memory compression during long-context workloads.
 \subsection{Models}
-Para la ejecucion de los benchmarks se utilizaron los siguientes modelos de peso abierto:
+The following open-weight models were used to run the benchmarks:
 \begin{enumerate}
-  \item Gemma 4 (E4B y E2B) Q8
+  \item Gemma 4 (E4B and E2B) Q8
   \item Qwen 3.5 9B Q8
   \item Llama 3.1 8B Q8
 \end{enumerate}
-Todos estos modelos fueron descargados directamente desde HuggingFace.
-Estos modelos fueron seleccionados ya que son los mas populares dentro de la comunidad de modelos de peso abierto, tienen una buena relacion calidad/tamaño del modelo, y son los mas compatibles con el fork de TurboQuant.
+All of these models were downloaded directly from HuggingFace.
+These models were selected because they are among the most popular within the open-weight community, offer a good quality-to-size ratio, and are the most compatible with the TurboQuant fork.
 
 \subsection{Framework}
-Se utilizo el fork Llama-cpp-turboquant. Este fork agrega el codec stack de TurboQuant a Llama.cpp, permitiendo poder cuantizar tanto los pesos como el KV Cache de los modelos. Ademas, al ser un fork directo de Llama.cpp, hereda todo lo bueno de este,
-como lo es la compatibilidad con distintos backends de inferencia (CUDA, Vulkan, Metal), iniciar servidores de LLM, y la compatibilidad con multiples modelos de distintos provedores.
+We used the Llama-cpp-turboquant fork. This fork adds the TurboQuant codec stack to Llama.cpp, allowing for the quantization of both the model weights and the KV Cache. Furthermore, being a direct fork of Llama.cpp, it inherits all of its advantages, such as compatibility with various inference backends (CUDA, Vulkan, Metal), the ability to start LLM servers, and support for multiple models from different providers.
 
-\subsection{Entorno de trabajo}
-Todas las pruebas fuerron ejecutadas dentro de una instancia Linux rentada desde Vast.ai, con la que se tuvo acceso a una RTX 5090 32GB a unos 100 TFLOPS aproximadamente. 
-Gracias a esto se pudo aumentar la muestra de las pruebas para poder tener resultados mas precisos.
-Desafortunadamente, el fork de Llama.cpp.turboquant no trae consigo binarios prebuildeados de los binarios, por lo que fue necesario buildearlas desde el mismo contenedor
-para poder utilizar los binarios mas importantes para las pruebas.
-La conexion se realizo a traves de SSH, en donde se pudo conectar internamente con la instancia, clono el repositorio, y se pudo ejecutar las pruebas.
+\subsection{Work Environment}
+All tests were executed on a Linux instance rented from Vast.ai, providing access to an RTX 5090 32GB delivering approximately 100 TFLOPS.
+This allowed us to increase the test sample size to obtain more precise results.
+Unfortunately, the Llama.cpp-turboquant fork does not provide pre-built binaries, so it was necessary to build them directly within the container to use the most critical binaries for testing.
+The connection was established via SSH, allowing us to connect internally to the instance, clone the repository, and execute the tests.
 
 
 \section{Experiments}
 This section contains the following.
 
-Las prubeas realizadas en el proyecto fueron las siguientes:
+The tests conducted in this project were as follows:
 
 \subsection{Data}
 Describe the dataset(s) you are using (provide references). If it's not already clear, make sure the associated task is clearly described.
 Being precise about the exact form of the input and output can be very useful for readers attempting to understand your work, especially if you've defined your own task.
 
-El dataset utilizado para ejecutar el benchmark fue LongBench V2 de zai-org.
-Este dataset tiene 503 problemas de seleccion multiple con una variedad de tematicas, tamaño de contextos y dificultad que lo hacen un desafio muy elevado para los LLM.
-A favor del tiempo y de los costos de la GPU rentada, se utilizo LongBench de la siguiente manera:
+The dataset used to run the benchmark was LongBench V2 by zai-org.
+This dataset consists of 503 multiple-choice problems covering a variety of topics, context sizes, and difficulty levels, making it a highly demanding challenge for LLMs.
+To optimize for time and the cost of the rented GPU, LongBench was utilized as follows:
 \begin{itemize}
-  \item Se seleccionaron 50 muestras aleatorias. Estas 50 tareas son las mismas para todos los modelos y pares de cuantizacion de KV Cache.
-  \item Estas muestran van desde las tareas cortas, medianas y grandes.
-  \item Se priorizan las tareas cortas y medianas debido a la ventana de contexto definido para los modelos.
+  \item 50 random samples were selected. These 50 tasks remain identical across all models and KV Cache quantization pairs.
+  \item These samples range from short to medium and large tasks.
+  \item Short and medium tasks were prioritized due to the defined context window for the models.
 \end{itemize}
 
 \subsection{Evaluation method}
@@ -150,24 +136,23 @@ Describe the evaluation metric(s) you use, plus any other details necessary to u
 Some projects will have clear metrics from prior work on given datasets, but we realize that other projects will define their own metrics.
 If you're defining your own metrics, be clear as to what you're hoping to measure with each evaluation method (whether quantitative or qualitative, automatic or human-defined!), and how it's defined.
 
-Se diseñaron multiples pruebas para los modelos y sus pares de KV Cache para comprobar de manera amplia sobre el rendimiento general de estas cuantizaciones.
+Multiple tests were designed for the models and their KV Cache pairs to broadly verify the overall performance of these quantizations.
 \subsubsection{LongBench V2}
-Se diseño un codigo Python para correr automaticamente las pruebas en todos los modelos, usando el siguiente orden:
+A Python script was designed to run the tests automatically across all models, following this sequence:
 \begin{enumerate}
-  \item Se seleccionan las 50 muestras.
-  \item Se carga el modelo con sus pesos (Q8\_0) con Llama-server.
-  \item Se define en Llama-server el tipo de cuantizacion que tendra los valores de K y V. Los pares seleccionados para las pruebas son: {
+  \item The 50 samples are selected.
+  \item The model is loaded with its weights (Q8\_0) using Llama-server.
+  \item The quantization type for the K and V values is defined in Llama-server. The pairs selected for testing are:
     \begin{enumerate}
-    \item K: F16 V: 16 (Full precision)
-    \item K: Q8\_0 V: Q8\_0 (Cuantizacion mas comun)
-    \item K: Q8\_0 V: turbo3 (Buen equilibrio entre ahorro y calidad)
-    \item K: turbo4 V: Q8\_0 (Combinacion mas experimental e inestable)
-    \item K: turbo4 V: turbo4 (Cuantizacion mas agresiva y delicada de todas)
+    \item K: F16 V: F16 (Full precision)
+    \item K: Q8\_0 V: Q8\_0 (Most common quantization)T
+    \item K: Q8\_0 V: turbo3 (Good balance between memory savings and quality)
+    \item K: turbo4 V: Q8\_0 (More experimental and unstable combination)
+    \item K: turbo4 V: turbo4 (Most aggressive and delicate quantization)
     \end{enumerate}
-  }
-  \item Se ejecutan las 50 tareas en cada combinacion de pares KV Cache de cada modelo.
-  \item Una vez acabado las 50 tareas, se almacenan metricas importantes (Cantidad de respuestas correctas de las 50 tareas, TTFT, Decode and Encode speed, Peak VRAM Usage, etc)
-  \item Se repite desde el paso dos con los siguientes modelos que quedan durante la ejecucion.
+  \item The 50 tasks are executed on each KV Cache pair combination for every model.
+  \item Once the 50 tasks are completed, important metrics are recorded (Number of correct answers out of 50, TTFT, Decode and Encode speed, Peak VRAM Usage, etc.).
+  \item The process is repeated from step two for the remaining models.
 \end{enumerate}
 
 \subsubsection{Ruler Tests}
